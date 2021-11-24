@@ -39,7 +39,7 @@ void Rules()
     _getch();
 }
 
-void Play_game()
+void Play_withFriend()
 {
     Clear_Screen();
     Large_Board board;
@@ -98,7 +98,23 @@ int main()
         cin >> choice;
         if (choice == 1)
         {
-            Play_game();
+            Clear_Screen();
+            cout << "____NEW GAME____\n\n";
+            cout << "1. Play with friend \n";
+            cout << "2. Play with bot\n\n";
+            cout << "Option: ";
+            cin >> choice;
+            switch (choice)
+            {
+            case 1:
+                Play_withFriend();
+                break;
+            
+            case 2:
+                // Play_withBot();
+                break;
+            }
+            return 0;
         }
         if (choice == 2)
         {
