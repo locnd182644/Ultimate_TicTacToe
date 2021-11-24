@@ -8,19 +8,18 @@ class Large_Board
 {
 public:
     Large_Board();
-    void displayBoards();
-    void Draw_select();
-    char getTurn();
-    void move(int);
-    int getBoardNum();
-    void setBoardNum(int);
-    bool boardFinished();
-    void selectNewBoard();
-    Status update();
+    void DrawBoards();
+    char GetTurn();
+    void Move(int);
+    int GetBoardNum();
+    void SetBoardNum(int);
+    bool BoardFinished();
+    void SelectNewBoard();
+    Status Update();
 
 private:
-    void initStatuses();
-    void setTurn();
+    void InitStatuses();
+    void SetTurn();
     
     int _board_num = -1;   // current board - 1
     Piece _turn;     // hold current player

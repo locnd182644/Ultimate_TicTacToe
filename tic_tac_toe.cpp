@@ -5,23 +5,23 @@ using namespace std;
 
 Small_Board::Small_Board()
 {
-    initBoard();
+    InitBoard();
     _gameStatus = NONE;
 }
 
-void Small_Board::initBoard()
+void Small_Board::InitBoard()
 {
     for(int x = 0; x < 3; ++x)
         for(int y = 0; y < 3; ++y)
             _board[x][y] = Piece_BLANK;
 }
 
-Status Small_Board::getStatus()
+Status Small_Board::GetStatus()
 {
     return _gameStatus;
 }
 
-int Small_Board::move(int cell, Piece _turn)
+int Small_Board::Move(int cell, Piece _turn)
 {
     /* player grid is display from 1 
      * so 1 must be subtracted for the 
@@ -34,7 +34,7 @@ int Small_Board::move(int cell, Piece _turn)
     return 0;  // cell already occupied
 }
 
-Status Small_Board::update()
+Status Small_Board::Update()
 { 
     bool tie = true;
     /* check for a tie */
@@ -48,7 +48,6 @@ Status Small_Board::update()
         return TIE;
     }
 
-    /* DIAGONALS */
     /* top-left to bottom-right */
     if(_board[0][0] != Piece_BLANK && 
        _board[0][0] == _board[1][1] && 

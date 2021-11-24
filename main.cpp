@@ -6,17 +6,26 @@ void Start()
 {
     Clear_Screen();
     Goto_xy(33, 9);
-    cout << "*****************************";
-    Goto_xy(37, 11);
+    cout << "*******************************";
+
+    Goto_xy(39, 11);
     cout << "ULTIMATE TIC TAC TOE";
 
+    Goto_xy(41, 13);
+    cout << ">>>        <<<";
+
+    Set_colorText(red);
+    Goto_xy(45, 13);
+    cout << "TEAM 5";
+    Goto_xy(35, 14);
+    cout << "HN21_CPLU.HUST_LITE_CPP_01";
+    Set_colorText(white);
+
     Goto_xy(33, 16);
-    cout << "*****************************" << endl;
-    Goto_xy(33, 17);
+    cout << "*******************************" << endl;
 
-    Goto_xy(33, 19);
-
-    cout << " press any key to continue";
+    Goto_xy(35, 19);
+    cout << "press any key to continue";
     _getch();
 }
 void Rules()
@@ -25,7 +34,7 @@ void Rules()
     cout << "1.Each turn, you mark one of the small squares..\n\n";
     cout << "2.When you get three in a row on a small board, you’ve won that board.\n\n";
     cout << "3.To win the game, you need to win three small boards in a row.\n\n";
-    cout << "*** Note: You do not get to pick which of the nine boards to play on. That is determined by the previous move of your opponent. Whichever square he picks, that is the board you must play in next.\n\n";
+    cout << "*** Note: You do not get to pick which of the nine boards to play on. That is determined by the previous Move of your opponent. Whichever square he picks, that is the board you must play in next.\n\n";
     cout << "Press any key to continue....";
     _getch();
 }
@@ -36,24 +45,25 @@ void Play_game()
     Large_Board board;
 
     //Nhap_ten();
-    board.displayBoards();
+    board.DrawBoards();
 
     int board_num;
     cout << "Enter the board number to start with: ";
     cin >> board_num;
-    board.setBoardNum(board_num);
-    board.Draw_select();
+    board.SetBoardNum(board_num);
+    Draw_select(board.GetBoardNum() - 1);
     int cell;
     bool playing = true;
     while (playing)
     {
-        Goto_xy(0, 18);
-        cout << "Player " << board.getTurn() << ": select cell" << endl;
+        board.DrawBoards();
+        Goto_xy(0, 20);
+        cout << "Player " << board.GetTurn() << ": select cell" << endl;
         cout << "cell: ";
         cin >> cell;
-        board.move(cell);
-        board.displayBoards();
-        int status = board.update();
+        board.Move(cell);
+        int status = board.Update();
+        board.DrawBoards();
 
         switch (status)
         {
@@ -72,13 +82,12 @@ void Play_game()
         default:
             break;
         }
-        if (board.boardFinished())
-            board.selectNewBoard();
+        if (board.BoardFinished())
+            board.SelectNewBoard();
     }
 }
 int main()
 {
-    Large_Board game;
     Start();
     int choice;
     while (1)

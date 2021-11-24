@@ -10,9 +10,8 @@ void Clear_Screen()
 
 void Goto_xy(int _x, int _y)
 {
-    HANDLE h;
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD Position;
-    h = GetStdHandle(STD_OUTPUT_HANDLE);
     Position.X = _x;
     Position.Y = _y;
     SetConsoleCursorPosition(h, Position);
@@ -72,4 +71,28 @@ void Infor_LargeBoard()
          << " | ";
     Goto_xy(50, 7);
     cout << "+---+---+---+";
+}
+
+void Draw_select(int _board_num)
+{
+    int i;
+    int _x = 6 + 16 * (_board_num % 3);  
+    int _y = 0 + 6 * (_board_num / 3);
+    Goto_xy(_x, _y);
+    cout << " _______ ";
+    for (i = 1; i < 4; i++)
+    {
+        Goto_xy(_x, _y + i);
+        cout << "|";
+        Goto_xy(_x + 8, _y + i);
+        cout << "|";
+    }
+    Goto_xy(_x, _y + i);
+    cout << "|_______|";
+}
+
+void Set_colorText(Colors _color)
+{
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(h, _color);
 }

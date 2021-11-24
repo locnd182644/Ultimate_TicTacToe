@@ -6,77 +6,85 @@ using namespace std;
 Large_Board::Large_Board()
 {
     _turn = Piece_X;
-    initStatuses();
+    InitStatuses();
 }
 
-void Large_Board::initStatuses()
+void Large_Board::InitStatuses()
 {
     for (int x = 0; x < 3; x++)
         for (int y = 0; y < 3; y++)
             _boardStatuses[x][y] = NONE;
 }
 
-char Large_Board::getTurn()
+char Large_Board::GetTurn()
 {
-    return _turn == Piece_X ? 'X' : 'O';
+    return _turn == Piece_X ? Piece_X : Piece_O;
 }
 
-void Large_Board::setTurn()
+void Large_Board::SetTurn()
 {
     _turn = _turn == Piece_X ? Piece_O : Piece_X;
 }
 
-int Large_Board::getBoardNum()
+int Large_Board::GetBoardNum()
 {
     return _board_num + 1;
 }
 
-void Large_Board::setBoardNum(int board_num)
+void Large_Board::SetBoardNum(int board_num)
 {
     _board_num = board_num - 1;
 }
 
-bool Large_Board::boardFinished()
+bool Large_Board::BoardFinished()
 {
     if (_boardStatuses[_board_num / 3][_board_num % 3] != NONE)
         return true;
     return false;
 }
 
-void Large_Board::selectNewBoard()
+void Large_Board::SelectNewBoard()
 {
-    cout << "The game on the next board is finished, " << getTurn() << " select next board: ";
+    for (int i = 0; i < 9; i++)
+    {
+        if(_boardStatuses[i / 3][i % 3] == NONE ) 
+            Draw_select(i);
+    }
+    Goto_xy(0, 20);
+    cout << "The game on the next board is finished\n"
+         << GetTurn() << " select next board: ";
     cin >> _board_num;
-    _board_num -= 1;
-    if (boardFinished())
-        selectNewBoard();
+    _board_num -= 1;    
+    if (BoardFinished())
+        SelectNewBoard();
 }
 
-void Large_Board::move(int cell)
+void Large_Board::Move(int cell)
 {
-    if (_boards[_board_num / 3][_board_num % 3].move(cell, _turn))
+    if (_boards[_board_num / 3][_board_num % 3].Move(cell, _turn))
     {
         _board_num = cell - 1;
     }
     else
     {
         // chosen cell is already occupied
-        cout << "Position already occupied. Try again." << endl;
+        cout << "Position already occupied. Try again :(" << endl;
         cout << "cell: ";
         cin >> cell;
-        move(cell); 
+        Move(cell);
         // call the function again with new parameters
     }
 }
 
-void Large_Board::displayBoards()
+void Large_Board::DrawBoards()
 {
     if (_board_num == -1)
         Information();
     else
     {
         Information();
-        Draw_select();
+        if(_boardStatuses[_board_num / 3][_board_num % 3] == NONE)
+            Draw_select(_board_num);
     }
 
     Goto_xy(0, 0);
@@ -94,41 +102,25 @@ void Large_Board::displayBoards()
                     Piece player = _boards[w][y]._board[x][z];
                     cout << (char)player << " ";
                 }
-                cout << "\t";
+                cout << "\t\t";
             }
-            cout << endl;
+            cout << endl;   
         }
+        cout << endl;
+        cout << endl;
         cout << endl;
     }
     cout << endl
          << endl;
 }
 
-void Large_Board::Draw_select()
-{
-    int i;
-    int _x = 6 + 8 * (_board_num % 3);
-    int _y = 0 + 4 * (_board_num / 3);
-    Goto_xy(_x, _y);
-    cout << " _______ ";
-    for (i = 1; i < 4; i++)
-    {
-        Goto_xy(_x, _y + i);
-        cout << "|";
-        Goto_xy(_x + 8, _y + i);
-        cout << "|";
-    }
-    Goto_xy(_x, _y + i);
-    cout << "|_______|";
-}
-
-Status Large_Board::update()
+Status Large_Board::Update()
 {
     for (int x = 0; x < 3; x++)
     {
         for (int y = 0; y < 3; y++)
         {
-            _boardStatuses[x][y] = _boards[x][y].update();
+            _boardStatuses[x][y] = _boards[x][y].Update();
         }
     }
 
@@ -142,18 +134,17 @@ Status Large_Board::update()
     if (tie)
         return TIE;
 
-    /* DIAGONALS */
     /* top-left to bottom-right */
     if (_boardStatuses[0][0] != NONE &&
         _boardStatuses[0][0] == _boardStatuses[1][1] &&
         _boardStatuses[1][1] == _boardStatuses[2][2])
-        return getTurn() == 'X' ? X : O;
+        return GetTurn() == 'X' ? X : O;
 
     /* top-right to bottom-left */
     if (_boardStatuses[0][2] != NONE &&
         _boardStatuses[0][2] == _boardStatuses[1][1] &&
         _boardStatuses[1][1] == _boardStatuses[2][0])
-        return getTurn() == 'X' ? X : O;
+        return GetTurn() == 'X' ? X : O;
 
     bool match;
     /* COLUMNS */
@@ -169,7 +160,7 @@ Status Large_Board::update()
             }
         }
         if (match)
-            return getTurn() == 'X' ? X : O;
+            return GetTurn() == 'X' ? X : O;
     }
     match = true; // match is false set it true for next check
 
@@ -186,10 +177,10 @@ Status Large_Board::update()
             }
         }
         if (match)
-            return getTurn() == 'X' ? X : O;
+            return GetTurn() == 'X' ? X : O;
     }
 
     // change player
-    setTurn(); 
+    SetTurn();
     return NONE;
 }
