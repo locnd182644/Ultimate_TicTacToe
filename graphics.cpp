@@ -3,6 +3,8 @@
 #include "graphics.h"
 #include "ultimate_tic_tac_toe.h"
 
+using namespace std;
+
 void Clear_Screen()
 {
     system("cls");
@@ -31,6 +33,9 @@ void Information()
     Goto_xy(50, i);
     cout << "|___________________________________________________|";
     Infor_LargeBoard();
+
+    Goto_xy(60, 14);
+    cout << "Input: Cell = 0 - Turn back one turn";
 
     Goto_xy(70, 3);
     cout << "ULTIMATE TIC TAC TOE";
@@ -76,7 +81,7 @@ void Infor_LargeBoard()
 void Draw_select(int _board_num)
 {
     int i;
-    int _x = 6 + 16 * (_board_num % 3);  
+    int _x = 6 + 16 * (_board_num % 3);
     int _y = 0 + 6 * (_board_num / 3);
     Goto_xy(_x, _y);
     cout << " _______ ";

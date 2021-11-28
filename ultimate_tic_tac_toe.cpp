@@ -1,4 +1,5 @@
 #include <iostream>
+#include "extend.h"
 #include "ultimate_tic_tac_toe.h"
 
 using namespace std;
@@ -11,6 +12,9 @@ Large_Board::Large_Board()
 
 void Large_Board::InitStatuses()
 {
+    /*
+     * Initialise board statuses to NONE
+     */
     for (int x = 0; x < 3; x++)
         for (int y = 0; y < 3; y++)
             _boardStatuses[x][y] = NONE;
@@ -18,7 +22,7 @@ void Large_Board::InitStatuses()
 
 char Large_Board::GetTurn()
 {
-    return _turn == Piece_X ? Piece_X : Piece_O;
+    return _turn == Piece_X ? 'X' : 'O';
 }
 
 void Large_Board::SetTurn()
@@ -31,9 +35,9 @@ int Large_Board::GetBoardNum()
     return _board_num + 1;
 }
 
-void Large_Board::SetBoardNum(int board_num)
+void Large_Board::SetBoardNum(int board_no)
 {
-    _board_num = board_num - 1;
+    _board_num = board_no - 1;
 }
 
 bool Large_Board::BoardFinished()
@@ -45,34 +49,42 @@ bool Large_Board::BoardFinished()
 
 void Large_Board::SelectNewBoard()
 {
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 3; i++)
     {
-        if(_boardStatuses[i / 3][i % 3] == NONE ) 
-            Draw_select(i);
+        for (int j = 0; j < 3; j++)
+        {
+            if (_boardStatuses[i][j] == NONE)
+                Draw_select(3 * i + j);
+        }
     }
-    Goto_xy(0, 20);
-    cout << "The game on the next board is finished\n"
-         << GetTurn() << " select next board: ";
+
+    if(mode)
+
+    Goto_xy(7, 21);
+    cout << "The game on the next board is finished";
+    Goto_xy(7, 22);
+    cout << GetTurn() << " select next board: ";
     cin >> _board_num;
-    _board_num -= 1;    
+    _board_num -= 1;
     if (BoardFinished())
         SelectNewBoard();
 }
 
 void Large_Board::Move(int cell)
 {
-    if (_boards[_board_num / 3][_board_num % 3].Move(cell, _turn))
+    // Convert 1d index to 2d
+    if (_boards[_board_num / 3][_board_num % 3].Fill(cell, _turn))
     {
+        // Minus 1 for zero indexing and convert 2d index to 1d :D
         _board_num = cell - 1;
     }
     else
     {
-        // chosen cell is already occupied
-        cout << "Position already occupied. Try again :(" << endl;
-        cout << "cell: ";
+        // Chosen cell is already occupied
+        cout << "Position already occupied. Try again." << endl;
+        cout << "Cell: ";
         cin >> cell;
-        Move(cell);
-        // call the function again with new parameters
+        Move(cell); // Call the function again with new parameters
     }
 }
 
@@ -83,7 +95,7 @@ void Large_Board::DrawBoards()
     else
     {
         Information();
-        if(_boardStatuses[_board_num / 3][_board_num % 3] == NONE)
+        if (_boardStatuses[_board_num / 3][_board_num % 3] == NONE)
             Draw_select(_board_num);
     }
 
@@ -104,7 +116,7 @@ void Large_Board::DrawBoards()
                 }
                 cout << "\t\t";
             }
-            cout << endl;   
+            cout << endl;
         }
         cout << endl;
         cout << endl;
@@ -114,18 +126,18 @@ void Large_Board::DrawBoards()
          << endl;
 }
 
-Status Large_Board::Update()
+Status Large_Board::CheckWin()
 {
     for (int x = 0; x < 3; x++)
     {
         for (int y = 0; y < 3; y++)
         {
-            _boardStatuses[x][y] = _boards[x][y].Update();
+            _boardStatuses[x][y] = _boards[x][y].CheckWin();
         }
     }
 
     bool tie = true;
-    /* check for a tie */
+    /* Check for a tie */
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
             if (_boardStatuses[i][j] == NONE)
@@ -146,41 +158,25 @@ Status Large_Board::Update()
         _boardStatuses[1][1] == _boardStatuses[2][0])
         return GetTurn() == 'X' ? X : O;
 
-    bool match;
     /* COLUMNS */
     for (int row = 0; row < 3; row++)
     {
-        match = true;
-        for (int column = 0; column < 3 - 1; column++)
-        {
-            if (_boardStatuses[column][row] == NONE || _boardStatuses[column][row] != _boardStatuses[column + 1][row])
-            {
-                match = false;
-                break;
-            }
-        }
-        if (match)
+        if (_boardStatuses[row][0] != NONE &&
+            _boardStatuses[row][0] == _boardStatuses[row][1] &&
+            _boardStatuses[row][1] == _boardStatuses[row][2])
             return GetTurn() == 'X' ? X : O;
     }
-    match = true; // match is false set it true for next check
 
     /* ROWS */
-    for (int row = 0; row < 3; row++)
+    for (int column = 0; column < 3; column++)
     {
-        match = true;
-        for (int column = 0; column < 3 - 1; column++)
-        {
-            if (_boardStatuses[row][column] == NONE || _boardStatuses[row][column] != _boardStatuses[row][column + 1])
-            {
-                match = false;
-                break;
-            }
-        }
-        if (match)
+        if (_boardStatuses[0][column] != NONE &&
+            _boardStatuses[0][column] == _boardStatuses[1][column] &&
+            _boardStatuses[1][column] == _boardStatuses[2][column])
             return GetTurn() == 'X' ? X : O;
     }
 
-    // change player
-    SetTurn();
+    SetTurn(); // Change player
+
     return NONE;
 }
