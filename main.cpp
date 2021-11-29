@@ -27,7 +27,7 @@ int main()
     while (1)
     {
         Clear_Screen();
-        cout << "Choose Options\n\n1.Start New Game\n2.How To Play\n3.Quit\n\n";
+        cout << "Choose Options\n\n1. Start New Game\n2. How To Play\n3. Quit\n\n";
         cout << "Option: ";
         cin >> choice_1;
         switch (choice_1)
@@ -70,12 +70,11 @@ int main()
             break;
 
         case 3:
-            break;
+            return 0;
         }
     }
-
-    return 0;
 }
+
 void Start()
 {
     Clear_Screen();
@@ -100,7 +99,7 @@ void Start()
     cout << "*******************************" << endl;
 
     Goto_xy(36, 19);
-    cout << "press any key to continue";
+    cout << "Press any key to continue";
     _getch();
 }
 void Rules()
@@ -193,37 +192,30 @@ int Play_with_BotEasy()
 
     current_board.DrawBoards();
 
-    int board_num;
+    int board_num;  
     cout << "       Enter the board number to start with: ";
-    cin >> board_num;
+    board_num = InputData();
     current_board.SetBoardNum(board_num);
     int cell;
 
     while (1)
     {
-        his_board.push(current_board);
+        his_board.push(current_board);  
         current_board.DrawBoards();
         switch (current_board.GetTurn())
         {
         case X:
-            Goto_xy(7, 20);
-            cout << "Player " << current_board.GetTurn() << ": select cell";
             Goto_xy(7, 21);
+            cout << "Player " << current_board.GetTurn() << ": select cell";
+            Goto_xy(7, 22);
             cout << "Cell: ";
-            while (1)
-            {
-                cin >> cell;
-                if (cell <= 9 && cell >= 0)
-                    break;
-                Goto_xy(7, 21);
-                cout << "Re-Enter Cell: ";
-            }
+            cell = InputData();
             break;
 
         case O:
-            Goto_xy(7, 20);
-            cout << "Bot " << current_board.GetTurn() << ": select cell";
             Goto_xy(7, 21);
+            cout << "Bot " << current_board.GetTurn() << ": select cell";
+            Goto_xy(7, 22);
             cell = FindBestMove(current_board);
             cout << "Cell: " << cell;
             break;
@@ -263,6 +255,9 @@ int Play_with_BotEasy()
         if (current_board.BoardFinished())
             current_board.SelectNewBoard();
     }
+
+    // Exit halfway
+    return 1;
 }
 
 void Enter_name()

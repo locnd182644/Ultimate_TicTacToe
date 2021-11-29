@@ -23,30 +23,33 @@ void Information()
 {
     int i;
     Clear_Screen();
-    Goto_xy(50, 1);
+    Goto_xy(coord_X_Infor, 1);
     cout << " ___________________________________________________";
     for (i = 2; i < 15; i++)
     {
-        Goto_xy(50, i);
+        Goto_xy(coord_X_Infor, i);
         cout << "|                                                   |";
     }
-    Goto_xy(50, i);
+    Goto_xy(coord_X_Infor, i);
     cout << "|___________________________________________________|";
     Infor_LargeBoard();
 
-    Goto_xy(60, 14);
-    cout << "Input: Cell = 0 - Turn back one turn";
-
-    Goto_xy(70, 3);
+    Goto_xy(coord_X_Infor + 25, 3);
     cout << "ULTIMATE TIC TAC TOE";
+
+    Goto_xy(coord_X_Infor + 10, 14);
+    cout << "Input: Cell = 0 - Turn back one turn"; 
+    Goto_xy(coord_X_Infor + 10, 14);
+    cout << "Input: Cell = 0 - Go back to your previous turn"; 
+
     Goto_xy(0, 0);
 }
 
 void Infor_LargeBoard()
 {
-    Goto_xy(50, 1);
+    Goto_xy(coord_X_Infor, 1);
     cout << "+---+---+---+";
-    Goto_xy(50, 2);
+    Goto_xy(coord_X_Infor, 2);
     cout << "| "
          << "1"
          << " | "
@@ -54,9 +57,9 @@ void Infor_LargeBoard()
          << " | "
          << "3"
          << " | ";
-    Goto_xy(50, 3);
+    Goto_xy(coord_X_Infor, 3);
     cout << "+---+---+---+";
-    Goto_xy(50, 4);
+    Goto_xy(coord_X_Infor, 4);
     cout << "| "
          << "4"
          << " | "
@@ -64,9 +67,9 @@ void Infor_LargeBoard()
          << " | "
          << "6"
          << " | ";
-    Goto_xy(50, 5);
+    Goto_xy(coord_X_Infor, 5);
     cout << "+---+---+---+";
-    Goto_xy(50, 6);
+    Goto_xy(coord_X_Infor, 6);
     cout << "| "
          << "7"
          << " | "
@@ -74,7 +77,7 @@ void Infor_LargeBoard()
          << " | "
          << "9"
          << " | ";
-    Goto_xy(50, 7);
+    Goto_xy(coord_X_Infor, 7);
     cout << "+---+---+---+";
 }
 

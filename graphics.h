@@ -1,6 +1,8 @@
 #ifndef _graphics_h_
 #define _graphics_h_
 
+#define coord_X_Infor 60 // X-coordinate of the Information Board
+
 enum Colors
 {
     red = 12,

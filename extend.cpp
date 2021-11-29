@@ -1,4 +1,5 @@
 #include "extend.h"
+#include <iostream>
 #include <cstdlib> // Random
 
 using namespace std;
@@ -101,4 +102,18 @@ int FindBestMove(Large_Board boards)
         return BotSelectCell(boards);
     }
     return bestMove;
+}
+
+int InputData()
+{
+    char data;
+    while (1)
+    {
+        cin >> data;
+        if ((int)data <= 57 && (int)data >= 48)
+            break;
+        Goto_xy(7, 22);
+        cout << "Re-Enter: ";
+    }
+    return (int)data - 48;
 }

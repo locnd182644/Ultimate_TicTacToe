@@ -9,4 +9,7 @@ int FindBestMove(Large_Board);      // Find best move for Bot Normal
 int BotSelectCell(Large_Board);     // Random with condition check
 int BotSelectBoard(Large_Board);    // Random with condition check
 
+// Handle input data from the keyboard
+int InputData();                    // Allows input from the keypad integers from 0 to 9
+
 #endif
