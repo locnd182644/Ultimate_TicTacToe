@@ -1,6 +1,7 @@
 
 game: extend.o graphics.o tic_tac_toe.o ultimate_tic_tac_toe.o main.o
 	g++ *.o -o game
+	rm *.o
 
 extend.o: extend.cpp
 	g++ -c extend.cpp
@@ -18,4 +19,4 @@ main.o: main.cpp
 	g++ -c main.cpp
 
 clean:
-	rm *.o
+	rm game

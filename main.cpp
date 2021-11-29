@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <string>
 #include "extend.h"
+#include "graphics.h"
 #include <stack>
 #include <windows.h>
 #include "ultimate_tic_tac_toe.h"
@@ -11,7 +12,7 @@ using namespace std;
 static string player[2];
 
 /* Stack save Large Board to replay */
-stack<Large_Board> his_board;
+stack<LargeBoard> hisboard;
 
 void Start(void);
 void Rules(void);
@@ -119,25 +120,25 @@ int Play_with_Friend()
     Clear_Screen();
 
     /* Stack save Large Board to replay */
-    stack<Large_Board> his_board;
-    Large_Board current_board;
+    stack<LargeBoard> hisboard;
+    LargeBoard currentboard;
 
     Enter_name(); // Enter player name;
 
-    current_board.DrawBoards();
+    currentboard.DrawBoards();
 
     int board_num;
     cout << "       Enter the board number to start with: ";
     cin >> board_num;
-    current_board.SetBoardNum(board_num);
-    Draw_select(current_board.GetBoardNum() - 1);
+    currentboard.SetBoardNum(board_num);
+    Draw_select(currentboard.GetBoardNum() - 1);
     int cell;
     while (1)
     {
-        his_board.push(current_board);
-        current_board.DrawBoards();
+        hisboard.push(currentboard);
+        currentboard.DrawBoards();
         Goto_xy(7, 20);
-        cout << "Player " << current_board.GetTurn() << ": select cell";
+        cout << "Player " << currentboard.GetTurn() << ": select cell";
 
         Goto_xy(7, 21);
         cout << "Cell: ";
@@ -155,16 +156,16 @@ int Play_with_Friend()
         {
             for (int i = 0; i < 3; i++)
             {
-                if (his_board.empty())
+                if (hisboard.empty())
                     break;
-                current_board = his_board.top();
-                his_board.pop();
+                currentboard = hisboard.top();
+                hisboard.pop();
             }
             continue;
         }
-        current_board.Move(cell);
-        int status = current_board.CheckWin();
-        current_board.DrawBoards();
+        currentboard.Move(cell);
+        int status = currentboard.CheckWin();
+        currentboard.DrawBoards();
 
         switch (status)
         {
@@ -180,33 +181,33 @@ int Play_with_Friend()
         default:
             break;
         }
-        if (current_board.BoardFinished())
-            current_board.SelectNewBoard();
+        if (currentboard.BoardFinished())
+            currentboard.SelectNewBoard();
     }
 }
 int Play_with_BotEasy()
 {
     Clear_Screen();
 
-    Large_Board current_board;
+    LargeBoard currentboard;
 
-    current_board.DrawBoards();
+    currentboard.DrawBoards();
 
     int board_num;  
     cout << "       Enter the board number to start with: ";
     board_num = InputData();
-    current_board.SetBoardNum(board_num);
+    currentboard.SetBoardNum(board_num);
     int cell;
 
     while (1)
     {
-        his_board.push(current_board);  
-        current_board.DrawBoards();
-        switch (current_board.GetTurn())
+        hisboard.push(currentboard);  
+        currentboard.DrawBoards();
+        switch (currentboard.GetTurn())
         {
         case X:
             Goto_xy(7, 21);
-            cout << "Player " << current_board.GetTurn() << ": select cell";
+            cout << "Player " << currentboard.GetTurn() << ": select cell";
             Goto_xy(7, 22);
             cout << "Cell: ";
             cell = InputData();
@@ -214,9 +215,9 @@ int Play_with_BotEasy()
 
         case O:
             Goto_xy(7, 21);
-            cout << "Bot " << current_board.GetTurn() << ": select cell";
+            cout << "Bot " << currentboard.GetTurn() << ": select cell";
             Goto_xy(7, 22);
-            cell = FindBestMove(current_board);
+            cell = FindBestMove(currentboard);
             cout << "Cell: " << cell;
             break;
         }
@@ -226,17 +227,17 @@ int Play_with_BotEasy()
         {
             for (int i = 0; i < 3; i++)
             {
-                if (his_board.empty())
+                if (hisboard.empty())
                     break;
-                current_board = his_board.top();
-                his_board.pop();
+                currentboard = hisboard.top();
+                hisboard.pop();
             }
             continue;
         }
 
-        current_board.Move(cell);
-        int status = current_board.CheckWin();
-        current_board.DrawBoards();
+        currentboard.Move(cell);
+        int status = currentboard.CheckWin();
+        currentboard.DrawBoards();
 
         switch (status)
         {
@@ -252,8 +253,8 @@ int Play_with_BotEasy()
         case NONE:
             break;
         }
-        if (current_board.BoardFinished())
-            current_board.SelectNewBoard();
+        if (currentboard.BoardFinished())
+            currentboard.SelectNewBoard();
     }
 
     // Exit halfway
@@ -272,20 +273,20 @@ void Enter_name()
 
 void Record_Game()
 {
-    Large_Board curr_boards; // Current Board
+    LargeBoard currboards; // Current Board
 
-    stack<Large_Board> temp;
+    stack<LargeBoard> temp;
 
-    for (; !his_board.empty(); his_board.pop())
+    for (; !hisboard.empty(); hisboard.pop())
     {
-        curr_boards = his_board.top();
-        temp.push(curr_boards);
+        currboards = hisboard.top();
+        temp.push(currboards);
     }
 
     for (; !temp.empty(); temp.pop())
     {
-        curr_boards = temp.top();
-        curr_boards.DrawBoards();
+        currboards = temp.top();
+        currboards.DrawBoards();
         Sleep(500);
     }
 }

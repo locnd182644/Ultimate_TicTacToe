@@ -16,17 +16,17 @@ enum Status
     X = 88,   // " X "
 };
 
-class Small_Board
+class SmallBoard
 {
 private:
-    Status _gameStatus;               // Status of SmallBoard
+    Status _gameStatus; // Status of SmallBoard
 public:
-    Piece _board[3][3];
-    Small_Board();
-    void InitBoard();                 // Initialization for Small_Board
+    Piece board[3][3]; // 3x3 cell
+    SmallBoard();
+    void InitBoard();                 // Initialization for SmallBoard
     bool Fill(int cell, Piece _turn); // Set pice for cell
     Status CheckWin();                // Check Win/Tie/None
-    Status GetStatus();               // Get status of Small_Board
+    Status GetStatus();               // Get status of SmallBoard
 };
 
 #endif

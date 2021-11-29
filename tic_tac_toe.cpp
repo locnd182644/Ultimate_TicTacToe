@@ -3,46 +3,46 @@
 
 using namespace std;
 
-Small_Board::Small_Board()
+SmallBoard::SmallBoard()
 {
     InitBoard();
     _gameStatus = NONE;
 }
 
-void Small_Board::InitBoard()
+void SmallBoard::InitBoard()
 {
     /* For all BLANK */
     for (int x = 0; x < 3; ++x)
         for (int y = 0; y < 3; ++y)
-            _board[x][y] = Piece_BLANK;
+            board[x][y] = Piece_BLANK;
 }
 
-Status Small_Board::GetStatus()
+Status SmallBoard::GetStatus()
 {
     return _gameStatus;
 }
 
-bool Small_Board::Fill(int cell, Piece _turn)
+bool SmallBoard::Fill(int cell, Piece _turn)
 {
     /* Player grid is display from 1 
      * So 1 must be subtracted for the 
      * Correct index */
     cell = cell - 1;
-    if (_board[cell / 3][cell % 3] == Piece_BLANK)
+    if (board[cell / 3][cell % 3] == Piece_BLANK)
     {
-        _board[cell / 3][cell % 3] = _turn;
+        board[cell / 3][cell % 3] = _turn;
         return true;
     }
     return false; // Cell already occupied
 }
 
-Status Small_Board::CheckWin()
+Status SmallBoard::CheckWin()
 {
     bool tie = true;
     /* Check for a tie */
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (_board[i][j] == Piece_BLANK)
+            if (board[i][j] == Piece_BLANK)
                 tie = false;
 
     if (tie)
@@ -52,31 +52,31 @@ Status Small_Board::CheckWin()
     }
 
     /* Top-left to bottom-right */
-    if (_board[0][0] != Piece_BLANK &&
-        _board[0][0] == _board[1][1] &&
-        _board[1][1] == _board[2][2])
+    if (board[0][0] != Piece_BLANK &&
+        board[0][0] == board[1][1] &&
+        board[1][1] == board[2][2])
     {
-        _gameStatus = _board[0][0] == Piece_X ? X : O;
+        _gameStatus = board[0][0] == Piece_X ? X : O;
         return _gameStatus; // Return winner
     }
 
     /* Top-right to bottom-left */
-    if (_board[0][2] != Piece_BLANK &&
-        _board[0][2] == _board[1][1] &&
-        _board[1][1] == _board[2][0])
+    if (board[0][2] != Piece_BLANK &&
+        board[0][2] == board[1][1] &&
+        board[1][1] == board[2][0])
     {
-        _gameStatus = _board[0][2] == Piece_X ? X : O;
+        _gameStatus = board[0][2] == Piece_X ? X : O;
         return _gameStatus; // Return winner
     }
 
     /* COLUMNS */
     for (int column = 0; column < 3; column++)
     {
-        if (_board[0][column] == _board[1][column] &&
-            _board[0][column] != Piece_BLANK &&
-            _board[1][column] == _board[2][column])
+        if (board[0][column] == board[1][column] &&
+            board[0][column] != Piece_BLANK &&
+            board[1][column] == board[2][column])
         {
-            _gameStatus = _board[0][column] == Piece_X ? X : O;
+            _gameStatus = board[0][column] == Piece_X ? X : O;
             return _gameStatus; // Return winner
         }
     }
@@ -84,11 +84,11 @@ Status Small_Board::CheckWin()
     /* ROWS */
     for (int row = 0; row < 3; row++)
     {
-        if (_board[row][0] != Piece_BLANK &&
-            _board[row][0] == _board[row][1] &&
-            _board[row][1] == _board[row][2])
+        if (board[row][0] != Piece_BLANK &&
+            board[row][0] == board[row][1] &&
+            board[row][1] == board[row][2])
         {
-            _gameStatus = _board[row][0] == Piece_X ? X : O;
+            _gameStatus = board[row][0] == Piece_X ? X : O;
             return _gameStatus; // Return winner
         }
     }

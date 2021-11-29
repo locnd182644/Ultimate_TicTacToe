@@ -1,12 +1,13 @@
 #include "extend.h"
 #include <iostream>
 #include <cstdlib> // Random
+#include "graphics.h"
 
 using namespace std;
 
-int BotSelectCell(Large_Board boards)
+int BotSelectCell(LargeBoard boards)
 {
-    int current_board = boards._board_num;
+    int current_board = boards.board_num;
     int temp;
     while (1)
     {
@@ -16,15 +17,15 @@ int BotSelectCell(Large_Board boards)
             if (temp != 9)
                 break;
         }
-        if (boards._boards[current_board / 3][current_board % 3]._board[temp / 3][temp % 3] == Piece_BLANK)
+        if (boards.boards[current_board / 3][current_board % 3].board[temp / 3][temp % 3] == Piece_BLANK)
             break;
     }
     return ++temp;
 }
 
-int BotSelectBoard(Large_Board boards)
+int BotSelectBoard(LargeBoard boards)
 {
-    int current_board = boards._board_num;
+    int current_board = boards.board_num;
     int temp;
     while (1)
     {
@@ -34,13 +35,13 @@ int BotSelectBoard(Large_Board boards)
             if (temp != 9)
                 break;
         }
-        if (boards._boards[current_board / 3][current_board % 3].GetStatus() == NONE)
+        if (boards.boards[current_board / 3][current_board % 3].GetStatus() == NONE)
             break;
     }
     return ++temp;
 }
 
-int EvaluateValue(Small_Board board)
+int EvaluateValue(SmallBoard board)
 {
     switch (board.CheckWin())
     {
@@ -53,9 +54,9 @@ int EvaluateValue(Small_Board board)
     }
 }
 
-int FindBestMove(Large_Board boards)
+int FindBestMove(LargeBoard boards)
 {
-    int current_board = boards._board_num;
+    int current_board = boards.board_num;
     int bestMove = 0;
     int moveVal;
 
@@ -64,11 +65,11 @@ int FindBestMove(Large_Board boards)
     {
         for (int j = 0; j < 3; j++)
         {
-            if (boards._boards[current_board / 3][current_board % 3]._board[i][j] == Piece_BLANK)
+            if (boards.boards[current_board / 3][current_board % 3].board[i][j] == Piece_BLANK)
             {
-                boards._boards[current_board / 3][current_board % 3]._board[i][j] = Piece_X;
-                moveVal = EvaluateValue(boards._boards[current_board / 3][current_board % 3]);
-                boards._boards[current_board / 3][current_board % 3]._board[i][j] = Piece_BLANK;
+                boards.boards[current_board / 3][current_board % 3].board[i][j] = Piece_X;
+                moveVal = EvaluateValue(boards.boards[current_board / 3][current_board % 3]);
+                boards.boards[current_board / 3][current_board % 3].board[i][j] = Piece_BLANK;
                 if (moveVal == -10)
                 {
                     bestMove = 3 * i + j + 1;
@@ -84,11 +85,11 @@ int FindBestMove(Large_Board boards)
     {
         for (int j = 0; j < 3; j++)
         {
-            if (boards._boards[current_board / 3][current_board % 3]._board[i][j] == Piece_BLANK)
+            if (boards.boards[current_board / 3][current_board % 3].board[i][j] == Piece_BLANK)
             {
-                boards._boards[current_board / 3][current_board % 3]._board[i][j] = Piece_O;
-                moveVal = EvaluateValue(boards._boards[current_board / 3][current_board % 3]);
-                boards._boards[current_board / 3][current_board % 3]._board[i][j] = Piece_BLANK;
+                boards.boards[current_board / 3][current_board % 3].board[i][j] = Piece_O;
+                moveVal = EvaluateValue(boards.boards[current_board / 3][current_board % 3]);
+                boards.boards[current_board / 3][current_board % 3].board[i][j] = Piece_BLANK;
                 if (moveVal == 10)
                 {
                     bestMove = 3 * i + j + 1;

@@ -81,11 +81,11 @@ void Infor_LargeBoard()
     cout << "+---+---+---+";
 }
 
-void Draw_select(int _board_num)
+void Draw_select(int board_num)
 {
     int i;
-    int _x = 6 + 16 * (_board_num % 3);
-    int _y = 0 + 6 * (_board_num / 3);
+    int _x = 6 + 16 * (board_num % 3);
+    int _y = 0 + 6 * (board_num / 3);
     Goto_xy(_x, _y);
     cout << " _______ ";
     for (i = 1; i < 4; i++)

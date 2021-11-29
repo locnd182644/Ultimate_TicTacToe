@@ -2,29 +2,30 @@
 #define _ultimate_tic_tac_toe_h
 
 #include "tic_tac_toe.h"
-#include "graphics.h"
 
-class Large_Board
+class LargeBoard
 {
 private:
-    void InitStatuses();
-    void SetTurn();
+    void InitStatuses(); // Initialise boards
+    void ToggleTurn();   // Toggle in turn
+    Piece _turn;         // Hold current player
 
 public:
-    Piece _turn;         // Hold current player
-    int _board_num = -1; // Current board = 0
-    Small_Board _boards[3][3];
-    Status _boardStatuses[3][3];
-    Large_Board();
+    bool mode;                  // Mode 0: with Friend; Mode 1: with Bot
+    int board_num = -1;         // Current board = 0
+    SmallBoard boards[3][3];    // 3x3 Small Board
+    Status boardStatuses[3][3]; // Status of Small Board
+
+    LargeBoard();          // Initialization function
     void DrawBoards();     // Draw large boad
-    char GetTurn();        //
-    void Move(int);        //
-    int GetBoardNum();     //
-    void SetBoardNum(int); //
-    bool BoardFinished();  //
-    void SelectNewBoard(); //
-    Status CheckWin();     //
-    bool mode;             // Mode 0: with Friend; Mode 1: with Bot
+    char GetTurn();        // Get turn of current
+    void Setturn(Piece);   // Set turn for game
+    void Move(int);        // Move 
+    int GetBoardNum();     // Get board of current
+    void SetBoardNum(int); // Set board of current
+    bool BoardFinished();  // Check if small board is finished
+    void SelectNewBoard(); // Select new small board 
+    Status CheckWin();     // Check Win/Tie/None
 };
 
 #endif
