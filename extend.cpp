@@ -5,9 +5,9 @@
 
 using namespace std;
 
-int BotSelectCell(LargeBoard boards)
+int BotSelectCell(LargeBoard *boards)
 {
-    int current_board = boards.board_num;
+    int current_board = boards->board_num;
     int temp;
     while (1)
     {
@@ -17,15 +17,14 @@ int BotSelectCell(LargeBoard boards)
             if (temp != 9)
                 break;
         }
-        if (boards.boards[current_board / 3][current_board % 3].board[temp / 3][temp % 3] == Piece_BLANK)
+        if (boards->boards[current_board / 3][current_board % 3].board[temp / 3][temp % 3] == Piece_BLANK)
             break;
     }
     return ++temp;
 }
 
-int BotSelectBoard(LargeBoard boards)
+int BotSelectBoard(LargeBoard *boards)
 {
-    int current_board = boards.board_num;
     int temp;
     while (1)
     {
@@ -33,12 +32,12 @@ int BotSelectBoard(LargeBoard boards)
         {
             temp = rand() % 10;
             if (temp != 9)
-                break;
+                break;  
         }
-        if (boards.boards[current_board / 3][current_board % 3].GetStatus() == NONE)
+        if (boards->boards[temp / 3][temp % 3].GetStatus() == NONE)
             break;
     }
-    return ++temp;
+    return temp;
 }
 
 int EvaluateValue(SmallBoard board)
@@ -100,7 +99,7 @@ int FindBestMove(LargeBoard boards)
 
     if (bestMove == 0)
     {
-        return BotSelectCell(boards);
+        return BotSelectCell(&boards);
     }
     return bestMove;
 }
@@ -111,7 +110,7 @@ int InputData()
     while (1)
     {
         cin >> data;
-        if ((int)data <= 57 && (int)data >= 48)
+        if ((int)data <= 57 && (int)data >= 48 || (int)data == 114)
             break;
         Goto_xy(7, 22);
         cout << "Re-Enter: ";

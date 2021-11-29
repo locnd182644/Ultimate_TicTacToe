@@ -18,6 +18,7 @@ void Start(void);
 void Rules(void);
 int Play_with_Friend(void);
 int Play_with_BotEasy(void);
+int Play_with_BotNormal(void);
 void Record_Game(void);
 void Enter_name(void);
 
@@ -50,19 +51,23 @@ int main()
                 {
                 case 1:
                     Play_with_Friend();
-                    Sleep(2000); // Screen pause for 2 seconds
+                    Sleep(1000); // Screen pause for 1 seconds
+                    break;
+                case 2:
+                    Play_with_BotEasy();
+                    Sleep(1000); // Screen pause for 1 seconds
                     break;
                 case 3:
-                    Play_with_BotEasy();
-                    Sleep(2000); // Screen pause for 2 seconds
+                    Play_with_BotNormal();
+                    Sleep(1000); // Screen pause for 1 seconds
                     break;
                 case 5:
                     Record_Game();
-                    Sleep(2000); // Screen pause for 2 seconds
+                    Sleep(1000); // Screen pause for 1 seconds
                     break;
                 }
-                case 6:
-                break;
+                if (choice_2 == 6)
+                    break;
             }
             break;
 
@@ -122,6 +127,7 @@ int Play_with_Friend()
     /* Stack save Large Board to replay */
     stack<LargeBoard> hisboard;
     LargeBoard currentboard;
+    currentboard.mode = 0;
 
     Enter_name(); // Enter player name;
 
@@ -129,7 +135,7 @@ int Play_with_Friend()
 
     int board_num;
     cout << "       Enter the board number to start with: ";
-    cin >> board_num;
+    board_num = InputData();
     currentboard.SetBoardNum(board_num);
     Draw_select(currentboard.GetBoardNum() - 1);
     int cell;
@@ -142,14 +148,7 @@ int Play_with_Friend()
 
         Goto_xy(7, 21);
         cout << "Cell: ";
-        while (1)
-        {
-            cin >> cell;
-            if (cell <= 9 && cell >= 0)
-                break;
-            Goto_xy(7, 21);
-            cout << "Re-Enter Cell: ";
-        }
+        cell = InputData();
 
         // If cell = 0, replay
         if (cell == 0)
@@ -184,24 +183,30 @@ int Play_with_Friend()
         if (currentboard.BoardFinished())
             currentboard.SelectNewBoard();
     }
+
+    // Exit halfway
+    return TIE;
 }
-int Play_with_BotEasy()
+int Play_with_BotNormal()
 {
     Clear_Screen();
 
     LargeBoard currentboard;
+    currentboard.mode = 1; // Mode with bot
 
     currentboard.DrawBoards();
 
-    int board_num;  
+    int board_num;
     cout << "       Enter the board number to start with: ";
     board_num = InputData();
+    if (board_num == 66) // User input 'r'
+        return TIE;
     currentboard.SetBoardNum(board_num);
     int cell;
 
     while (1)
     {
-        hisboard.push(currentboard);  
+        hisboard.push(currentboard);
         currentboard.DrawBoards();
         switch (currentboard.GetTurn())
         {
@@ -211,6 +216,8 @@ int Play_with_BotEasy()
             Goto_xy(7, 22);
             cout << "Cell: ";
             cell = InputData();
+            if (cell == 66) // User input 'r'
+                return TIE;
             break;
 
         case O:
@@ -258,7 +265,87 @@ int Play_with_BotEasy()
     }
 
     // Exit halfway
-    return 1;
+    return TIE;
+}
+int Play_with_BotEasy()
+{
+    Clear_Screen();
+
+    LargeBoard currentboard;
+    currentboard.mode = 1; // Mode with bot
+
+    currentboard.DrawBoards();
+
+    int board_num;
+    cout << "       Enter the board number to start with: ";
+    board_num = InputData();
+    if (board_num == 66) // User input 'r'
+        return TIE;
+    currentboard.SetBoardNum(board_num);
+    int cell;
+
+    while (1)
+    {
+        hisboard.push(currentboard);
+        currentboard.DrawBoards();
+        switch (currentboard.GetTurn())
+        {
+        case X:
+            Goto_xy(7, 21);
+            cout << "Player " << currentboard.GetTurn() << ": select cell";
+            Goto_xy(7, 22);
+            cout << "Cell: ";
+            cell = InputData();
+            if (cell == 66) // User input 'r'
+                return TIE;
+            break;
+
+        case O:
+            Goto_xy(7, 21);
+            cout << "Bot " << currentboard.GetTurn() << ": select cell";
+            Goto_xy(7, 22);
+            cell = BotSelectCell(&currentboard);
+            cout << "Cell: " << cell;
+            break;
+        }
+
+        // If cell = 0, replay
+        if (cell == 0)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (hisboard.empty())
+                    break;
+                currentboard = hisboard.top();
+                hisboard.pop();
+            }
+            continue;
+        }
+
+        currentboard.Move(cell);
+        int status = currentboard.CheckWin();
+        currentboard.DrawBoards();
+
+        switch (status)
+        {
+        case X:
+            cout << "X has won!" << endl;
+            return X;
+        case O:
+            cout << "O has won!" << endl;
+            return O;
+        case TIE:
+            cout << "Game over. Tie" << endl;
+            return TIE;
+        case NONE:
+            break;
+        }
+        if (currentboard.BoardFinished())
+            currentboard.SelectNewBoard();
+    }
+
+    // Exit halfway
+    return TIE;
 }
 
 void Enter_name()

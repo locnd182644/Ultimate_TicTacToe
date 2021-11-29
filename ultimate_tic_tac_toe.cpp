@@ -1,5 +1,5 @@
 #include <iostream>
-// #include "extend.h"
+#include "extend.h"
 #include "graphics.h"
 #include "ultimate_tic_tac_toe.h"
 
@@ -26,7 +26,7 @@ char LargeBoard::GetTurn()
     return _turn == Piece_X ? 'X' : 'O';
 }
 
-void LargeBoard:: Setturn(Piece turn)
+void LargeBoard::Setturn(Piece turn)
 {
     _turn = turn;
 }
@@ -64,16 +64,21 @@ void LargeBoard::SelectNewBoard()
         }
     }
 
-    if (mode)
-
+    if (mode == true && _turn == Piece_O)
+    {
+        board_num = BotSelectBoard(this);
+    }
+    else
+    {
         Goto_xy(7, 21);
-    cout << "The game on the next board is finished";
-    Goto_xy(7, 22);
-    cout << GetTurn() << " select next board: ";
-    cin >> board_num;
-    board_num -= 1;
-    if (BoardFinished())
-        SelectNewBoard();
+        cout << "The game on the next board is finished";
+        Goto_xy(7, 22);
+        cout << GetTurn() << " select next board: ";
+        board_num = InputData();
+        board_num -= 1;
+        if (BoardFinished())
+            SelectNewBoard();
+    }
 }
 
 void LargeBoard::Move(int cell)
@@ -97,10 +102,10 @@ void LargeBoard::Move(int cell)
 void LargeBoard::DrawBoards()
 {
     if (board_num == -1)
-        Information();
+        Information(this);
     else
     {
-        Information();
+        Information(this);
         if (boardStatuses[board_num / 3][board_num % 3] == NONE)
             Draw_select(board_num);
     }

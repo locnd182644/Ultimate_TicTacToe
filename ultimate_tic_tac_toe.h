@@ -6,9 +6,9 @@
 class LargeBoard
 {
 private:
+    Piece _turn;         // Hold current player
     void InitStatuses(); // Initialise boards
     void ToggleTurn();   // Toggle in turn
-    Piece _turn;         // Hold current player
 
 public:
     bool mode;                  // Mode 0: with Friend; Mode 1: with Bot

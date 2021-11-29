@@ -1,6 +1,8 @@
 #ifndef _graphics_h_
 #define _graphics_h_
 
+#include "ultimate_tic_tac_toe.h"
+
 #define coord_X_Infor 60 // X-coordinate of the Information Board
 
 enum Colors
@@ -17,7 +19,7 @@ void Draw_select(int);      // Specify the current table
 void Set_colorText(Colors); // Set color of text
 
 /*******  Information  *******/
-void Information(void);      // Information Board
-void Infor_LargeBoard(void); // Information Status of Large Board
+void Information(LargeBoard*);      // Information Board
+void Infor_LargeBoard(LargeBoard*); // Information Status of Large Board
 
 #endif

@@ -19,64 +19,61 @@ void Goto_xy(int _x, int _y)
     SetConsoleCursorPosition(h, Position);
 }
 
-void Information()
+void Information(LargeBoard* boards)
 {
     int i;
     Clear_Screen();
     Goto_xy(coord_X_Infor, 1);
-    cout << " ___________________________________________________";
+    cout << " ____________________________________________________";
     for (i = 2; i < 15; i++)
     {
         Goto_xy(coord_X_Infor, i);
-        cout << "|                                                   |";
+        cout << "|                                                    |";
     }
     Goto_xy(coord_X_Infor, i);
-    cout << "|___________________________________________________|";
-    Infor_LargeBoard();
+    cout << "|____________________________________________________|";
+    Infor_LargeBoard(boards);
 
-    Goto_xy(coord_X_Infor + 25, 3);
+    Goto_xy(coord_X_Infor + 23, 3);
     cout << "ULTIMATE TIC TAC TOE";
 
-    Goto_xy(coord_X_Infor + 10, 14);
-    cout << "Input: Cell = 0 - Turn back one turn"; 
-    Goto_xy(coord_X_Infor + 10, 14);
-    cout << "Input: Cell = 0 - Go back to your previous turn"; 
+    Goto_xy(coord_X_Infor + 2, 10);
+    cout << "* NOTE *";
+    Goto_xy(coord_X_Infor + 1, 12);
+    cout << "- Only 1 character from the keyboard is allowed";
+    Goto_xy(coord_X_Infor + 1, 13);
+    cout << "- Input: Cell = '0' - Go back to your previous turn";
+    Goto_xy(coord_X_Infor + 1, 14);
+    cout << "         Cell = 'r' - Exit Game";
 
     Goto_xy(0, 0);
 }
 
-void Infor_LargeBoard()
+void Infor_LargeBoard(LargeBoard* boards)
 {
-    Goto_xy(coord_X_Infor, 1);
-    cout << "+---+---+---+";
-    Goto_xy(coord_X_Infor, 2);
-    cout << "| "
-         << "1"
-         << " | "
-         << "2"
-         << " | "
-         << "3"
-         << " | ";
-    Goto_xy(coord_X_Infor, 3);
-    cout << "+---+---+---+";
-    Goto_xy(coord_X_Infor, 4);
-    cout << "| "
-         << "4"
-         << " | "
-         << "5"
-         << " | "
-         << "6"
-         << " | ";
-    Goto_xy(coord_X_Infor, 5);
-    cout << "+---+---+---+";
-    Goto_xy(coord_X_Infor, 6);
-    cout << "| "
-         << "7"
-         << " | "
-         << "8"
-         << " | "
-         << "9"
-         << " | ";
+    char temp[9];
+    for (int i = 0; i < 9; i++)
+    {
+        if (boards->boardStatuses[i / 3][i % 3] == NONE)
+            temp[i] = i + 1 + 48;
+        else
+            temp[i] = boards->boardStatuses[i / 3][i % 3];
+    }
+
+    for (int i = 0; i < 3; i++)
+    {
+        Goto_xy(coord_X_Infor, 1 + 2 * i);
+        cout << "+---+---+---+";
+        Goto_xy(coord_X_Infor, 2 + 2 * i);
+        cout << "| ";
+        for (int j = 0; j < 3; j++)
+        {
+            Set_colorText(red);
+            cout << temp[3 * i + j ];
+            Set_colorText(white);
+            cout << " | ";
+        }
+    }
     Goto_xy(coord_X_Infor, 7);
     cout << "+---+---+---+";
 }
