@@ -1,15 +1,17 @@
+#include <windows.h>
 #include <iostream>
 #include <conio.h>
 #include <string>
-#include "extend.h"
-#include "graphics.h"
+#include <vector>
 #include <stack>
-#include <windows.h>
+#include "handle.h"
+#include "graphics.h"
+#include "player_infor.h"
 #include "ultimate_tic_tac_toe.h"
 
 using namespace std;
 
-static string player[2];
+vector<Player_infor> Players;
 
 /* Stack save Large Board to replay */
 stack<LargeBoard> hisboard;
@@ -50,6 +52,7 @@ int main()
                 switch (choice_2)
                 {
                 case 1:
+                    Enter_name();
                     Play_with_Friend();
                     Sleep(1000); // Screen pause for 1 seconds
                     break;
@@ -128,8 +131,6 @@ int Play_with_Friend()
     stack<LargeBoard> hisboard;
     LargeBoard currentboard;
     currentboard.mode = 0;
-
-    Enter_name(); // Enter player name;
 
     currentboard.DrawBoards();
 
@@ -350,12 +351,12 @@ int Play_with_BotEasy()
 
 void Enter_name()
 {
-    cout << "*** Note: Player 1 is always X" << endl;
-    fflush(stdin);
-    cout << "Enter player name 1: ";
-    getline(cin, player[0]);
-    cout << "Enter player name 2: ";
-    getline(cin, player[1]);
+    // cout << "*** Note: Player 1 is always X" << endl;
+    // fflush(stdin);
+    // cout << "Enter player name 1: ";
+    // getline(cin, player[0].name);
+    // cout << "Enter player name 2: ";
+    // getline(cin, player[1].name);
 }
 
 void Record_Game()

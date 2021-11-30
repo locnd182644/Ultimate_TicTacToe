@@ -68,7 +68,7 @@ void Infor_LargeBoard(LargeBoard* boards)
         cout << "| ";
         for (int j = 0; j < 3; j++)
         {
-            Set_colorText(red);
+            Set_colorText(green);
             cout << temp[3 * i + j ];
             Set_colorText(white);
             cout << " | ";
