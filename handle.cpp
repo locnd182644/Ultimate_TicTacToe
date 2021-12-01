@@ -1,5 +1,4 @@
 #include "handle.h"
-#include <iostream>
 #include <cstdlib> // Random
 #include "graphics.h"
 
@@ -11,12 +10,8 @@ int BotSelectCell(LargeBoard *boards)
     int temp;
     while (1)
     {
-        while (1)
-        {
-            temp = rand() % 10;
-            if (temp != 9)
-                break;
-        }
+        temp = rand() % 9;
+
         if (boards->boards[current_board / 3][current_board % 3].board[temp / 3][temp % 3] == Piece_BLANK)
             break;
     }
@@ -32,7 +27,7 @@ int BotSelectBoard(LargeBoard *boards)
         {
             temp = rand() % 10;
             if (temp != 9)
-                break;  
+                break;
         }
         if (boards->boards[temp / 3][temp % 3].GetStatus() == NONE)
             break;

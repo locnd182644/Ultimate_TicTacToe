@@ -1,4 +1,3 @@
-#include <iostream>
 #include <windows.h>
 #include "graphics.h"
 #include "ultimate_tic_tac_toe.h"
@@ -19,37 +18,39 @@ void Goto_xy(int _x, int _y)
     SetConsoleCursorPosition(h, Position);
 }
 
-void Information(LargeBoard* boards)
+void Information(LargeBoard *boards)
 {
     int i;
-    Clear_Screen();
-    Goto_xy(coord_X_Infor, 1);
+    Goto_xy(xBoardInfor, yBoardInfor);
     cout << " ____________________________________________________";
-    for (i = 2; i < 15; i++)
+    for (i = yBoardInfor + 1; i < hBoardInfor; i++)
     {
-        Goto_xy(coord_X_Infor, i);
+        Goto_xy(xBoardInfor, i);
         cout << "|                                                    |";
     }
-    Goto_xy(coord_X_Infor, i);
+    Goto_xy(xBoardInfor, i);
     cout << "|____________________________________________________|";
     Infor_LargeBoard(boards);
 
-    Goto_xy(coord_X_Infor + 23, 3);
+    Goto_xy(xBoardInfor + 23, yBoardInfor + 2);
     cout << "ULTIMATE TIC TAC TOE";
 
-    Goto_xy(coord_X_Infor + 2, 10);
+    Goto_xy(xBoardInfor + 2, hBoardInfor - 4);
+    Set_colorText(green);
     cout << "* NOTE *";
-    Goto_xy(coord_X_Infor + 1, 12);
+    Set_colorText(white);
+
+    Goto_xy(xBoardInfor + 1, hBoardInfor - 3);
     cout << "- Only 1 character from the keyboard is allowed";
-    Goto_xy(coord_X_Infor + 1, 13);
+    Goto_xy(xBoardInfor + 1, hBoardInfor - 2);
     cout << "- Input: Cell = '0' - Go back to your previous turn";
-    Goto_xy(coord_X_Infor + 1, 14);
+    Goto_xy(xBoardInfor + 1, hBoardInfor - 1);
     cout << "         Cell = 'r' - Exit Game";
 
     Goto_xy(0, 0);
 }
 
-void Infor_LargeBoard(LargeBoard* boards)
+void Infor_LargeBoard(LargeBoard *boards)
 {
     char temp[9];
     for (int i = 0; i < 9; i++)
@@ -62,27 +63,35 @@ void Infor_LargeBoard(LargeBoard* boards)
 
     for (int i = 0; i < 3; i++)
     {
-        Goto_xy(coord_X_Infor, 1 + 2 * i);
+        Goto_xy(xBoardInfor - 1, yBoardInfor + 2 * i);
         cout << "+---+---+---+";
-        Goto_xy(coord_X_Infor, 2 + 2 * i);
+        Goto_xy(xBoardInfor - 1, yBoardInfor + 1 + 2 * i);
         cout << "| ";
         for (int j = 0; j < 3; j++)
         {
-            Set_colorText(green);
-            cout << temp[3 * i + j ];
-            Set_colorText(white);
-            cout << " | ";
+            if (temp[3 * i + j] == X || temp[3 * i + j] == O || temp[3 * i + j] == TIE)
+            {
+                cout << temp[3 * i + j];
+                cout << " | ";
+            }
+            else
+            {
+                Set_colorText(green);
+                cout << temp[3 * i + j];
+                Set_colorText(white);
+                cout << " | ";
+            }
         }
     }
-    Goto_xy(coord_X_Infor, 7);
+    Goto_xy(xBoardInfor - 1, yBoardInfor + 6);
     cout << "+---+---+---+";
 }
 
 void Draw_select(int board_num)
 {
     int i;
-    int _x = 6 + 16 * (board_num % 3);
-    int _y = 0 + 6 * (board_num / 3);
+    int _x = 6 + 11 * (board_num % 3);
+    int _y = 1 + 5 * (board_num / 3);
     Goto_xy(_x, _y);
     cout << " _______ ";
     for (i = 1; i < 4; i++)

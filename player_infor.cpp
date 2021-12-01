@@ -1,4 +1,3 @@
-#include <iostream>
 #include "player_infor.h"
 
 using namespace std;

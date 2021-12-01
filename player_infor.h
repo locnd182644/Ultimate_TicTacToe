@@ -1,6 +1,7 @@
 #ifndef _player_infor_h_
 #define _player_infor_h_
 
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -27,7 +28,6 @@ public:
 
     int total_match();
     float win_rate();
-
 };
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef _tic_tac_toe_h
 #define _tic_tac_toe_h
 
+#include <iostream>
+
 enum Piece
 {
     Piece_BLANK = 95, // " _ "

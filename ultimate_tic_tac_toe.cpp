@@ -1,4 +1,3 @@
-#include <iostream>
 #include "handle.h"
 #include "graphics.h"
 #include "ultimate_tic_tac_toe.h"
@@ -70,9 +69,9 @@ void LargeBoard::SelectNewBoard()
     }
     else
     {
-        Goto_xy(7, 21);
+        Goto_xy(xInput, yInput);
         cout << "The game on the next board is finished";
-        Goto_xy(7, 22);
+        Goto_xy(xInput, yInput + 1);
         cout << GetTurn() << " select next board: ";
         board_num = InputData();
         board_num -= 1;
@@ -91,8 +90,10 @@ void LargeBoard::Move(int cell)
     }
     else
     {
+        Goto_xy(xInput, yInput + 1);
         // Chosen cell is already occupied
         cout << "Position already occupied. Try again." << endl;
+        Goto_xy(xInput, yInput + 2);
         cout << "Cell: ";
         cin >> cell;
         Move(cell); // Call the function again with new parameters
@@ -101,18 +102,8 @@ void LargeBoard::Move(int cell)
 
 void LargeBoard::DrawBoards()
 {
-    if (board_num == -1)
-        Information(this);
-    else
-    {
-        Information(this);
-        if (boardStatuses[board_num / 3][board_num % 3] == NONE)
-            Draw_select(board_num);
-    }
-
-    Goto_xy(0, 0);
-
-    cout << endl;
+    Clear_Screen();
+    cout << "\n\n";
     for (int w = 0; w < 3; w++)
     {
         for (int x = 0; x < 3; x++)
@@ -125,16 +116,21 @@ void LargeBoard::DrawBoards()
                     Piece player = boards[w][y].board[x][z];
                     cout << (char)player << " ";
                 }
-                cout << "\t\t";
+                cout << "     ";
             }
             cout << endl;
         }
         cout << endl;
         cout << endl;
-        cout << endl;
     }
-    cout << endl
-         << endl;
+    if (board_num == -1)
+        Information(this);
+    else
+    {
+        Information(this);
+        if (boardStatuses[board_num / 3][board_num % 3] == NONE)
+            Draw_select(board_num);
+    }
 }
 
 Status LargeBoard::CheckWin()

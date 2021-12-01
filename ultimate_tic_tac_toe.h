@@ -20,11 +20,11 @@ public:
     void DrawBoards();     // Draw large boad
     char GetTurn();        // Get turn of current
     void Setturn(Piece);   // Set turn for game
-    void Move(int);        // Move 
+    void Move(int);        // Move
     int GetBoardNum();     // Get board of current
     void SetBoardNum(int); // Set board of current
     bool BoardFinished();  // Check if small board is finished
-    void SelectNewBoard(); // Select new small board 
+    void SelectNewBoard(); // Select new small board
     Status CheckWin();     // Check Win/Tie/None
 };
 

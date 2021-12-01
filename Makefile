@@ -18,8 +18,8 @@ ultimate_tic_tac_toe.o: ultimate_tic_tac_toe.cpp
 main.o: main.cpp
 	g++ -c main.cpp
 
-player_infor.o::  player_infor.cpp
-	g++ -c  player_infor.cpp
+player_infor.o: player_infor.cpp
+	g++ -c player_infor.cpp
 
 clean:
 	rm game

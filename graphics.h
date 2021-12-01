@@ -3,7 +3,11 @@
 
 #include "ultimate_tic_tac_toe.h"
 
-#define coord_X_Infor 60 // X-coordinate of the Information Board
+#define xBoardInfor 50 // X-coordinate of the Information Board
+#define yBoardInfor 2  // Y-coordinate of the Information Board
+#define hBoardInfor 14 // High of the Information Board
+#define xInput      7
+#define yInput      19
 
 enum Colors
 {

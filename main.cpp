@@ -1,7 +1,5 @@
 #include <windows.h>
-#include <iostream>
 #include <conio.h>
-#include <string>
 #include <vector>
 #include <stack>
 #include "handle.h"
@@ -10,8 +8,6 @@
 #include "ultimate_tic_tac_toe.h"
 
 using namespace std;
-
-vector<Player_infor> Players;
 
 /* Stack save Large Board to replay */
 stack<LargeBoard> hisboard;
@@ -27,7 +23,7 @@ void Enter_name(void);
 int main()
 {
     Start();
-    int choice_1, choice_2, choice_3;
+    int choice_1, choice_2;
     while (1)
     {
         Clear_Screen();
@@ -83,7 +79,6 @@ int main()
         }
     }
 }
-
 void Start()
 {
     Clear_Screen();
@@ -114,7 +109,7 @@ void Start()
 void Rules()
 {
     Clear_Screen();
-    cout << "1.Each turn, you mark one of the small squares..\n\n";
+    cout << "1.Each turn, you mark one of the small squares.\n\n";
     cout << "2.When you get three in a row on a small board, you have won that board.\n\n";
     cout << "3.To win the game, you need to win three small boards in a row.\n\n";
     cout << "*** Note: You do not get to pick which of the nine boards to play on.\n";
@@ -129,13 +124,15 @@ int Play_with_Friend()
 
     /* Stack save Large Board to replay */
     stack<LargeBoard> hisboard;
+
     LargeBoard currentboard;
     currentboard.mode = 0;
 
     currentboard.DrawBoards();
 
     int board_num;
-    cout << "       Enter the board number to start with: ";
+    Goto_xy(xInput, yInput);
+    cout << "Enter the board number to start with: ";
     board_num = InputData();
     currentboard.SetBoardNum(board_num);
     Draw_select(currentboard.GetBoardNum() - 1);
@@ -144,10 +141,10 @@ int Play_with_Friend()
     {
         hisboard.push(currentboard);
         currentboard.DrawBoards();
-        Goto_xy(7, 20);
+        Goto_xy(xInput, yInput);
         cout << "Player " << currentboard.GetTurn() << ": select cell";
 
-        Goto_xy(7, 21);
+        Goto_xy(xInput, yInput + 1);
         cout << "Cell: ";
         cell = InputData();
 
@@ -181,6 +178,7 @@ int Play_with_Friend()
         default:
             break;
         }
+
         if (currentboard.BoardFinished())
             currentboard.SelectNewBoard();
     }
@@ -212,9 +210,9 @@ int Play_with_BotNormal()
         switch (currentboard.GetTurn())
         {
         case X:
-            Goto_xy(7, 21);
+            Goto_xy(7, 17);
             cout << "Player " << currentboard.GetTurn() << ": select cell";
-            Goto_xy(7, 22);
+            Goto_xy(7, 18);
             cout << "Cell: ";
             cell = InputData();
             if (cell == 66) // User input 'r'
@@ -222,9 +220,9 @@ int Play_with_BotNormal()
             break;
 
         case O:
-            Goto_xy(7, 21);
+            Goto_xy(7, 17);
             cout << "Bot " << currentboard.GetTurn() << ": select cell";
-            Goto_xy(7, 22);
+            Goto_xy(7, 18);
             cell = FindBestMove(currentboard);
             cout << "Cell: " << cell;
             break;
@@ -325,7 +323,7 @@ int Play_with_BotEasy()
 
         currentboard.Move(cell);
         int status = currentboard.CheckWin();
-        currentboard.DrawBoards();
+        // currentboard.DrawBoards();
 
         switch (status)
         {
