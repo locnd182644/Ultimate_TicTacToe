@@ -1,6 +1,4 @@
 #include <windows.h>
-#include <conio.h>
-#include <vector>
 #include <stack>
 #include "handle.h"
 #include "graphics.h"
@@ -8,6 +6,10 @@
 #include "ultimate_tic_tac_toe.h"
 
 using namespace std;
+
+#define SleepTime1000 1000
+
+vector<cPlayerInfor> g_players;
 
 /* Stack save Large Board to replay */
 stack<LargeBoard> hisboard;
@@ -22,19 +24,32 @@ void Enter_name(void);
 
 int main()
 {
+    fstream filein;
+    filein.open("Infor_Player.txt", ios::in);
+    ReadInforListPlayer(filein, g_players);
     Start();
-    int choice_1, choice_2;
+    int choice1, choice2;
     while (1)
     {
         Clear_Screen();
-        cout << "Choose Options\n\n1. Start New Game\n2. How To Play\n3. Quit\n\n";
+        cPlayerInfor *pPlayer;
+        string name;
+        cout << "Choose Options\n\n1. Start New Game\n2. Information of player\n3. How To Play\n4. Quit\n\n";
         cout << "Option: ";
-        cin >> choice_1;
-        switch (choice_1)
+        cin >> choice1;
+        switch (choice1)
         {
         case 1:
+            cout << "Input your name: ";
+            fflush(stdin); // lam sach bo nho dem
+            getline(cin, name);
+
+            // Refer current Player
+            pPlayer = &g_players[iSeachPlayer(g_players, name)];
+
             while (1)
             {
+
                 Clear_Screen();
                 cout << "____NEW GAME____\n\n";
                 cout << "1. Play with friend \n";
@@ -44,37 +59,62 @@ int main()
                 cout << "5. Watch the game again\n";
                 cout << "6. Return\n\n";
                 cout << "Option: ";
-                cin >> choice_2;
-                switch (choice_2)
+                cin >> choice2;
+                switch (choice2)
                 {
                 case 1:
                     Enter_name();
                     Play_with_Friend();
-                    Sleep(1000); // Screen pause for 1 seconds
                     break;
                 case 2:
-                    Play_with_BotEasy();
-                    Sleep(1000); // Screen pause for 1 seconds
+                    switch (Play_with_BotEasy())
+                    {
+                    case X:
+                        pPlayer->m_win++;
+                        break;
+                    case O:
+                        pPlayer->m_lose++;
+                        break;
+                    case TIE:
+                        pPlayer->m_tie++;
+                        break;
+                    }
                     break;
                 case 3:
-                    Play_with_BotNormal();
-                    Sleep(1000); // Screen pause for 1 seconds
+                    switch (Play_with_BotNormal())
+                    {
+                    case X:
+                        pPlayer->m_win++;
+                        break;
+                    case O:
+                        pPlayer->m_lose++;
+                        break;
+                    case TIE:
+                        pPlayer->m_tie++;
+                        break;
+                    }
                     break;
                 case 5:
                     Record_Game();
-                    Sleep(1000); // Screen pause for 1 seconds
                     break;
                 }
-                if (choice_2 == 6)
+                if (choice2 == 6)
                     break;
             }
+
             break;
 
         case 2:
-            Rules();
+            Clear_Screen();
+            ExportInforListPlayer(g_players);
             break;
 
         case 3:
+            Clear_Screen();
+            Rules();
+            break;
+
+        case 4:
             return 0;
         }
     }
@@ -86,16 +126,17 @@ void Start()
     cout << "*******************************";
 
     Goto_xy(39, 11);
+    Set_colorText(green);
     cout << "ULTIMATE TIC TAC TOE";
 
     Goto_xy(41, 13);
     cout << ">>>        <<<";
 
-    Set_colorText(yellow);
     Goto_xy(45, 13);
+    Set_colorText(yellow);
     cout << "TEAM 5";
-    Set_colorText(red);
     Goto_xy(35, 14);
+    Set_colorText(red);
     cout << "HN21_CPLU.HUST_LITE_CPP_01";
     Set_colorText(white);
 
@@ -108,22 +149,21 @@ void Start()
 }
 void Rules()
 {
-    Clear_Screen();
-    cout << "1.Each turn, you mark one of the small squares.\n\n";
-    cout << "2.When you get three in a row on a small board, you have won that board.\n\n";
-    cout << "3.To win the game, you need to win three small boards in a row.\n\n";
+    Set_colorText(green);
+    cout << "            HOW TO PLAY GAME\n\n";
+    Set_colorText(white);
+    cout << "          1.Each turn, you mark one of the small squares.\n\n";
+    cout << "          2.When you get three in a row on a small board, you have won that board.\n\n";
+    cout << "          3.To win the game, you need to win three small boards in a row.\n\n";
     cout << "*** Note: You do not get to pick which of the nine boards to play on.\n";
     cout << "          That is determined by the previous Move of your opponent.\n";
-    cout << "          Whichever square he picks, that is the board you must play in next.\n\n";
-    cout << "Press any key to continue....";
+    cout << "          Whichever square he picks, that is the board you must play in next.\n\n\n";
+    cout << "          Press any key to continue....";
     _getch();
 }
 int Play_with_Friend()
 {
     Clear_Screen();
-
-    /* Stack save Large Board to replay */
-    stack<LargeBoard> hisboard;
 
     LargeBoard currentboard;
     currentboard.mode = 0;
@@ -183,6 +223,8 @@ int Play_with_Friend()
             currentboard.SelectNewBoard();
     }
 
+    Sleep(SleepTime1000); // Screen pause for 1 seconds
+
     // Exit halfway
     return TIE;
 }
@@ -196,7 +238,8 @@ int Play_with_BotNormal()
     currentboard.DrawBoards();
 
     int board_num;
-    cout << "       Enter the board number to start with: ";
+    Goto_xy(xInput, yInput);
+    cout << "Enter the board number to start with: ";
     board_num = InputData();
     if (board_num == 66) // User input 'r'
         return TIE;
@@ -210,9 +253,9 @@ int Play_with_BotNormal()
         switch (currentboard.GetTurn())
         {
         case X:
-            Goto_xy(7, 17);
+            Goto_xy(xInput, yInput);
             cout << "Player " << currentboard.GetTurn() << ": select cell";
-            Goto_xy(7, 18);
+            Goto_xy(xInput, yInput + 1);
             cout << "Cell: ";
             cell = InputData();
             if (cell == 66) // User input 'r'
@@ -220,9 +263,9 @@ int Play_with_BotNormal()
             break;
 
         case O:
-            Goto_xy(7, 17);
+            Goto_xy(xInput, yInput);
             cout << "Bot " << currentboard.GetTurn() << ": select cell";
-            Goto_xy(7, 18);
+            Goto_xy(xInput, yInput);
             cell = FindBestMove(currentboard);
             cout << "Cell: " << cell;
             break;
@@ -263,6 +306,8 @@ int Play_with_BotNormal()
             currentboard.SelectNewBoard();
     }
 
+    Sleep(SleepTime1000); // Screen pause for 1 seconds
+
     // Exit halfway
     return TIE;
 }
@@ -276,7 +321,8 @@ int Play_with_BotEasy()
     currentboard.DrawBoards();
 
     int board_num;
-    cout << "       Enter the board number to start with: ";
+    Goto_xy(xInput, yInput);
+    cout << "Enter the board number to start with: ";
     board_num = InputData();
     if (board_num == 66) // User input 'r'
         return TIE;
@@ -290,9 +336,9 @@ int Play_with_BotEasy()
         switch (currentboard.GetTurn())
         {
         case X:
-            Goto_xy(7, 21);
+            Goto_xy(xInput, yInput);
             cout << "Player " << currentboard.GetTurn() << ": select cell";
-            Goto_xy(7, 22);
+            Goto_xy(xInput, yInput + 1);
             cout << "Cell: ";
             cell = InputData();
             if (cell == 66) // User input 'r'
@@ -300,15 +346,15 @@ int Play_with_BotEasy()
             break;
 
         case O:
-            Goto_xy(7, 21);
+            Goto_xy(xInput, yInput);
             cout << "Bot " << currentboard.GetTurn() << ": select cell";
-            Goto_xy(7, 22);
+            Goto_xy(xInput, yInput + 1);
             cell = BotSelectCell(&currentboard);
             cout << "Cell: " << cell;
             break;
         }
 
-        // If cell = 0, replay
+        // If cell = 0 then replay
         if (cell == 0)
         {
             for (int i = 0; i < 3; i++)
@@ -323,7 +369,6 @@ int Play_with_BotEasy()
 
         currentboard.Move(cell);
         int status = currentboard.CheckWin();
-        // currentboard.DrawBoards();
 
         switch (status)
         {
@@ -343,18 +388,14 @@ int Play_with_BotEasy()
             currentboard.SelectNewBoard();
     }
 
+    Sleep(SleepTime1000); // Screen pause for 1 seconds
+
     // Exit halfway
     return TIE;
 }
 
 void Enter_name()
 {
-    // cout << "*** Note: Player 1 is always X" << endl;
-    // fflush(stdin);
-    // cout << "Enter player name 1: ";
-    // getline(cin, player[0].name);
-    // cout << "Enter player name 2: ";
-    // getline(cin, player[1].name);
 }
 
 void Record_Game()
@@ -375,4 +416,6 @@ void Record_Game()
         currboards.DrawBoards();
         Sleep(500);
     }
+
+    Sleep(SleepTime1000); // Screen pause for 1 seconds
 }

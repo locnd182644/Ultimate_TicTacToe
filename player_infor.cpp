@@ -1,59 +1,91 @@
 #include "player_infor.h"
+#include "graphics.h"
 
 using namespace std;
 
-Player_infor::Player_infor()
+cPlayerInfor::cPlayerInfor()
 {
-    name = "NULL";
-    _win = 0;
-    _lose = 0;
-    _tie = 0;
+    m_name = "NULL";
+    m_win = 0;
+    m_tie = 0;
+    m_lose = 0;
 }
 
-Player_infor::Player_infor(string temp_name)
+cPlayerInfor::cPlayerInfor(string TempName)
 {
-    name = temp_name;
-    _win = 0;
-    _lose = 0;
-    _tie = 0;
+    m_name = TempName;
+    m_win = 0;
+    m_tie = 0;
+    m_lose = 0;
 }
 
-int Player_infor::get_win()
+int cPlayerInfor::TotalMatch()
 {
-    return _win;
+    return m_win + m_tie + m_lose;
 }
 
-int Player_infor::get_tie()
+float cPlayerInfor::WinRate()
 {
-    return _tie;
+    return (TotalMatch() == 0) ? 0 : (m_win) / (float)TotalMatch();
 }
 
-int Player_infor::get_lose()
+int iSeachPlayer(vector<cPlayerInfor> &listPlayer, string name)
 {
-    return _lose;
+    int i;
+    // Duyet danh sach, neu co ten nguoi choi tra ve chi so nguoi choi trong danh sach
+    for (i = 0; i < listPlayer.size(); i++)
+    {
+        if (listPlayer[i].m_name == name)
+            return i;
+    }
+
+    // neu khong thi tao nguoi choi moi va tra ve chi so
+    cPlayerInfor newPlayer(name);
+    listPlayer.push_back(newPlayer);
+    return i + 1;
 }
 
-void Player_infor::win()
+/** Read Information of player from file **/
+void ReadInforPlayer(fstream &filein, cPlayerInfor &player)
 {
-    _win++;
+    getline(filein, player.m_name, ',');
+    filein >> player.m_win;
+    filein >> player.m_tie;
+    filein >> player.m_lose;
 }
 
-void Player_infor::tie()
+/** Read Information of player from file, then push on the list **/
+void ReadInforListPlayer(fstream &filein, vector<cPlayerInfor> &listPlayer)
 {
-    _tie++;
+    cPlayerInfor TempPlayer;
+    while (!filein.eof()) // Check end file
+    {
+        ReadInforPlayer(filein, TempPlayer);
+        listPlayer.push_back(TempPlayer);
+    }
 }
 
-void Player_infor::lose()
+/** Export imformation of player to screen**/
+void ExportInforListPlayer(vector<cPlayerInfor> listPlayer)
 {
-    _lose++;
-}
-
-int Player_infor::total_match()
-{
-    return _win + _tie + _lose;
-}
-
-float Player_infor::win_rate()
-{
-    return (total_match() == 0) ? 0 : (_win) / total_match();
+    cPlayerInfor tempPlayer;
+    Set_colorText(green);
+    cout << "Name\t\tWin\tTie\tLose\tWin Rate\n\n";
+    Set_colorText(white);
+    for (int i = 0; i < listPlayer.size(); i++)
+    {
+        tempPlayer = listPlayer[i];
+        cout << tempPlayer.m_name
+             << "\t"
+             << tempPlayer.m_win
+             << "\t"
+             << tempPlayer.m_tie
+             << "\t"
+             << tempPlayer.m_lose
+             << "\t"
+             << tempPlayer.WinRate() * 100 << " %"
+             << "\n\n\n";
+    }
+    cout << "Press any key to continue....";
+    _getch();
 }

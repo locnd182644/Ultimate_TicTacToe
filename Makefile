@@ -1,7 +1,6 @@
 
 game: handle.o graphics.o tic_tac_toe.o ultimate_tic_tac_toe.o player_infor.o main.o
 	g++ *.o -o game
-	rm *.o
 
 handle.o: handle.cpp
 	g++ -c handle.cpp

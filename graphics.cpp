@@ -33,6 +33,7 @@ void Information(LargeBoard *boards)
     Infor_LargeBoard(boards);
 
     Goto_xy(xBoardInfor + 23, yBoardInfor + 2);
+    Set_colorText(yellow);
     cout << "ULTIMATE TIC TAC TOE";
 
     Goto_xy(xBoardInfor + 2, hBoardInfor - 4);
@@ -71,7 +72,9 @@ void Infor_LargeBoard(LargeBoard *boards)
         {
             if (temp[3 * i + j] == X || temp[3 * i + j] == O || temp[3 * i + j] == TIE)
             {
+                Set_colorText(yellow);
                 cout << temp[3 * i + j];
+                Set_colorText(white);
                 cout << " | ";
             }
             else
@@ -89,6 +92,7 @@ void Infor_LargeBoard(LargeBoard *boards)
 
 void Draw_select(int board_num)
 {
+    Set_colorText(yellow);
     int i;
     int _x = 6 + 11 * (board_num % 3);
     int _y = 1 + 5 * (board_num / 3);
@@ -103,6 +107,7 @@ void Draw_select(int board_num)
     }
     Goto_xy(_x, _y + i);
     cout << "|_______|";
+    Set_colorText(white);
 }
 
 void Set_colorText(Colors _color)

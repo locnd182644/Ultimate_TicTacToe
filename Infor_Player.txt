@@ -1,0 +1,16 @@
+Nguyen Van A,
+1
+1
+1
+Nguyen Van B,
+2
+0
+1
+Nguyen Van C,
+0
+0
+0
+Nguyen Van D,
+1
+2
+3

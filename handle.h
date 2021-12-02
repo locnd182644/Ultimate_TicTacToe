@@ -2,6 +2,7 @@
 #define _handle_h_
 
 #include "ultimate_tic_tac_toe.h"
+#include "player_infor.h"
 
 // Handle input data from the keyboard
 int InputData(); // Allows input from the keypad integers from 0 to 9
@@ -15,5 +16,6 @@ int EvaluateValue(SmallBoard);    // Score board of current
 int FindBestMove(LargeBoard);     // Find best move for Bot Normal
 
 //  Handle Bot Hard
+
 
 #endif
