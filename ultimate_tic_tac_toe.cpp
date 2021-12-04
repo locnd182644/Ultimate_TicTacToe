@@ -1,71 +1,82 @@
 #include "handle.h"
+#include "mode.h"
 #include "graphics.h"
 #include "ultimate_tic_tac_toe.h"
 
 using namespace std;
 
-LargeBoard::LargeBoard()
+cLargeBoard::cLargeBoard()
 {
-    _turn = Piece_X;
-    InitStatuses();
+    m_turn = Piece_X; // The first turn is X 
+	
+    InitStatuses(); // Initial status 
 }
 
-void LargeBoard::InitStatuses()
+void cLargeBoard::InitStatuses()
 {
     /*
      * Initialise board statuses to NONE
      */
     for (int x = 0; x < 3; x++)
         for (int y = 0; y < 3; y++)
-            boardStatuses[x][y] = NONE;
+            m_boardStatuses[x][y] = NONE;
 }
 
-char LargeBoard::GetTurn()
+/* Get current turn */
+char cLargeBoard::GetTurn()
 {
-    return _turn == Piece_X ? 'X' : 'O';
+    return m_turn == Piece_X ? 'X' : 'O';
 }
 
-void LargeBoard::Setturn(Piece turn)
+/* Set current turn by turn parameters */
+void cLargeBoard::Setturn(PIECE turn)
 {
-    _turn = turn;
+    m_turn = turn;
 }
 
-void LargeBoard::ToggleTurn()
+/* Toggle switch turn */
+void cLargeBoard::ToggleTurn()
 {
-    _turn = _turn == Piece_X ? Piece_O : Piece_X;
+    m_turn = m_turn == Piece_X ? Piece_O : Piece_X;
 }
 
-int LargeBoard::GetBoardNum()
+/* Get current board number */
+int cLargeBoard::GetBoardNum()
 {
-    return board_num + 1;
+    return m_boardNum + 1;
 }
 
-void LargeBoard::SetBoardNum(int board_no)
+/* Set current board number by board_nu parameters*/
+void cLargeBoard::SetBoardNum(int board_nu)
 {
-    board_num = board_no - 1;
+    m_boardNum = board_nu - 1;
 }
 
-bool LargeBoard::BoardFinished()
+/* Check board's status none or not */
+bool cLargeBoard::BoardFinished()
 {
-    if (boardStatuses[board_num / 3][board_num % 3] != NONE)
+    if (m_boardStatuses[m_boardNum / 3][m_boardNum % 3] != NONE)
         return true;
     return false;
 }
 
-void LargeBoard::SelectNewBoard()
+/* Select new Board to play */
+void cLargeBoard::SelectNewBoard()
 {
+	
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
-            if (boardStatuses[i][j] == NONE)
-                Draw_select(3 * i + j);
+            if (m_boardStatuses[i][j] == NONE)
+                Draw_select(3 * i + j); // Choose a small board in the next turn
         }
     }
 
-    if (mode == true && _turn == Piece_O)
+	/* Auto choose board for 2 mode */
+    if (m_mode == 1 && m_turn == Piece_O)
     {
-        board_num = BotSelectBoard(this);
+        m_boardNum = BotSelectBoard(this);
     }
     else
     {
@@ -73,20 +84,23 @@ void LargeBoard::SelectNewBoard()
         cout << "The game on the next board is finished";
         Goto_xy(xInput, yInput + 1);
         cout << GetTurn() << " select next board: ";
-        board_num = InputData();
-        board_num -= 1;
+		
+        m_boardNum = InputData(); // input from keyboard
+        m_boardNum -= 1;
+		
         if (BoardFinished())
-            SelectNewBoard();
+            SelectNewBoard();   // call Recursive Function
+
     }
 }
 
-void LargeBoard::Move(int cell)
+void cLargeBoard::Move(int cell)
 {
     // Convert 1d index to 2d
-    if (boards[board_num / 3][board_num % 3].Fill(cell, _turn))
+    if (m_boards[m_boardNum / 3][m_boardNum % 3].Fill(cell, m_turn))
     {
-        // Minus 1 for zero indexing and convert 2d index to 1d :D
-        board_num = cell - 1;
+		// Mapping cell to board
+        m_boardNum = cell - 1;
     }
     else
     {
@@ -95,51 +109,20 @@ void LargeBoard::Move(int cell)
         cout << "Position already occupied. Try again." << endl;
         Goto_xy(xInput, yInput + 2);
         cout << "Cell: ";
-        cin >> cell;
+        cell = InputData();
         Move(cell); // Call the function again with new parameters
     }
 }
 
-void LargeBoard::DrawBoards()
-{
-    Clear_Screen();
-    cout << "\n\n";
-    for (int w = 0; w < 3; w++)
-    {
-        for (int x = 0; x < 3; x++)
-        {
-            cout << "\t";
-            for (int y = 0; y < 3; y++)
-            {
-                for (int z = 0; z < 3; z++)
-                {
-                    Piece player = boards[w][y].board[x][z];
-                    cout << (char)player << " ";
-                }
-                cout << "     ";
-            }
-            cout << endl;
-        }
-        cout << endl;
-        cout << endl;
-    }
-    if (board_num == -1)
-        Information(this);
-    else
-    {
-        Information(this);
-        if (boardStatuses[board_num / 3][board_num % 3] == NONE)
-            Draw_select(board_num);
-    }
-}
 
-Status LargeBoard::CheckWin()
+/* Check win the large board */
+Status cLargeBoard::CheckWin()
 {
     for (int x = 0; x < 3; x++)
     {
         for (int y = 0; y < 3; y++)
         {
-            boardStatuses[x][y] = boards[x][y].CheckWin();
+            m_boardStatuses[x][y] = m_boards[x][y].CheckWin();
         }
     }
 
@@ -147,39 +130,39 @@ Status LargeBoard::CheckWin()
     /* Check for a tie */
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++)
-            if (boardStatuses[i][j] == NONE)
+            if (m_boardStatuses[i][j] == NONE)
                 tie = false;
 
     if (tie)
         return TIE;
 
     /* top-left to bottom-right */
-    if (boardStatuses[0][0] != NONE &&
-        boardStatuses[0][0] == boardStatuses[1][1] &&
-        boardStatuses[1][1] == boardStatuses[2][2])
+    if (m_boardStatuses[0][0] != NONE &&
+        m_boardStatuses[0][0] == m_boardStatuses[1][1] &&
+        m_boardStatuses[1][1] == m_boardStatuses[2][2])
         return GetTurn() == 'X' ? X : O;
 
     /* top-right to bottom-left */
-    if (boardStatuses[0][2] != NONE &&
-        boardStatuses[0][2] == boardStatuses[1][1] &&
-        boardStatuses[1][1] == boardStatuses[2][0])
+    if (m_boardStatuses[0][2] != NONE &&
+        m_boardStatuses[0][2] == m_boardStatuses[1][1] &&
+        m_boardStatuses[1][1] == m_boardStatuses[2][0])
         return GetTurn() == 'X' ? X : O;
 
     /* COLUMNS */
     for (int row = 0; row < 3; row++)
     {
-        if (boardStatuses[row][0] != NONE &&
-            boardStatuses[row][0] == boardStatuses[row][1] &&
-            boardStatuses[row][1] == boardStatuses[row][2])
+        if (m_boardStatuses[row][0] != NONE &&
+            m_boardStatuses[row][0] == m_boardStatuses[row][1] &&
+            m_boardStatuses[row][1] == m_boardStatuses[row][2])
             return GetTurn() == 'X' ? X : O;
     }
 
     /* ROWS */
     for (int column = 0; column < 3; column++)
     {
-        if (boardStatuses[0][column] != NONE &&
-            boardStatuses[0][column] == boardStatuses[1][column] &&
-            boardStatuses[1][column] == boardStatuses[2][column])
+        if (m_boardStatuses[0][column] != NONE &&
+            m_boardStatuses[0][column] == m_boardStatuses[1][column] &&
+            m_boardStatuses[1][column] == m_boardStatuses[2][column])
             return GetTurn() == 'X' ? X : O;
     }
 

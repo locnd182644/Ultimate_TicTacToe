@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-enum Piece
+enum PIECE
 {
     Piece_BLANK = 95, // " _ "
     Piece_O = 79,     // " O "
@@ -18,15 +18,15 @@ enum Status
     X = 88,   // " X "
 };
 
-class SmallBoard
+class cSmallBoard
 {
 private:
-    Status _gameStatus; // Status of SmallBoard
+    Status m_gameStatus; // Status of SmallBoard
 public:
-    Piece board[3][3]; // 3x3 cell
-    SmallBoard();
+    PIECE m_board[3][3];                // 3x3 cell
+    cSmallBoard();                     // Initialization method
     void InitBoard();                 // Initialization for SmallBoard
-    bool Fill(int cell, Piece _turn); // Set pice for cell
+    bool Fill(int cell, PIECE m_turn); // Set pice for cell
     Status CheckWin();                // Check Win/Tie/None
     Status GetStatus();               // Get status of SmallBoard
 };

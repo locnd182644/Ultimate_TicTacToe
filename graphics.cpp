@@ -18,7 +18,7 @@ void Goto_xy(int _x, int _y)
     SetConsoleCursorPosition(h, Position);
 }
 
-void Information(LargeBoard *boards)
+void Information(cLargeBoard boards)
 {
     int i;
     Goto_xy(xBoardInfor, yBoardInfor);
@@ -30,7 +30,7 @@ void Information(LargeBoard *boards)
     }
     Goto_xy(xBoardInfor, i);
     cout << "|____________________________________________________|";
-    Infor_LargeBoard(boards);
+    Infor_StatusLargeBoard(boards);
 
     Goto_xy(xBoardInfor + 23, yBoardInfor + 2);
     Set_colorText(yellow);
@@ -51,15 +51,15 @@ void Information(LargeBoard *boards)
     Goto_xy(0, 0);
 }
 
-void Infor_LargeBoard(LargeBoard *boards)
+void Infor_StatusLargeBoard(cLargeBoard boards)
 {
-    char temp[9];
+    char temp[9]; // ASCII of '1' -> '9' or 'X' or 'O' or '='  
     for (int i = 0; i < 9; i++)
     {
-        if (boards->boardStatuses[i / 3][i % 3] == NONE)
+        if (boards.m_boardStatuses[i / 3][i % 3] == NONE)
             temp[i] = i + 1 + 48;
         else
-            temp[i] = boards->boardStatuses[i / 3][i % 3];
+            temp[i] = boards.m_boardStatuses[i / 3][i % 3];
     }
 
     for (int i = 0; i < 3; i++)
@@ -90,12 +90,12 @@ void Infor_LargeBoard(LargeBoard *boards)
     cout << "+---+---+---+";
 }
 
-void Draw_select(int board_num)
+void Draw_select(int _boardNum)
 {
     Set_colorText(yellow);
     int i;
-    int _x = 6 + 11 * (board_num % 3);
-    int _y = 1 + 5 * (board_num / 3);
+    int _x = 6 + 11 * (_boardNum % 3);
+    int _y = 1 + 5 * (_boardNum / 3);
     Goto_xy(_x, _y);
     cout << " _______ ";
     for (i = 1; i < 4; i++)
@@ -114,4 +114,43 @@ void Set_colorText(Colors _color)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, _color);
+}
+
+/* Display interface a Large Board */
+void DrawBoards(cLargeBoard boards)
+{
+    int tempBoardNum = boards.m_boardNum;
+    Clear_Screen();
+    cout << "\n\n";
+    for (int w = 0; w < 3; w++)
+    {
+        for (int x = 0; x < 3; x++)
+        {
+            cout << "\t";
+            for (int y = 0; y < 3; y++)
+            {
+                for (int z = 0; z < 3; z++)
+                {
+                    PIECE player = boards.m_boards[w][y].m_board[x][z];
+                    cout << (char)player << " ";
+                }
+                cout << "     ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+        cout << endl;
+    }
+	
+	/* Display board graphic before	being taken */
+    if (tempBoardNum == -1)
+        Information(boards);
+	
+	/* Display board graphic after being taken */
+    else
+    {
+        Information(boards);
+        if (boards.m_boardStatuses[tempBoardNum / 3][tempBoardNum % 3] == NONE)
+            Draw_select(tempBoardNum);
+    }
 }
