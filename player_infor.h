@@ -33,9 +33,9 @@ void ReadInforPlayer(ifstream &, cPlayerInfor &);
 void ReadInforListPlayer(ifstream &, vector<cPlayerInfor> &);
 
 /** Display Players' list **/
-void WriteInforListPlayer_Screen(vector<cPlayerInfor>);
+void WriteInforListPlayerScreen(vector<cPlayerInfor>);
 
 /** Save Players' list in file **/
-void WriteInforListPlayer_File(ofstream &, vector<cPlayerInfor>);
+void WriteInforListPlayerFile(ofstream &, vector<cPlayerInfor>);
 
 #endif

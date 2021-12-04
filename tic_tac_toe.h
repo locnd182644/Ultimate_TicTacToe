@@ -10,7 +10,7 @@ enum PIECE
     Piece_X = 88,     // " X "
 };
 
-enum Status
+enum STATUS
 {
     NONE,
     TIE = 61, // " = "
@@ -21,14 +21,14 @@ enum Status
 class cSmallBoard
 {
 private:
-    Status m_gameStatus; // Status of SmallBoard
+    STATUS m_gameStatus; // Status of SmallBoard
 public:
     PIECE m_board[3][3];                // 3x3 cell
     cSmallBoard();                     // Initialization method
     void InitBoard();                 // Initialization for SmallBoard
     bool Fill(int cell, PIECE m_turn); // Set pice for cell
-    Status CheckWin();                // Check Win/Tie/None
-    Status GetStatus();               // Get status of SmallBoard
+    STATUS CheckWin();                // Check Win/Tie/None
+    STATUS GetStatus();               // Get status of SmallBoard
 };
 
 #endif

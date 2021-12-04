@@ -69,7 +69,7 @@ void cLargeBoard::SelectNewBoard()
         for (int j = 0; j < 3; j++)
         {
             if (m_boardStatuses[i][j] == NONE)
-                Draw_select(3 * i + j); // Choose a small board in the next turn
+                DrawSelect(3 * i + j); // Choose a small board in the next turn
         }
     }
 
@@ -80,9 +80,9 @@ void cLargeBoard::SelectNewBoard()
     }
     else
     {
-        Goto_xy(xInput, yInput);
+        GotoXY(xInput, yInput);
         cout << "The game on the next board is finished";
-        Goto_xy(xInput, yInput + 1);
+        GotoXY(xInput, yInput + 1);
         cout << GetTurn() << " select next board: ";
 		
         m_boardNum = InputData(); // input from keyboard
@@ -104,10 +104,10 @@ void cLargeBoard::Move(int cell)
     }
     else
     {
-        Goto_xy(xInput, yInput + 1);
+        GotoXY(xInput, yInput + 1);
         // Chosen cell is already occupied
         cout << "Position already occupied. Try again." << endl;
-        Goto_xy(xInput, yInput + 2);
+        GotoXY(xInput, yInput + 2);
         cout << "Cell: ";
         cell = InputData();
         Move(cell); // Call the function again with new parameters
@@ -116,7 +116,7 @@ void cLargeBoard::Move(int cell)
 
 
 /* Check win the large board */
-Status cLargeBoard::CheckWin()
+STATUS cLargeBoard::CheckWin()
 {
     for (int x = 0; x < 3; x++)
     {

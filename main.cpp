@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define SleepTime1000 1000
+#define SleepTime2000 2000
 
 vector<cPlayerInfor> g_players;
 extern stack<cLargeBoard> g_hisBoard;
@@ -31,17 +31,16 @@ int main()
     int choice1, choice2;
     while (1)
     {
-        Clear_Screen();
+        ClearScreen();
         cPlayerInfor *pPlayer;
         string name;
-
-        Set_colorText(green);
+        SetColorText(green);
         cout << "Choose Options\n\n";
-        Set_colorText(white);
+        SetColorText(white);
         cout << "1. Start New Game\n";
         cout << "2. Information of player\n";
         cout << "3. How To Play\n";
-        cout << "4. Quit\n\n";
+        cout << "4. Save Information & Quit\n\n";
         cout << "Option: ";
 
         cin >> choice1;
@@ -58,7 +57,7 @@ int main()
             while (1)
             {
 
-                Clear_Screen();
+                ClearScreen();
                 cout << "____NEW GAME____\n\n";
                 cout << "1. Play with friend \n";
                 cout << "2. Play with Bot Easy\n";
@@ -72,10 +71,11 @@ int main()
                 {
                 case 1:
                     PlayWithFriend();
-                    Sleep(SleepTime1000); // Screen pause for 1 seconds
+                    Sleep(SleepTime2000); // Screen pause for 2 seconds
                     break;
                 case 2:
-                    switch (PlayWithBotEasy())
+                    ClearScreen(); // clean Screen
+                    switch (PlayWithBotEasy(SelectFirstPlay()))
                     {
                     case X:
                         pPlayer->m_win++;
@@ -87,10 +87,11 @@ int main()
                         pPlayer->m_tie++;
                         break;
                     }
-                    Sleep(SleepTime1000); // Screen pause for 1 seconds
+                    Sleep(SleepTime2000); // Screen pause for 2 seconds
                     break;
                 case 3:
-                    switch (PlayWithBotNormal())
+                    ClearScreen(); // clean Screen
+                    switch (PlayWithBotNormal(SelectFirstPlay()))
                     {
                     case X:
                         pPlayer->m_win++;
@@ -102,11 +103,11 @@ int main()
                         pPlayer->m_tie++;
                         break;
                     }
-                    Sleep(SleepTime1000); // Screen pause for 1 seconds
+                    Sleep(SleepTime2000); // Screen pause for 2 seconds
                     break;
                 case 5:
                     RecordGame();
-                    Sleep(SleepTime1000); // Screen pause for 1 seconds
+                    Sleep(SleepTime2000); // Screen pause for 2 seconds
                     break;
                 }
                 if (choice2 == 6)
@@ -116,58 +117,57 @@ int main()
             break;
 
         case 2:
-            Clear_Screen();
-            WriteInforListPlayer_Screen(g_players);
+            ClearScreen();
+            WriteInforListPlayerScreen(g_players);
             break;
 
         case 3:
-            Clear_Screen();
+            ClearScreen();
             Rules();
             break;
 
         case 4:
+            WriteInforListPlayerFile(fileOut, g_players); // Chinh lai dinh dang viet vao
+            fileOut.close();                              // Viết file đang không trùng với đọc file
             return 0;
         }
-        WriteInforListPlayer_File(fileOut, g_players);
     }
-    fileOut.close();
-    return 0;
 }
 
 void Start()
 {
-    Clear_Screen();
-    Goto_xy(33, 9);
+    ClearScreen();
+    GotoXY(33, 9);
     cout << "*******************************";
 
-    Goto_xy(39, 11);
-    Set_colorText(green);
+    GotoXY(39, 11);
+    SetColorText(green);
     cout << "ULTIMATE TIC TAC TOE";
 
-    Goto_xy(41, 13);
+    GotoXY(41, 13);
     cout << ">>>        <<<";
 
-    Goto_xy(45, 13);
-    Set_colorText(yellow);
+    GotoXY(45, 13);
+    SetColorText(yellow);
     cout << "TEAM 5";
-    Goto_xy(35, 14);
-    Set_colorText(red);
+    GotoXY(35, 14);
+    SetColorText(red);
     cout << "HN21_CPLU.HUST_LITE_CPP_01";
-    Set_colorText(white);
+    SetColorText(white);
 
-    Goto_xy(33, 16);
+    GotoXY(33, 16);
     cout << "*******************************" << endl;
 
-    Goto_xy(36, 19);
+    GotoXY(36, 19);
     cout << "Press any key to continue";
     _getch();
 }
 
 void Rules()
 {
-    Set_colorText(green);
+    SetColorText(green);
     cout << "            HOW TO PLAY GAME\n\n";
-    Set_colorText(white);
+    SetColorText(white);
     cout << "          1.Each turn, you mark one of the small squares.\n\n";
     cout << "          2.When you get three in a row on a small board, you have won that board.\n\n";
     cout << "          3.To win the game, you need to win three small boards in a row.\n\n";

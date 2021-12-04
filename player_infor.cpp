@@ -59,21 +59,21 @@ void ReadInforPlayer(ifstream &filein, cPlayerInfor &player)
 /** Read Information of player from file, then push on the list **/
 void ReadInforListPlayer(ifstream &filein, vector<cPlayerInfor> &listPlayer)
 {
-    cPlayerInfor TempPlayer;
+    cPlayerInfor tempPlayer;
     while (!filein.eof()) // Check file end
     {
-        ReadInforPlayer(filein, TempPlayer);
-        listPlayer.push_back(TempPlayer);
+        ReadInforPlayer(filein, tempPlayer);
+        listPlayer.push_back(tempPlayer);
     }
 }
 
 /** Export imformation of player on screen**/
-void WriteInforListPlayer_Screen(vector<cPlayerInfor> listPlayer)
+void WriteInforListPlayerScreen(vector<cPlayerInfor> listPlayer)
 {
     cPlayerInfor tempPlayer;
-    Set_colorText(green);
+    SetColorText(green);
     cout << "Name\t\tWin\tTie\tLose\tWin rate\n\n";
-    Set_colorText(white);
+    SetColorText(white);
     for (int i = 0; i < listPlayer.size(); i++)
     {
         tempPlayer = listPlayer[i];
@@ -93,7 +93,7 @@ void WriteInforListPlayer_Screen(vector<cPlayerInfor> listPlayer)
 }
 
 /** Save Players' list in file **/
-void WriteInforListPlayer_File(ofstream &fileout, vector<cPlayerInfor> listPlayer)
+void WriteInforListPlayerFile(ofstream &fileout, vector<cPlayerInfor> listPlayer)
 {
     cPlayerInfor tempPlayer;
     for (int i = 0; i < listPlayer.size(); i++)

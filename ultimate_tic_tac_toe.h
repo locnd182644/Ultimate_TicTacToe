@@ -14,7 +14,7 @@ public:
     bool m_mode;                  // Mode 0: with Friend; Mode 1: with Bot
     int m_boardNum = -1;         // Current board = 0
     cSmallBoard m_boards[3][3];    // 3x3 Small Board
-    Status m_boardStatuses[3][3]; // Status of Small Board
+    STATUS m_boardStatuses[3][3]; // Status of Small Board
 
     cLargeBoard();          // Initialization method
     char GetTurn();        // Get turn of current
@@ -24,7 +24,7 @@ public:
     void SetBoardNum(int); // Set board of current
     bool BoardFinished();  // Check if small board is finished
     void SelectNewBoard(); // Select new small board
-    Status CheckWin();     // Check Win/Tie/None
+    STATUS CheckWin();     // Check Win/Tie/None
 };
 
 #endif

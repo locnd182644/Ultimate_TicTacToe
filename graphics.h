@@ -9,7 +9,7 @@
 #define xInput 7
 #define yInput 19
 
-enum Colors
+enum COLORS
 {
     green = 10,
     red = 12,
@@ -18,14 +18,14 @@ enum Colors
     white = 15
 };
 
-void Clear_Screen(void);      // Clear the screen
-void Goto_xy(int, int);       // Set Coordinates of text poiter
-void Draw_select(int);        // Specify the current table
-void Set_colorText(Colors);   // Set color of text
+void ClearScreen(void);      // Clear the screen
+void GotoXY(int, int);       // Set Coordinates of text poiter
+void DrawSelect(int);        // Specify the current table
+void SetColorText(COLORS);   // Set color of text
 void DrawBoards(cLargeBoard); // Draw a large board
 
 /*******  Information  *******/
 void Information(cLargeBoard);       // Information Board
-void Infor_StatusLargeBoard(cLargeBoard); // Information Status of Large Board
+void InforStatusLargeBoard(cLargeBoard); // Information Status of Large Board
 
 #endif

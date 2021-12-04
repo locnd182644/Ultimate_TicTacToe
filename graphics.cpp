@@ -4,12 +4,12 @@
 
 using namespace std;
 
-void Clear_Screen()
+void ClearScreen()
 {
     system("cls");
 }
 
-void Goto_xy(int _x, int _y)
+void GotoXY(int _x, int _y)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD Position;
@@ -21,37 +21,37 @@ void Goto_xy(int _x, int _y)
 void Information(cLargeBoard boards)
 {
     int i;
-    Goto_xy(xBoardInfor, yBoardInfor);
+    GotoXY(xBoardInfor, yBoardInfor);
     cout << " ____________________________________________________";
     for (i = yBoardInfor + 1; i < hBoardInfor; i++)
     {
-        Goto_xy(xBoardInfor, i);
+        GotoXY(xBoardInfor, i);
         cout << "|                                                    |";
     }
-    Goto_xy(xBoardInfor, i);
+    GotoXY(xBoardInfor, i);
     cout << "|____________________________________________________|";
-    Infor_StatusLargeBoard(boards);
+    InforStatusLargeBoard(boards);
 
-    Goto_xy(xBoardInfor + 23, yBoardInfor + 2);
-    Set_colorText(yellow);
+    GotoXY(xBoardInfor + 23, yBoardInfor + 2);
+    SetColorText(yellow);
     cout << "ULTIMATE TIC TAC TOE";
 
-    Goto_xy(xBoardInfor + 2, hBoardInfor - 4);
-    Set_colorText(green);
+    GotoXY(xBoardInfor + 2, hBoardInfor - 4);
+    SetColorText(green);
     cout << "* NOTE *";
-    Set_colorText(white);
+    SetColorText(white);
 
-    Goto_xy(xBoardInfor + 1, hBoardInfor - 3);
+    GotoXY(xBoardInfor + 1, hBoardInfor - 3);
     cout << "- Only 1 character from the keyboard is allowed";
-    Goto_xy(xBoardInfor + 1, hBoardInfor - 2);
+    GotoXY(xBoardInfor + 1, hBoardInfor - 2);
     cout << "- Input: Cell = '0' - Go back to your previous turn";
-    Goto_xy(xBoardInfor + 1, hBoardInfor - 1);
+    GotoXY(xBoardInfor + 1, hBoardInfor - 1);
     cout << "         Cell = 'r' - Exit Game";
 
-    Goto_xy(0, 0);
+    GotoXY(0, 0);
 }
 
-void Infor_StatusLargeBoard(cLargeBoard boards)
+void InforStatusLargeBoard(cLargeBoard boards)
 {
     char temp[9]; // ASCII of '1' -> '9' or 'X' or 'O' or '='  
     for (int i = 0; i < 9; i++)
@@ -64,53 +64,53 @@ void Infor_StatusLargeBoard(cLargeBoard boards)
 
     for (int i = 0; i < 3; i++)
     {
-        Goto_xy(xBoardInfor - 1, yBoardInfor + 2 * i);
+        GotoXY(xBoardInfor - 1, yBoardInfor + 2 * i);
         cout << "+---+---+---+";
-        Goto_xy(xBoardInfor - 1, yBoardInfor + 1 + 2 * i);
+        GotoXY(xBoardInfor - 1, yBoardInfor + 1 + 2 * i);
         cout << "| ";
         for (int j = 0; j < 3; j++)
         {
             if (temp[3 * i + j] == X || temp[3 * i + j] == O || temp[3 * i + j] == TIE)
             {
-                Set_colorText(yellow);
+                SetColorText(yellow);
                 cout << temp[3 * i + j];
-                Set_colorText(white);
+                SetColorText(white);
                 cout << " | ";
             }
             else
             {
-                Set_colorText(green);
+                SetColorText(green);
                 cout << temp[3 * i + j];
-                Set_colorText(white);
+                SetColorText(white);
                 cout << " | ";
             }
         }
     }
-    Goto_xy(xBoardInfor - 1, yBoardInfor + 6);
+    GotoXY(xBoardInfor - 1, yBoardInfor + 6);
     cout << "+---+---+---+";
 }
 
-void Draw_select(int _boardNum)
+void DrawSelect(int _boardNum)
 {
-    Set_colorText(yellow);
+    SetColorText(yellow);
     int i;
     int _x = 6 + 11 * (_boardNum % 3);
     int _y = 1 + 5 * (_boardNum / 3);
-    Goto_xy(_x, _y);
+    GotoXY(_x, _y);
     cout << " _______ ";
     for (i = 1; i < 4; i++)
     {
-        Goto_xy(_x, _y + i);
+        GotoXY(_x, _y + i);
         cout << "|";
-        Goto_xy(_x + 8, _y + i);
+        GotoXY(_x + 8, _y + i);
         cout << "|";
     }
-    Goto_xy(_x, _y + i);
+    GotoXY(_x, _y + i);
     cout << "|_______|";
-    Set_colorText(white);
+    SetColorText(white);
 }
 
-void Set_colorText(Colors _color)
+void SetColorText(COLORS _color)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, _color);
@@ -120,7 +120,7 @@ void Set_colorText(Colors _color)
 void DrawBoards(cLargeBoard boards)
 {
     int tempBoardNum = boards.m_boardNum;
-    Clear_Screen();
+    ClearScreen();
     cout << "\n\n";
     for (int w = 0; w < 3; w++)
     {
@@ -151,6 +151,6 @@ void DrawBoards(cLargeBoard boards)
     {
         Information(boards);
         if (boards.m_boardStatuses[tempBoardNum / 3][tempBoardNum % 3] == NONE)
-            Draw_select(tempBoardNum);
+            DrawSelect(tempBoardNum);
     }
 }
