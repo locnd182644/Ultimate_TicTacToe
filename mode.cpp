@@ -108,7 +108,7 @@ int FindBestMove(cLargeBoard boards)
 }
 
 /* Mode play with Friend */
-int PlayWithFriend()
+STATUS PlayWithFriend()
 {
     ClearScreen();
 
@@ -181,7 +181,7 @@ int PlayWithFriend()
 }
 
 /* Mode play with Bot Normal */
-int PlayWithBotNormal(PIECE piece)
+STATUS PlayWithBotNormal(PIECE piece)
 {
     ClearScreen();
 
@@ -275,7 +275,7 @@ int PlayWithBotNormal(PIECE piece)
 }
 
 /* Mode play with Bot Easy */
-int PlayWithBotEasy(PIECE piece)
+STATUS PlayWithBotEasy(PIECE piece)
 {
     ClearScreen();
 

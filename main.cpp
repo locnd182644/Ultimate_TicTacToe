@@ -42,8 +42,7 @@ int main()
         cout << "3. How To Play\n";
         cout << "4. Save Information & Quit\n\n";
         cout << "Option: ";
-
-        cin >> choice1;
+        choice1 = InputData(); // Allows input from the keypad integers from 0 to 9
         switch (choice1)
         {
         case 1:

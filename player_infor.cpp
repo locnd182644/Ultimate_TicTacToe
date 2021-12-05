@@ -51,6 +51,8 @@ int iSearchPlayer(vector<cPlayerInfor> &listPlayer, string name)
 void ReadInforPlayer(ifstream &filein, cPlayerInfor &player)
 {
     getline(filein, player.m_name, ',');
+    if (player.m_name[0] == '\n')
+        player.m_name.erase(player.m_name.begin()); // Clear first character ('\n')
     filein >> player.m_win;
     filein >> player.m_tie;
     filein >> player.m_lose;
@@ -96,10 +98,12 @@ void WriteInforListPlayerScreen(vector<cPlayerInfor> listPlayer)
 void WriteInforListPlayerFile(ofstream &fileout, vector<cPlayerInfor> listPlayer)
 {
     cPlayerInfor tempPlayer;
+
     for (int i = 0; i < listPlayer.size(); i++)
     {
         tempPlayer = listPlayer[i];
-        fileout << tempPlayer.m_name
+        fileout << "\n"
+                << tempPlayer.m_name
                 << ",\n"
                 << tempPlayer.m_win
                 << "\n"

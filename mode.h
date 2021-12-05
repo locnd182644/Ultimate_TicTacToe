@@ -19,13 +19,13 @@ int FindBestMove(cLargeBoard);  // Find best move for Bot Normal
 /*  Handle Bot Hard */
 
 /* Mode play with Friend */
-int PlayWithFriend(void);
+STATUS PlayWithFriend(void);
 
 /* Mode play with Bot Easy */
-int PlayWithBotEasy(PIECE);
+STATUS PlayWithBotEasy(PIECE);
 
 /* Mode play with Bot Normal */
-int PlayWithBotNormal(PIECE);
+STATUS PlayWithBotNormal(PIECE);
 
 /* Re-watch the latest match */
 void RecordGame(void);
