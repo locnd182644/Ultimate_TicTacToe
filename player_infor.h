@@ -1,6 +1,7 @@
 #ifndef _player_infor_h_
 #define _player_infor_h_
 
+#include "tic_tac_toe.h"
 #include <iostream>
 #include <fstream>
 #include <conio.h>
@@ -12,14 +13,14 @@ using namespace std;
 class cPlayerInfor
 {
 public:
-    int m_win;     // the number of win
-    int m_tie;     // the number of tie
-    int m_lose;    // the number of lose
-    string m_name; // player name
+    int m_win;           // the number of win
+    int m_tie;           // the number of tie
+    int m_lose;          // the number of lose
+    string m_name;       // player name
 
-    cPlayerInfor(); // Initial method
+    cPlayerInfor(); // initial method
     cPlayerInfor(string);
-    int TotalMatch(); // the number of matchmak 
+    int TotalMatch(); // the number of matchmak
     float WinRate();  // the rate of win
 };
 

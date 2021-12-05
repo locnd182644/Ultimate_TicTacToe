@@ -12,6 +12,7 @@ using namespace std;
 
 vector<cPlayerInfor> g_players;
 extern stack<cLargeBoard> g_hisBoard;
+cPlayerInfor *pPlayer[2];
 
 void Start(void);
 void Rules(void);
@@ -24,16 +25,13 @@ int main()
     fileIn.open("Infor_Player.txt", ios::in);
     ReadInforListPlayer(fileIn, g_players);
     fileIn.close();
-
-    fileOut.open("Infor_Player.txt", ios::out | ios::trunc); // mode write file
+    fileOut.open("Infor_Player.txt", ios::out | ios::trunc); // mode clean & write file
 
     Start();
     int choice1, choice2;
     while (1)
     {
         ClearScreen();
-        cPlayerInfor *pPlayer;
-        string name;
         SetColorText(green);
         cout << "Choose Options\n\n";
         SetColorText(white);
@@ -42,17 +40,12 @@ int main()
         cout << "3. How To Play\n";
         cout << "4. Save Information & Quit\n\n";
         cout << "Option: ";
-        choice1 = InputData(); // Allows input from the keypad integers from 0 to 9
+        choice1 = InputData(); // allows input from the keypad integers from 0 to 9
         switch (choice1)
         {
         case 1:
-            cout << "Input your name: ";
-            fflush(stdin); // clean buffer memory
-            getline(cin, name);
 
-            // Refer to current Player
-            pPlayer = &g_players[iSearchPlayer(g_players, name)];
-
+            pPlayer[0] = InputPlayerName(g_players); // import name of current player
             while (1)
             {
 
@@ -65,50 +58,75 @@ int main()
                 cout << "5. Watch the game again\n";
                 cout << "6. Return\n\n";
                 cout << "Option: ";
-                cin >> choice2;
+                choice2 = InputData();
                 switch (choice2)
                 {
-                case 1:
-                    PlayWithFriend();
-                    Sleep(SleepTime2000); // Screen pause for 2 seconds
+                /*  Play with friend */
+                case 1: 
+                    ClearScreen();  
+                    pPlayer[1] = InputPlayerName(g_players); // import name of the player to play with the current player
+                    switch (PlayWithFriend(SelectFirstPlay2()));
+                    {
+                    case X:
+                        pPlayer[0]->m_win++;
+                        pPlayer[1]->m_lose++;
+                        break;
+                    case O:
+                        pPlayer[1]->m_win++;
+                        pPlayer[0]->m_lose++;
+                        break;
+                    case TIE:
+                        pPlayer[0]->m_tie++;
+                        pPlayer[1]->m_tie++;
+                        break;
+                    }
+                    Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
+
+                /* Play with Bot Easy */
                 case 2:
                     ClearScreen(); // clean Screen
-                    switch (PlayWithBotEasy(SelectFirstPlay()))
+                    switch (PlayWithBotEasy(SelectFirstPlay1()))
                     {
                     case X:
-                        pPlayer->m_win++;
+                        pPlayer[0]->m_win++;
                         break;
                     case O:
-                        pPlayer->m_lose++;
+                        pPlayer[0]->m_lose++;
                         break;
                     case TIE:
-                        pPlayer->m_tie++;
+                        pPlayer[0]->m_tie++;
                         break;
                     }
-                    Sleep(SleepTime2000); // Screen pause for 2 seconds
+                    Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
+
+                /* Play with Bot Normal */
                 case 3:
                     ClearScreen(); // clean Screen
-                    switch (PlayWithBotNormal(SelectFirstPlay()))
+                    switch (PlayWithBotNormal(SelectFirstPlay1()))
                     {
                     case X:
-                        pPlayer->m_win++;
+                        pPlayer[0]->m_win++;
                         break;
                     case O:
-                        pPlayer->m_lose++;
+                        pPlayer[0]->m_lose++;
                         break;
                     case TIE:
-                        pPlayer->m_tie++;
+                        pPlayer[0]->m_tie++;
                         break;
                     }
-                    Sleep(SleepTime2000); // Screen pause for 2 seconds
+                    Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
+
                 case 5:
+                    /* Re-watch the latest match */
                     RecordGame();
-                    Sleep(SleepTime2000); // Screen pause for 2 seconds
+                    Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
                 }
+
+                /* Return Choose Options */
                 if (choice2 == 6)
                     break;
             }
@@ -117,7 +135,7 @@ int main()
 
         case 2:
             ClearScreen();
-            WriteInforListPlayerScreen(g_players);
+            WriteInforListPlayerScreen(g_players); // display list of player information
             break;
 
         case 3:
@@ -126,8 +144,9 @@ int main()
             break;
 
         case 4:
-            WriteInforListPlayerFile(fileOut, g_players); // Chinh lai dinh dang viet vao
-            fileOut.close();                              // Viết file đang không trùng với đọc file
+            /* Save information into file & Exit */
+            WriteInforListPlayerFile(fileOut, g_players);
+            fileOut.close();
             return 0;
         }
     }

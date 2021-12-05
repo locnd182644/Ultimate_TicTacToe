@@ -19,7 +19,7 @@ void cSmallBoard::InitBoard()
 }
 
 /* Get status of small board */
-Status cSmallBoard::GetStatus()
+STATUS cSmallBoard::GetStatus()
 {
     return m_gameStatus;
 }
@@ -40,7 +40,7 @@ bool cSmallBoard::Fill(int cell, PIECE m_turn)
 }
 
 /* Check win */
-Status cSmallBoard::CheckWin()
+STATUS cSmallBoard::CheckWin()
 {
     bool tie = true;
     /* Check for a tie */

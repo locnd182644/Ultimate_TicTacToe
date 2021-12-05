@@ -44,7 +44,7 @@ int iSearchPlayer(vector<cPlayerInfor> &listPlayer, string name)
     /* if not then create new player */
     cPlayerInfor newPlayer(name);
     listPlayer.push_back(newPlayer);
-    return i + 1;
+    return i;
 }
 
 /** Read Information of player from file **/

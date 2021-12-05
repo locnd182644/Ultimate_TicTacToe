@@ -108,11 +108,12 @@ int FindBestMove(cLargeBoard boards)
 }
 
 /* Mode play with Friend */
-STATUS PlayWithFriend()
+STATUS PlayWithFriend(PIECE piece)
 {
     ClearScreen();
 
     cLargeBoard currentBoard;
+    currentBoard.Setturn(piece); // set first turn
     currentBoard.m_mode = 0;
 
     DrawBoards(currentBoard);
@@ -123,7 +124,7 @@ STATUS PlayWithFriend()
 
     m_boardNum = InputData();
     if (m_boardNum == 66) // User input 'r'
-        return TIE;
+        return TIE;       // Halfway exit
 
     currentBoard.SetBoardNum(m_boardNum);
     DrawSelect(currentBoard.GetBoardNum() - 1);
@@ -138,8 +139,8 @@ STATUS PlayWithFriend()
         GotoXY(xInput, yInput + 1);
         cout << "Cell: ";
         cell = InputData();
-        if (m_boardNum == 66) // User input 'r'
-            return TIE;
+        if (cell == 66) // User input 'r'
+            return TIE; // Halfway exit
 
         // If cell = 0, replay
         if (cell == 0)
@@ -175,9 +176,6 @@ STATUS PlayWithFriend()
         if (currentBoard.BoardFinished())
             currentBoard.SelectNewBoard();
     }
-
-    // Halfway exit
-    return TIE;
 }
 
 /* Mode play with Bot Normal */
@@ -199,8 +197,7 @@ STATUS PlayWithBotNormal(PIECE piece)
     case X:
         m_boardNum = InputData(); // Player import from keyboard
         if (m_boardNum == 66)     // user input 'r'
-            return TIE;
-        break;
+            return TIE;           // Halfway exit
 
     case O:
         m_boardNum = BotSelectBoard(&currentBoard); // bot automatically selects board
@@ -223,8 +220,7 @@ STATUS PlayWithBotNormal(PIECE piece)
             cout << "Cell: ";
             cell = InputData();
             if (cell == 66) // user input 'r'
-                return TIE;
-            break;
+                return TIE; // Halfway exit
 
         case O:
             GotoXY(xInput, yInput);
@@ -269,9 +265,6 @@ STATUS PlayWithBotNormal(PIECE piece)
         if (currentBoard.BoardFinished())
             currentBoard.SelectNewBoard();
     }
-
-    // Halfway exit
-    return TIE;
 }
 
 /* Mode play with Bot Easy */
@@ -290,7 +283,7 @@ STATUS PlayWithBotEasy(PIECE piece)
     cout << "Enter the board number to start with: ";
     m_boardNum = InputData();
     if (m_boardNum == 66) // user input 'r'
-        return TIE;
+        return TIE;       // Halfway exit
     currentBoard.SetBoardNum(m_boardNum);
     int cell;
 
@@ -307,8 +300,7 @@ STATUS PlayWithBotEasy(PIECE piece)
             cout << "Cell: ";
             cell = InputData();
             if (cell == 66) // user input 'r'
-                return TIE;
-            break;
+                return TIE; // Halfway exit
 
         case O:
             GotoXY(xInput, yInput);
@@ -352,9 +344,6 @@ STATUS PlayWithBotEasy(PIECE piece)
         if (currentBoard.BoardFinished())
             currentBoard.SelectNewBoard();
     }
-
-    // Halfway exit
-    return TIE;
 }
 
 /* Re-watch the latest match */
