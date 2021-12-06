@@ -28,7 +28,7 @@ int main()
     fileOut.open("Infor_Player.txt", ios::out | ios::trunc); // mode clean & write file
 
     Start();
-    int choice1, choice2;
+    int choice1, choice2, choice3;
     while (1)
     {
         ClearScreen();
@@ -36,15 +36,15 @@ int main()
         cout << "Choose Options\n\n";
         SetColorText(white);
         cout << "1. Start New Game\n";
-        cout << "2. Information of player\n";
-        cout << "3. How To Play\n";
+        cout << "2. Information of Player\n";
+        cout << "3. How to Play\n";
         cout << "4. Save Information & Exit\n\n";
         cout << "Option: ";
         choice1 = InputData(); // allows input from the keypad integers from 0 to 9
         switch (choice1)
         {
         case 1:
-
+    
             pPlayer[0] = &g_players[iSearchPlayer(g_players)]; // import name of current player
             while (1)
             {
@@ -67,9 +67,41 @@ int main()
                 {
                 /*  Play with friend */
                 case 1:
-                    ClearScreen();                           // clean Screen
-                    pPlayer[1] = &g_players[iSearchPlayer(g_players)]; // import name of the player to play with the current player
-                    switch (PlayWithFriend(SelectFirstPlay(FRIEND)))
+                    ClearScreen(); // clean Screen
+                    SetColorText(green);
+                    cout << "Choose:\n\n";
+                    SetColorText(white);
+                    cout << "1. Import another player's name\n";
+                    cout << "2. Find player of the same level\n";
+                    cout << "***Note: Option 2: Find opponents with a win rate difference of no more than 10 %\n\n";
+                    cout << "Option: ";
+                    choice3 = InputData();
+                    STATUS withFriend;
+                    switch (choice3)
+                    {
+                        /* Import name of the player to play with the current player */
+                    case 1:
+                        pPlayer[1] = &g_players[iSearchPlayer(g_players)];
+                        withFriend = PlayWithFriend(SelectFirstPlay(FRIEND));
+                        break;
+
+                        /* Find the player with the closest win rate */
+                    case 2:
+                        int itemp = iFindCompetitor(g_players, *pPlayer[0]); // index competitor in list
+                        if (itemp == -1)
+                        {
+                            cout << "No competitors found ";
+                            break;
+                        }
+                        else
+                        {
+                            pPlayer[1] = &g_players[itemp];
+                            withFriend = PlayWithFriend(SelectFirstPlay(FRIEND));
+                            break;
+                        }
+                    }
+
+                    switch (withFriend)
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -84,6 +116,7 @@ int main()
                         pPlayer[1]->m_tie++;
                         break;
                     }
+
                     Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
 
@@ -102,6 +135,7 @@ int main()
                         pPlayer[0]->m_tie++;
                         break;
                     }
+
                     Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
 
@@ -120,12 +154,14 @@ int main()
                         pPlayer[0]->m_tie++;
                         break;
                     }
+
                     Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
 
                 case 5:
                     /* Re-watch the latest match */
                     RecordGame();
+
                     Sleep(SleepTime2000); // screen pause for 2 seconds
                     break;
                 }

@@ -40,7 +40,6 @@ PIECE SelectFirstPlay(MODE mode)
     case FRIEND:
         cout << "*** NOTE: ' " << pPlayer[0]->m_name << " ' is X\n";
         cout << "          ' " << pPlayer[1]->m_name << " ' is O\n\n";
-        cout << pPlayer[0]->WinRate() - pPlayer[1]->WinRate();
         SetColorText(green);
         cout << "Choose to play first: \n";
         SetColorText(white);

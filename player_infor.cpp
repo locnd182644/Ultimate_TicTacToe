@@ -58,7 +58,7 @@ int iSearchPlayer(vector<cPlayerInfor> &listPlayer)
 /* Return player's index in list or return -1 */
 int iFindCompetitor(vector<cPlayerInfor> listPlayer, cPlayerInfor currPlayer)
 {
-    /* Win rate difference exceeds 10 % then return -1 */
+    /* if a win rate difference of more than 10% % then return -1 */
     if (SmallestDifference(listPlayer, currPlayer) > 0.1)
         return -1;
 
