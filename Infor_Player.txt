@@ -1,21 +1,25 @@
 
 Nguyen Van A,
-7
-8
+2
+2
 2
 Nguyen Van B,
 2
-5
+8
 4
 Nguyen Van C,
 1
-2
+4
 3
 Nguyen Van D,
 1
-2
+3
 3
 Nguyen Van E,
-1
+2
+3
+2
+Nguyen Van F,
+0
 2
 0

@@ -10,8 +10,8 @@ using namespace std;
 
 #define SleepTime2000 2000
 
-vector<cPlayerInfor> g_players;
 extern stack<cLargeBoard> g_hisBoard;
+vector<cPlayerInfor> g_players;
 cPlayerInfor *pPlayer[2];
 
 void Start(void);
@@ -45,14 +45,14 @@ int main()
         {
         case 1:
 
-            pPlayer[0] = InputPlayerName(g_players); // import name of current player
+            pPlayer[0] = &g_players[iSearchPlayer(g_players)]; // import name of current player
             while (1)
             {
 
                 ClearScreen();
                 cout << "____  ";
                 SetColorText(green);
-                cout << pPlayer[0]->m_name; // Display current player name
+                cout << pPlayer[0]->m_name; // display current player name
                 SetColorText(white);
                 cout << "  ____\n\n";
                 cout << "1. Play with friend \n";
@@ -67,8 +67,8 @@ int main()
                 {
                 /*  Play with friend */
                 case 1:
-                    ClearScreen();
-                    pPlayer[1] = InputPlayerName(g_players); // import name of the player to play with the current player
+                    ClearScreen();                           // clean Screen
+                    pPlayer[1] = &g_players[iSearchPlayer(g_players)]; // import name of the player to play with the current player
                     switch (PlayWithFriend(SelectFirstPlay(FRIEND)))
                     {
                     case X:
@@ -137,13 +137,12 @@ int main()
             break;
 
         case 2:
-            ClearScreen();
-            WriteInforListPlayerScreen(g_players); // display list of player information
+            DisplayInforPlayer(g_players); // display information of player with options
             break;
 
         case 3:
             ClearScreen();
-            Rules();
+            Rules(); // game rule
             break;
 
         case 4:

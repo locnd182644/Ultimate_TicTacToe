@@ -24,6 +24,12 @@ enum MODE
     BOT
 };
 
+enum SORT
+{
+    INCREASE,
+    DECREASE
+};
+
 class cSmallBoard
 {
 private:

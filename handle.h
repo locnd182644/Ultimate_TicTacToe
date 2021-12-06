@@ -11,7 +11,4 @@ int InputData(); // Allows input from the keypad integers from 0 to 9
 /* Select first to play */
 PIECE SelectFirstPlay(MODE);
 
-/* Import name of player & Returns that cPlayerInfor obj's address in the vector list */
-cPlayerInfor *InputPlayerName(vector<cPlayerInfor> &);
-
 #endif
