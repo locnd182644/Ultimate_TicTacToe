@@ -74,13 +74,13 @@ void WriteInforListPlayerScreen(vector<cPlayerInfor> listPlayer)
 {
     cPlayerInfor tempPlayer;
     SetColorText(green);
-    cout << "Name\t\tWin\tTie\tLose\tWin rate\n\n";
+    cout << "Name\t\t\tWin\tTie\tLose\tWin rate\n\n";
     SetColorText(white);
     for (int i = 0; i < listPlayer.size(); i++)
     {
         tempPlayer = listPlayer[i];
         cout << tempPlayer.m_name
-             << "\t"
+             << "\t\t"
              << tempPlayer.m_win
              << "\t"
              << tempPlayer.m_tie

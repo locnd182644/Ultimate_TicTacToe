@@ -38,7 +38,7 @@ int main()
         cout << "1. Start New Game\n";
         cout << "2. Information of player\n";
         cout << "3. How To Play\n";
-        cout << "4. Save Information & Quit\n\n";
+        cout << "4. Save Information & Exit\n\n";
         cout << "Option: ";
         choice1 = InputData(); // allows input from the keypad integers from 0 to 9
         switch (choice1)
@@ -50,7 +50,11 @@ int main()
             {
 
                 ClearScreen();
-                cout << "____NEW GAME____\n\n";
+                cout << "____  ";
+                SetColorText(green);
+                cout << pPlayer[0]->m_name; // Display current player name
+                SetColorText(white);
+                cout << "  ____\n\n";
                 cout << "1. Play with friend \n";
                 cout << "2. Play with Bot Easy\n";
                 cout << "3. Play with Bot Normal\n";
@@ -62,10 +66,10 @@ int main()
                 switch (choice2)
                 {
                 /*  Play with friend */
-                case 1: 
-                    ClearScreen();  
+                case 1:
+                    ClearScreen();
                     pPlayer[1] = InputPlayerName(g_players); // import name of the player to play with the current player
-                    switch (PlayWithFriend(SelectFirstPlay2()));
+                    switch (PlayWithFriend(SelectFirstPlay(FRIEND)))
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -86,7 +90,7 @@ int main()
                 /* Play with Bot Easy */
                 case 2:
                     ClearScreen(); // clean Screen
-                    switch (PlayWithBotEasy(SelectFirstPlay1()))
+                    switch (PlayWithBotEasy(SelectFirstPlay(BOT)))
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -104,7 +108,7 @@ int main()
                 /* Play with Bot Normal */
                 case 3:
                     ClearScreen(); // clean Screen
-                    switch (PlayWithBotNormal(SelectFirstPlay1()))
+                    switch (PlayWithBotNormal(SelectFirstPlay(BOT)))
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -130,7 +134,6 @@ int main()
                 if (choice2 == 6)
                     break;
             }
-
             break;
 
         case 2:

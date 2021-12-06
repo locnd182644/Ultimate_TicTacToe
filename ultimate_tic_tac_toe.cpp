@@ -7,9 +7,7 @@ using namespace std;
 
 cLargeBoard::cLargeBoard()
 {
-    m_turn = Piece_X; // The first turn is X 
-	
-    InitStatuses(); // Initial status 
+    InitStatuses(); // initial status
 }
 
 void cLargeBoard::InitStatuses()
@@ -63,18 +61,18 @@ bool cLargeBoard::BoardFinished()
 /* Select new Board to play */
 void cLargeBoard::SelectNewBoard()
 {
-	
+
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
             if (m_boardStatuses[i][j] == NONE)
-                DrawSelect(3 * i + j); // Choose a small board in the next turn
+                DrawSelect(3 * i + j); // choose a small board in the next turn
         }
     }
 
-	/* Auto choose board for 2 mode */
-    if (m_mode == 1 && m_turn == Piece_O)
+    /* Auto choose board for 2 mode */
+    if (m_mode == BOT && m_turn == Piece_O)
     {
         m_boardNum = BotSelectBoard(this);
     }
@@ -84,36 +82,32 @@ void cLargeBoard::SelectNewBoard()
         cout << "The game on the next board is finished";
         GotoXY(xInput, yInput + 1);
         cout << GetTurn() << " select next board: ";
-		
+
         m_boardNum = InputData(); // input from keyboard
         m_boardNum -= 1;
-		
-        if (BoardFinished())
-            SelectNewBoard();   // call Recursive Function
 
+        if (BoardFinished())
+            SelectNewBoard(); // call Recursive Function
     }
 }
 
 void cLargeBoard::Move(int cell)
 {
-    // Convert 1d index to 2d
-    if (m_boards[m_boardNum / 3][m_boardNum % 3].Fill(cell, m_turn))
+    if (m_boards[m_boardNum / 3][m_boardNum % 3].Fill(cell, m_turn)) // convert 1d index to 2d
     {
-		// Mapping cell to board
-        m_boardNum = cell - 1;
+        m_boardNum = cell - 1; // mapping cell to board
     }
     else
     {
         GotoXY(xInput, yInput + 1);
-        // Chosen cell is already occupied
+        /* Chosen cell is already occupied */
         cout << "Position already occupied. Try again." << endl;
         GotoXY(xInput, yInput + 2);
         cout << "Cell: ";
         cell = InputData();
-        Move(cell); // Call the function again with new parameters
+        Move(cell); // call the function again with new parameters
     }
 }
-
 
 /* Check win the large board */
 STATUS cLargeBoard::CheckWin()
@@ -166,7 +160,7 @@ STATUS cLargeBoard::CheckWin()
             return GetTurn() == 'X' ? X : O;
     }
 
-    ToggleTurn(); // Change player
+    ToggleTurn(); // change player
 
     return NONE;
 }

@@ -114,7 +114,7 @@ STATUS PlayWithFriend(PIECE piece)
 
     cLargeBoard currentBoard;
     currentBoard.Setturn(piece); // set first turn
-    currentBoard.m_mode = 0;
+    currentBoard.m_mode = FRIEND;     // mode with friend
 
     DrawBoards(currentBoard);
 
@@ -123,15 +123,21 @@ STATUS PlayWithFriend(PIECE piece)
     cout << "Enter the board number to start with: ";
 
     m_boardNum = InputData();
-    if (m_boardNum == 66) // User input 'r'
-        return TIE;       // Halfway exit
+
+    /*  Halfway exit */
+    if (m_boardNum == 66) // user input 'r'
+        return TIE;
+    /**/
 
     currentBoard.SetBoardNum(m_boardNum);
     DrawSelect(currentBoard.GetBoardNum() - 1);
-    int cell;
+
+    int cell; // cell in small board
+
     while (1)
     {
-        g_hisBoard.push(currentBoard);
+        g_hisBoard.push(currentBoard); // push current board into vector list
+
         DrawBoards(currentBoard);
         GotoXY(xInput, yInput);
         cout << "Player " << currentBoard.GetTurn() << ": select cell";
@@ -139,10 +145,12 @@ STATUS PlayWithFriend(PIECE piece)
         GotoXY(xInput, yInput + 1);
         cout << "Cell: ";
         cell = InputData();
-        if (cell == 66) // User input 'r'
-            return TIE; // Halfway exit
 
-        // If cell = 0, replay
+        /*  Halfway exit */
+        if (cell == 66) // user input 'r'
+            return TIE;
+
+        /* If cell = 0, replay */
         if (cell == 0)
         {
             for (int i = 0; i < 3; i++)
@@ -154,10 +162,13 @@ STATUS PlayWithFriend(PIECE piece)
             }
             continue;
         }
-        currentBoard.Move(cell);
-        int status = currentBoard.CheckWin();
-        DrawBoards(currentBoard);
 
+        currentBoard.Move(cell); // fill cell into small board & mapping to board
+
+        // DrawBoards(currentBoard);
+
+        /* Check win large board */
+        int status = currentBoard.CheckWin();
         switch (status)
         {
         case X:
@@ -173,6 +184,7 @@ STATUS PlayWithFriend(PIECE piece)
             break;
         }
 
+        /* Check board's status none or not to select new board */
         if (currentBoard.BoardFinished())
             currentBoard.SelectNewBoard();
     }
@@ -185,19 +197,24 @@ STATUS PlayWithBotNormal(PIECE piece)
 
     cLargeBoard currentBoard;
     currentBoard.Setturn(piece); // set first turn
-    currentBoard.m_mode = 1;     // mode with bot
+    currentBoard.m_mode = BOT;     // mode with bot
 
     DrawBoards(currentBoard);
 
     int m_boardNum;
     GotoXY(xInput, yInput);
     cout << "Enter the board number to start with: ";
+
+    /* Select board with both */
     switch (currentBoard.GetTurn())
     {
     case X:
-        m_boardNum = InputData(); // Player import from keyboard
-        if (m_boardNum == 66)     // user input 'r'
-            return TIE;           // Halfway exit
+        m_boardNum = InputData(); // player import from keyboard
+
+        /*  Halfway exit */
+        if (m_boardNum == 66) // user input 'r'
+            return TIE;
+        /**/
 
     case O:
         m_boardNum = BotSelectBoard(&currentBoard); // bot automatically selects board
@@ -205,11 +222,12 @@ STATUS PlayWithBotNormal(PIECE piece)
     }
     currentBoard.SetBoardNum(m_boardNum);
 
-    int cell;
+    int cell; // cell in small board
 
     while (1)
     {
-        g_hisBoard.push(currentBoard);
+        g_hisBoard.push(currentBoard); // push current board into vector list
+
         DrawBoards(currentBoard);
         switch (currentBoard.GetTurn())
         {
@@ -219,19 +237,23 @@ STATUS PlayWithBotNormal(PIECE piece)
             GotoXY(xInput, yInput + 1);
             cout << "Cell: ";
             cell = InputData();
+
+            /*  Halfway exit */
             if (cell == 66) // user input 'r'
-                return TIE; // Halfway exit
+                return TIE;
+            /**/
+            break;
 
         case O:
             GotoXY(xInput, yInput);
             cout << "Bot " << currentBoard.GetTurn() << ": select cell";
-            GotoXY(xInput, yInput);
+            GotoXY(xInput, yInput + 1);
             cell = FindBestMove(currentBoard);
             cout << "Cell: " << cell;
             break;
         }
 
-        // If cell = 0, replay
+        /* If cell = 0, replay */
         if (cell == 0)
         {
             for (int i = 0; i < 3; i++)
@@ -244,10 +266,12 @@ STATUS PlayWithBotNormal(PIECE piece)
             continue;
         }
 
-        currentBoard.Move(cell);
-        int status = currentBoard.CheckWin();
-        DrawBoards(currentBoard);
+        currentBoard.Move(cell); // fill cell into small board & mapping to board
 
+        // DrawBoards(currentBoard);
+
+        /* Check win large board */
+        int status = currentBoard.CheckWin();
         switch (status)
         {
         case X:
@@ -262,6 +286,8 @@ STATUS PlayWithBotNormal(PIECE piece)
         case NONE:
             break;
         }
+
+        /* Check board's status none or not to select new board */
         if (currentBoard.BoardFinished())
             currentBoard.SelectNewBoard();
     }
@@ -273,23 +299,41 @@ STATUS PlayWithBotEasy(PIECE piece)
     ClearScreen();
 
     cLargeBoard currentBoard;
-    currentBoard.m_mode = 1; // mode with bot
-    currentBoard.Setturn(piece);
+    currentBoard.m_mode = BOT;     // mode with bot
+    currentBoard.Setturn(piece); // set first turn
 
     DrawBoards(currentBoard);
 
     int m_boardNum;
     GotoXY(xInput, yInput);
     cout << "Enter the board number to start with: ";
-    m_boardNum = InputData();
-    if (m_boardNum == 66) // user input 'r'
-        return TIE;       // Halfway exit
+
+    /* Select board with both */
+    switch (currentBoard.GetTurn())
+    {
+    case X:
+        m_boardNum = InputData(); // player import from keyboard
+
+        /*  Halfway exit */
+        if (m_boardNum == 66) // user input 'r'
+            return TIE;
+        /**/
+
+        break;
+
+    case O:
+        m_boardNum = BotSelectBoard(&currentBoard); // bot automatically selects board
+        break;
+    }
+
     currentBoard.SetBoardNum(m_boardNum);
-    int cell;
+
+    int cell; // cell in small board
 
     while (1)
     {
-        g_hisBoard.push(currentBoard);
+        g_hisBoard.push(currentBoard); // push current board into vector list
+
         DrawBoards(currentBoard);
         switch (currentBoard.GetTurn())
         {
@@ -299,8 +343,11 @@ STATUS PlayWithBotEasy(PIECE piece)
             GotoXY(xInput, yInput + 1);
             cout << "Cell: ";
             cell = InputData();
+
+            /*  Halfway exit */
             if (cell == 66) // user input 'r'
-                return TIE; // Halfway exit
+                return TIE;
+            /**/
 
         case O:
             GotoXY(xInput, yInput);
@@ -311,7 +358,7 @@ STATUS PlayWithBotEasy(PIECE piece)
             break;
         }
 
-        // If cell = 0 then replay
+        /* If cell = 0 then replay */
         if (cell == 0)
         {
             for (int i = 0; i < 3; i++)
@@ -324,9 +371,10 @@ STATUS PlayWithBotEasy(PIECE piece)
             continue;
         }
 
-        currentBoard.Move(cell);
-        int status = currentBoard.CheckWin();
+        currentBoard.Move(cell); // fill cell into small board & mapping to board
 
+        /* Check win large board */
+        int status = currentBoard.CheckWin();
         switch (status)
         {
         case X:
@@ -341,6 +389,8 @@ STATUS PlayWithBotEasy(PIECE piece)
         case NONE:
             break;
         }
+
+        /* Check board's status none or not to select new board */
         if (currentBoard.BoardFinished())
             currentBoard.SelectNewBoard();
     }

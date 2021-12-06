@@ -11,7 +11,7 @@ private:
     void ToggleTurn();   // Toggle in turn
 
 public:
-    bool m_mode;                  // Mode 0: with Friend; Mode 1: with Bot
+    MODE m_mode;                  // m_mode = 0: with Friend; m_mode = 1: with Bot
     int m_boardNum = -1;         // Current board = 0
     cSmallBoard m_boards[3][3];    // 3x3 Small Board
     STATUS m_boardStatuses[3][3]; // Status of Small Board
