@@ -7,14 +7,14 @@ using namespace std;
 /* Stack save Large Board to replay */
 stack<cLargeBoard> g_hisBoard;
 
-/* Random with checked condition */
+/* Random with checked condition : Cell must be Piece_BLANK */
 int BotSelectCell(cLargeBoard *boards)
 {
     int current_board = boards->m_boardNum;
     int temp;
     while (1)
     {
-        temp = rand() % 9;
+        temp = rand() % 9; // random 0 -> 8
         if (boards->m_boards[current_board / 3][current_board % 3]
                 .m_board[temp / 3][temp % 3] == Piece_BLANK)
             break;
@@ -22,18 +22,13 @@ int BotSelectCell(cLargeBoard *boards)
     return ++temp;
 }
 
-/* Random with checked condition */
+/* Random with checked condition: The small board must be NONE*/
 int BotSelectBoard(cLargeBoard *boards)
 {
     int temp;
     while (1)
     {
-        while (1)
-        {
-            temp = rand() % 10;
-            if (temp != 9)
-                break;
-        }
+        temp = rand() % 9; // random 0 -> 8
         if (boards->m_boards[temp / 3][temp % 3].GetStatus() == NONE)
             break;
     }
@@ -41,70 +36,99 @@ int BotSelectBoard(cLargeBoard *boards)
 }
 
 /* Evaluate score of current small board */
-int EvaluateValue(cSmallBoard board)
+int Minimax(cSmallBoard board, int depth, bool isBOT)
 {
+    int score = 0;
+    int bestScore = 0;
+
     switch (board.CheckWin())
     {
-    case X:
-        return -10;
     case O:
         return 10;
-    default:
+    case X:
+        return -10;
+    }
+
+    if (depth == 0)
         return 0;
+
+    // Turn of Bot       /* Maximizing */
+    if (isBOT == true)
+    {
+        bestScore = -999;
+        /*  Try to fill O in each cell one by one.
+            Then call back & check win and depth */
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board.m_board[i][j] == Piece_BLANK)
+                {
+                    board.m_board[i][j] = Piece_O;
+                    score = Minimax(board, depth - 1, false);
+                    board.m_board[i][j] = Piece_BLANK;
+                    bestScore = max(score, bestScore);
+                }
+            }
+        }
+        return bestScore;
+    }
+
+    else // Turn of Player      /* Minimizing */
+    {
+        bestScore = 999;
+        /*  Try to fill X in each cell one by one.
+            Then call back & check win and depth */
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board.m_board[i][j] == Piece_BLANK)
+                {
+                    board.m_board[i][j] = Piece_X;
+                    score = Minimax(board, depth - 1, true);
+                    board.m_board[i][j] = Piece_BLANK;
+                    bestScore = min(score, bestScore);
+                }
+            }
+        }
+        return bestScore;
     }
 }
 
 /* Find best move for bot */
-int FindBestMove(cLargeBoard boards)
+int BestMove(cLargeBoard boards, int indexMove)
 {
     int current_board = boards.m_boardNum;
-    int bestMove = 0;
-    int moveVal;
+    int x = -1, y = -1;
+    int score = 0, bestScore = -999;
 
-    /* Bot fill X in each cell one by one. Then check win this turn */
+    /*  Bot thinks to fill O in each cell one by one.
+        Then call back & check win and depth
+        Return best score */
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
         {
             if (boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] == Piece_BLANK)
             {
-                boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] = Piece_X;
-                moveVal = EvaluateValue(boards.m_boards[current_board / 3][current_board % 3]);
-                boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] = Piece_BLANK;
-                if (moveVal == -10)
+                boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] = Piece_O; // Fill by O Piece
+
+                score = Minimax(boards.m_boards[current_board / 3][current_board % 3], indexMove - 1, false);
+
+                boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] = Piece_BLANK; // Fill by Blanks Piece again
+
+                if (score > bestScore)
                 {
-                    bestMove = 3 * i + j + 1;
+                    bestScore = score;
+                    x = i;
+                    y = j;
                 }
             }
         }
     }
-
-    /**     Prioritise win rather than preventing    **/
-
-    /* Bot fill O in each cell one by one. Then check win this turn */
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            if (boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] == Piece_BLANK)
-            {
-                boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] = Piece_O;
-                moveVal = EvaluateValue(boards.m_boards[current_board / 3][current_board % 3]);
-                boards.m_boards[current_board / 3][current_board % 3].m_board[i][j] = Piece_BLANK;
-                if (moveVal == 10)
-                {
-                    bestMove = 3 * i + j + 1;
-                }
-            }
-        }
-    }
-
-    if (bestMove == 0)
-    {
-        return BotSelectCell(&boards);
-    }
-
-    return bestMove;
+    cout << " Score Best: " << bestScore << endl;
+    return x * 3 + y + 1; // Return best move
 }
 
 /* Mode play with Friend */
@@ -113,8 +137,8 @@ STATUS PlayWithFriend(PIECE piece)
     ClearScreen();
 
     cLargeBoard currentBoard;
-    currentBoard.Setturn(piece); // set first turn
-    currentBoard.m_mode = FRIEND;     // mode with friend
+    currentBoard.Setturn(piece);  // set first turn
+    currentBoard.m_mode = FRIEND; // mode with friend
 
     DrawBoards(currentBoard);
 
@@ -197,7 +221,7 @@ STATUS PlayWithBotNormal(PIECE piece)
 
     cLargeBoard currentBoard;
     currentBoard.Setturn(piece); // set first turn
-    currentBoard.m_mode = BOT;     // mode with bot
+    currentBoard.m_mode = BOT;   // mode with bot
 
     DrawBoards(currentBoard);
 
@@ -248,7 +272,7 @@ STATUS PlayWithBotNormal(PIECE piece)
             GotoXY(xInput, yInput);
             cout << "Bot " << currentBoard.GetTurn() << ": select cell";
             GotoXY(xInput, yInput + 1);
-            cell = FindBestMove(currentBoard);
+            cell = BestMove(currentBoard, 2);
             cout << "Cell: " << cell;
             break;
         }
@@ -299,7 +323,7 @@ STATUS PlayWithBotEasy(PIECE piece)
     ClearScreen();
 
     cLargeBoard currentBoard;
-    currentBoard.m_mode = BOT;     // mode with bot
+    currentBoard.m_mode = BOT;   // mode with bot
     currentBoard.Setturn(piece); // set first turn
 
     DrawBoards(currentBoard);

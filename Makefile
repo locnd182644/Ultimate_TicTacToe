@@ -1,5 +1,4 @@
-
-game: mode.o handle.o graphics.o tic_tac_toe.o ultimate_tic_tac_toe.o player_infor.o main.o
+game: mode.o handle.o graphics.o tic_tac_toe.o ultimate_tic_tac_toe.o player_infor.o main.o 
 	g++ *.o -o game
 
 mode.o: mode.cpp
@@ -22,6 +21,9 @@ main.o: main.cpp
 
 player_infor.o: player_infor.cpp
 	g++ -c player_infor.cpp
+
+# test.o: test.cpp
+# 	g++ -c test.cpp
 
 clean:
 	rm *.o
