@@ -5,7 +5,7 @@
 using namespace std;
 
 /* Stack save Large Board to replay */
-stack<cLargeBoard> g_hisBoard;
+extern stack<cLargeBoard> g_hisBoard;
 
 /* Mode play with Friend */
 STATUS PlayWithFriend(PIECE piece)
@@ -146,6 +146,7 @@ STATUS PlayWithBotEasy(PIECE piece)
             if (cell == 66) // user input 'r'
                 return TIE;
             /**/
+			break;
 
         case O:
             GotoXY(xInput, yInput);

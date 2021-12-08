@@ -5,14 +5,20 @@
 #include "graphics.h"
 #include "player_infor.h"
 #include "ultimate_tic_tac_toe.h"
+#include "test.h"
 
 using namespace std;
 
 #define SleepTime2000 2000
 
-extern stack<cLargeBoard> g_hisBoard;
-vector<cPlayerInfor> g_players;
+/* Pointer to player in the vector list */
 cPlayerInfor *pPlayer[2];
+
+/* Stack save Large Board to replay */
+stack<cLargeBoard> g_hisBoard;
+
+/* Vector list save information of player */
+vector<cPlayerInfor> g_players;
 
 void Start(void);
 void Rules(void);
@@ -25,7 +31,7 @@ int main()
     fileIn.open("Infor_Player.txt", ios::in);
     ReadInforListPlayer(fileIn, g_players);
     fileIn.close();
-    fileOut.open("Infor_Player.txt", ios::out | ios::trunc); // mode clean & write file
+    fileOut.open("Infor_Player.txt", ios::out); // mode 	write file
 
     Start();
     int choice1, choice2, choice3;
@@ -36,8 +42,8 @@ int main()
         cout << "Choose Options\n\n";
         SetColorText(white);
         cout << "1. Start New Game\n";
-        cout << "2. Information of Player\n";
-        cout << "3. How to Play\n";
+        cout << "2. How to Play\n";
+		cout << "3. Information of Player\n";
         cout << "4. Save Information & Exit\n\n";
         cout << "Option: ";
         choice1 = InputData(); // allows input from the keypad integers from 0 to 9
@@ -71,9 +77,9 @@ int main()
                     SetColorText(green);
                     cout << "Choose:\n\n";
                     SetColorText(white);
-                    cout << "1. Import another player's name\n";
-                    cout << "2. Find player of the same level\n";
-                    cout << "***Note: Option 2: Find opponents with a win rate difference of no more than 10 %\n\n";
+                    cout << "1.  Import another player's name\n";
+                    cout << "2.  Find player at the same level\n";
+                    cout << "*** Note: Option 2: Find opponents with a win rate difference of no more than 10 %\n\n";
                     cout << "Option: ";
                     choice3 = InputData();
                     STATUS withFriend;
@@ -192,13 +198,14 @@ int main()
             break;
 
         case 2:
-            DisplayInforPlayer(g_players); // display information of player with options
-            break;
-
-        case 3:
             ClearScreen();
             Rules(); // game rule
             break;
+			
+        case 3:
+            DisplayInforPlayer(g_players); // display information of player with options
+            break;
+
 
         case 4:
             /* Save information into file & Exit */

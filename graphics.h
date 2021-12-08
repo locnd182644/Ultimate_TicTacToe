@@ -5,9 +5,9 @@
 
 #define xBoardInfor 47 // X-coordinate of the Information Board
 #define yBoardInfor 2  // Y-coordinate of the Information Board
-#define hBoardInfor 14 // High of the Information Board
-#define xInput 7
-#define yInput 19
+#define hBoardInfor 16 // High of the Information Board
+#define xInput 7    //  X-coordinate of input cell
+#define yInput 19   //  y-coordinate of input cell
 
 enum COLORS
 {
@@ -27,5 +27,6 @@ void DrawBoards(cLargeBoard); // Draw a large board
 /*******  Information  *******/
 void Information(cLargeBoard);       // Information Board
 void InforStatusLargeBoard(cLargeBoard); // Information Status of Large Board
+void DisplayCurrPlayer(cLargeBoard); // Display name of current player
 
 #endif

@@ -1,8 +1,12 @@
 #include <windows.h>
 #include "graphics.h"
+#include "player_infor.h"
 #include "ultimate_tic_tac_toe.h"
 
 using namespace std;
+
+/* Pointer to player in the vector list */
+extern cPlayerInfor *pPlayer[2];
 
 void ClearScreen()
 {
@@ -36,6 +40,8 @@ void Information(cLargeBoard boards)
     SetColorText(yellow);
     cout << "ULTIMATE TIC TAC TOE";
 
+    DisplayCurrPlayer(boards);
+
     GotoXY(xBoardInfor + 2, hBoardInfor - 4);
     SetColorText(green);
     cout << "* NOTE *";
@@ -53,7 +59,7 @@ void Information(cLargeBoard boards)
 
 void InforStatusLargeBoard(cLargeBoard boards)
 {
-    char temp[9]; // ASCII of '1' -> '9' or 'X' or 'O' or '='  
+    char temp[9]; // ASCII of '1' -> '9' or 'X' or 'O' or '='
     for (int i = 0; i < 9; i++)
     {
         if (boards.m_boardStatuses[i / 3][i % 3] == NONE)
@@ -141,12 +147,12 @@ void DrawBoards(cLargeBoard boards)
         cout << endl;
         cout << endl;
     }
-	
-	/* Display board graphic before	being taken */
+
+    /* Display board graphic before	being taken */
     if (tempBoardNum == -1)
         Information(boards);
-	
-	/* Display board graphic after being taken */
+
+    /* Display board graphic after being taken */
     else
     {
         Information(boards);
@@ -154,3 +160,39 @@ void DrawBoards(cLargeBoard boards)
             DrawSelect(tempBoardNum);
     }
 }
+
+/*  Display name of current player */
+void DisplayCurrPlayer(cLargeBoard boards)
+{
+    SetColorText(green);
+    GotoXY(xBoardInfor + 2, hBoardInfor - 6);
+    cout << "Current Turn: ";
+    SetColorText(white);
+    switch (boards.m_mode)
+    {
+    case BOT:
+        switch (boards.GetTurn())
+        {
+        case X:
+            cout << pPlayer[0]->m_name;
+            break;
+        case O:
+            cout << "BOT";
+            break;
+        }
+        break;
+    case FRIEND:
+        switch (boards.GetTurn())
+        {
+        case X:
+            cout << pPlayer[0]->m_name;
+            break;
+
+        case O:
+            cout << pPlayer[1]->m_name;
+            break;
+        }
+        break;
+    }
+}
+

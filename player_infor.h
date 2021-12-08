@@ -30,6 +30,7 @@ int iSearchPlayer(vector<cPlayerInfor> &);
 
 /* Find the player with the closest win rate */
 int iFindCompetitor(vector<cPlayerInfor>, cPlayerInfor);
+
 /* Smallest difference value of win rate */
 float SmallestDifference(vector<cPlayerInfor> , cPlayerInfor );
 

@@ -16,4 +16,6 @@ int BestMove(cSmallBoard, int);
 
 void Test(void);
 
+void DisplayUltimateTicTacToe(void);
+
 #endif
