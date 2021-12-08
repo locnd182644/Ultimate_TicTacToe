@@ -61,7 +61,6 @@ bool cLargeBoard::BoardFinished()
 /* Select new Board to play */
 void cLargeBoard::SelectNewBoard()
 {
-
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -84,6 +83,10 @@ void cLargeBoard::SelectNewBoard()
         cout << GetTurn() << " select next board: ";
 
         m_boardNum = InputData(); // input from keyboard
+                                  /*  Halfway exit */
+        if (m_boardNum == 66)     // user input 'r'
+            return ;
+        /**/
         m_boardNum -= 1;
 
         if (BoardFinished())

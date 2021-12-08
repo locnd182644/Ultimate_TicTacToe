@@ -44,7 +44,7 @@ int main()
         switch (choice1)
         {
         case 1:
-    
+
             pPlayer[0] = &g_players[iSearchPlayer(g_players)]; // import name of current player
             while (1)
             {
@@ -82,7 +82,7 @@ int main()
                         /* Import name of the player to play with the current player */
                     case 1:
                         pPlayer[1] = &g_players[iSearchPlayer(g_players)];
-                        withFriend = PlayWithFriend(SelectFirstPlay(FRIEND));
+                        withFriend = PlayWithFriend(SelectFirstPlay(FRIEND)); // choose first turn to play with modeBoards is FRIEND
                         break;
 
                         /* Find the player with the closest win rate */
@@ -96,7 +96,7 @@ int main()
                         else
                         {
                             pPlayer[1] = &g_players[itemp];
-                            withFriend = PlayWithFriend(SelectFirstPlay(FRIEND));
+                            withFriend = PlayWithFriend(SelectFirstPlay(FRIEND)); // choose first turn to play with modeBoards is FRIEND
                             break;
                         }
                     }
@@ -122,8 +122,8 @@ int main()
 
                 /* Play with Bot Easy */
                 case 2:
-                    ClearScreen(); // clean Screen
-                    switch (PlayWithBotEasy(SelectFirstPlay(BOT)))
+                    ClearScreen();                                 // clean Screen
+                    switch (PlayWithBotEasy(SelectFirstPlay(BOT))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -141,8 +141,27 @@ int main()
 
                 /* Play with Bot Normal */
                 case 3:
-                    ClearScreen(); // clean Screen
-                    switch (PlayWithBotNormal(SelectFirstPlay(BOT)))
+                    ClearScreen();                                   // clean Screen
+                    switch (PlayWithBotNormal(SelectFirstPlay(BOT))) // choose first turn to play with modeBoards is BOT
+                    {
+                    case X:
+                        pPlayer[0]->m_win++;
+                        break;
+                    case O:
+                        pPlayer[0]->m_lose++;
+                        break;
+                    case TIE:
+                        pPlayer[0]->m_tie++;
+                        break;
+                    }
+
+                    Sleep(SleepTime2000); // screen pause for 2 seconds
+                    break;
+
+                    /* Play with Bot Hard */
+                case 4:
+                    ClearScreen();                                 // clean Screen
+                    switch (PlayWithBotHard(SelectFirstPlay(BOT))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
                         pPlayer[0]->m_win++;

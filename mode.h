@@ -8,16 +8,6 @@
 
 #define SleepTime500 500
 
-/*  Handling Easy Bot */
-int BotSelectCell(cLargeBoard *);  // random with checked condition : Cell must be Piece_BLANK
-int BotSelectBoard(cLargeBoard *); // random with checked condition: The small board must be NONE 
-
-/*  Handling Bots with minimax */
-int Minimax(cSmallBoard, int, bool); // score of current small board
-int BestMove(cLargeBoard, int);      // find best move for bot
-
-/*  Handle Hard Bot */
-
 /* Mode play with Friend */
 STATUS PlayWithFriend(PIECE);
 
@@ -26,6 +16,9 @@ STATUS PlayWithBotEasy(PIECE);
 
 /* Mode play with Bot Normal */
 STATUS PlayWithBotNormal(PIECE);
+
+/* Mode play with Bot Hard */
+STATUS PlayWithBotHard(PIECE);
 
 /* Re-watch the latest match */
 void RecordGame(void);
