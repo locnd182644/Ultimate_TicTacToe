@@ -25,6 +25,12 @@ void Rules(void);
 
 int main()
 {
+    char c;
+    cin >> c;
+    cout << c;
+    cin >> c;
+    cout << c;
+    while(1);
     ifstream fileIn;
     ofstream fileOut;
 
