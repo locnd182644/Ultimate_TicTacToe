@@ -5,7 +5,7 @@
 using namespace std;
 
 // Pointer to player in the vector list
-extern cPlayerInfor *pPlayer[2];
+extern CPlayerInfor *pPlayer[2];
 
 /* Allows input from the keypad integers from 0 to 9 or 'r' */
 int InputData()
@@ -29,7 +29,7 @@ int InputData()
 }
 
 /* Set & returns the first player */
-PIECE SelectFirstPlay(MODE mode)
+ePiece SelectFirstPlay(eMode mode)
 {
     ClearScreen();
 
@@ -37,7 +37,7 @@ PIECE SelectFirstPlay(MODE mode)
     switch (mode)
     {
     /* Play with friend */
-    case FRIEND:
+    case Friend:
         cout << "*** NOTE: ' " << pPlayer[0]->m_name << " ' is X\n";
         cout << "          ' " << pPlayer[1]->m_name << " ' is O\n\n";
         SetColorText(green);
@@ -61,7 +61,7 @@ PIECE SelectFirstPlay(MODE mode)
         }
 
     /* Play with Bot */
-    case BOT:
+    default:
         cout << "*** NOTE: Bot is always O\n\n";
         SetColorText(green);
         cout << "Choose to play first: \n";
@@ -85,7 +85,7 @@ PIECE SelectFirstPlay(MODE mode)
 }
 
 /* Random with checked condition : Cell must be Piece_BLANK */
-int BotSelectCell(cLargeBoard *pBoards)
+int BotSelectCell(CLargeBoard *pBoards)
 {
     int currentBoard = pBoards->m_boardNum;
     int temp;
@@ -100,7 +100,7 @@ int BotSelectCell(cLargeBoard *pBoards)
 }
 
 /* Random with checked condition: The small board must be NONE*/
-int BotSelectBoard(cLargeBoard *pBoards)
+int BotSelectBoard(CLargeBoard *pBoards)
 {
     int temp;
     while (1)
@@ -113,7 +113,7 @@ int BotSelectBoard(cLargeBoard *pBoards)
 }
 
 /* Evaluate score of current small board */
-int Minimax(cSmallBoard boards, int depth, bool isBOT)
+int Minimax(CSmallBoard boards, int depth, bool isBOT)
 {
     int score = 0;
     int bestScore = 0;
@@ -121,9 +121,9 @@ int Minimax(cSmallBoard boards, int depth, bool isBOT)
     switch (boards.CheckWin())
     {
     case O:
-        return 10;
+        return 1;
     case X:
-        return -10;
+        return -1;
     }
 
     if (depth == 0)
@@ -174,7 +174,7 @@ int Minimax(cSmallBoard boards, int depth, bool isBOT)
 }
 
 /* Find best move for bot */
-int BestMove(cLargeBoard boards, int indexMove)
+int BestMove(CLargeBoard boards, int indexMove)
 {
     int currentBoardNum = boards.m_boardNum;
     int x = -1, y = -1;
@@ -208,7 +208,7 @@ int BestMove(cLargeBoard boards, int indexMove)
 }
 
 /*  The number of moves in current small board */
-int MoveNum(cLargeBoard boards)
+int MoveNum(CLargeBoard boards)
 {
     int tempMoveNum = 0;
     int currentBoardNum = boards.m_boardNum;

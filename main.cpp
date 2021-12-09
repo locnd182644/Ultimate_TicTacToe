@@ -9,16 +9,16 @@
 
 using namespace std;
 
-#define SleepTime2000 2000
+#define SleepTime 3000  // 3 seconds
 
 /* Pointer to player in the vector list */
-cPlayerInfor *pPlayer[2];
+CPlayerInfor *pPlayer[2];
 
 /* Stack save Large Board to replay */
-stack<cLargeBoard> g_hisBoard;
+stack<CLargeBoard> g_hisBoard;
 
 /* Vector list save information of player */
-vector<cPlayerInfor> g_players;
+vector<CPlayerInfor> g_players;
 
 void Start(void);
 void Rules(void);
@@ -31,7 +31,7 @@ int main()
     fileIn.open("Infor_Player.txt", ios::in);
     ReadInforListPlayer(fileIn, g_players);
     fileIn.close();
-    fileOut.open("Infor_Player.txt", ios::out); // mode 	write file
+    fileOut.open("Infor_Player.txt", ios::out); // mode write file
 
     Start();
     int choice1, choice2, choice3;
@@ -61,7 +61,7 @@ int main()
                 cout << pPlayer[0]->m_name; // display current player name
                 SetColorText(white);
                 cout << "  ____\n\n";
-                cout << "1. Play with friend \n";
+                cout << "1. Play with Friend \n";
                 cout << "2. Play with Bot Easy\n";
                 cout << "3. Play with Bot Normal\n";
                 cout << "4. Play with Bot Hard\n";
@@ -79,16 +79,16 @@ int main()
                     SetColorText(white);
                     cout << "1.  Import another player's name\n";
                     cout << "2.  Find player at the same level\n";
-                    cout << "*** Note: Option 2: Find opponents with a win rate difference of no more than 10 %\n\n";
+                    cout << "*** Note: Option 2: Find opponents  with a differential rate no more than 10% %\n\n";
                     cout << "Option: ";
                     choice3 = InputData();
-                    STATUS withFriend;
+                    eStatus withFriend;
                     switch (choice3)
                     {
                         /* Import name of the player to play with the current player */
                     case 1:
                         pPlayer[1] = &g_players[iSearchPlayer(g_players)];
-                        withFriend = PlayWithFriend(SelectFirstPlay(FRIEND)); // choose first turn to play with modeBoards is FRIEND
+                        withFriend = PlayWithFriend(SelectFirstPlay(Friend)); // choose first turn to play with modeBoards is FRIEND
                         break;
 
                         /* Find the player with the closest win rate */
@@ -102,7 +102,7 @@ int main()
                         else
                         {
                             pPlayer[1] = &g_players[itemp];
-                            withFriend = PlayWithFriend(SelectFirstPlay(FRIEND)); // choose first turn to play with modeBoards is FRIEND
+                            withFriend = PlayWithFriend(SelectFirstPlay(Friend)); // choose first turn to play with modeBoards is FRIEND
                             break;
                         }
                     }
@@ -123,13 +123,13 @@ int main()
                         break;
                     }
 
-                    Sleep(SleepTime2000); // screen pause for 2 seconds
+                    Sleep(SleepTime); // screen pause for 2 seconds
                     break;
 
                 /* Play with Bot Easy */
                 case 2:
                     ClearScreen();                                 // clean Screen
-                    switch (PlayWithBotEasy(SelectFirstPlay(BOT))) // choose first turn to play with modeBoards is BOT
+                    switch (PlayWithBotEasy(SelectFirstPlay(BotEasy))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -142,13 +142,13 @@ int main()
                         break;
                     }
 
-                    Sleep(SleepTime2000); // screen pause for 2 seconds
+                    Sleep(SleepTime); // screen pause for 2 seconds
                     break;
 
                 /* Play with Bot Normal */
                 case 3:
                     ClearScreen();                                   // clean Screen
-                    switch (PlayWithBotNormal(SelectFirstPlay(BOT))) // choose first turn to play with modeBoards is BOT
+                    switch (PlayWithBotNormal(SelectFirstPlay(BotNormal))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -161,13 +161,13 @@ int main()
                         break;
                     }
 
-                    Sleep(SleepTime2000); // screen pause for 2 seconds
+                    Sleep(SleepTime); // screen pause for 2 seconds
                     break;
 
                     /* Play with Bot Hard */
                 case 4:
                     ClearScreen();                                 // clean Screen
-                    switch (PlayWithBotHard(SelectFirstPlay(BOT))) // choose first turn to play with modeBoards is BOT
+                    switch (PlayWithBotHard(SelectFirstPlay(BotHard))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
                         pPlayer[0]->m_win++;
@@ -180,14 +180,14 @@ int main()
                         break;
                     }
 
-                    Sleep(SleepTime2000); // screen pause for 2 seconds
+                    Sleep(SleepTime); // screen pause for 2 seconds
                     break;
 
                 case 5:
                     /* Re-watch the latest match */
                     RecordGame();
 
-                    Sleep(SleepTime2000); // screen pause for 2 seconds
+                    Sleep(SleepTime); // screen pause for 2 seconds
                     break;
                 }
 
@@ -248,14 +248,14 @@ void Start()
 void Rules()
 {
     SetColorText(green);
-    cout << "            HOW TO PLAY GAME\n\n";
+    cout << "               HOW TO PLAY GAME\n\n";
     SetColorText(white);
-    cout << "          1.Each turn, you mark one of the small squares.\n\n";
-    cout << "          2.When you get three in a row on a small board, you have won that board.\n\n";
-    cout << "          3.To win the game, you need to win three small boards in a row.\n\n";
-    cout << "*** Note: You do not get to pick which of the nine boards to play on.\n";
-    cout << "          That is determined by the previous Move of your opponent.\n";
-    cout << "          Whichever square he picks, that is the board you must play in next.\n\n\n";
-    cout << "          Press any key to continue....";
+    cout << "      1.Each turn, you mark one of the small squares.\n\n";
+    cout << "      2.When you get three in a row on a small board, you have won that board.\n\n";
+    cout << "      3.To win the game, you need to win three small boards in a row.\n\n";
+    cout << "***   You do not get to pick which of the nine boards to play on.\n";
+    cout << "Note: That is determined by the previous Move of your opponent.\n";
+    cout << "      Whichever square he picks, that is the board you must play in next.\n\n\n";
+    cout << "      Press any key to continue....";
     _getch();
 }

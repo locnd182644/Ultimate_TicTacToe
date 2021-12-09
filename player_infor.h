@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class cPlayerInfor
+class CPlayerInfor
 {
 public:
     int m_win;     // the number of win
@@ -19,41 +19,41 @@ public:
     int m_lose;    // the number of lose
     string m_name; // player name
 
-    cPlayerInfor(); // initial method
-    cPlayerInfor(string);
-    int TotalMatch(); // the number of matchmak
+    CPlayerInfor(); // initial method
+    CPlayerInfor(string);
+    int TotalMatch(); // the number of match 
     float WinRate();  // the rate of win
 };
 
 /** Import name of player, find, return player's index in list **/
-int iSearchPlayer(vector<cPlayerInfor> &);
+int iSearchPlayer(vector<CPlayerInfor> &);
 
-/* Find the player with the closest win rate */
-int iFindCompetitor(vector<cPlayerInfor>, cPlayerInfor);
+/** Find the player with the closest win rate **/
+int iFindCompetitor(vector<CPlayerInfor>, CPlayerInfor);
 
-/* Smallest difference value of win rate */
-float SmallestDifference(vector<cPlayerInfor> , cPlayerInfor );
+/** Smallest difference value of win rate **/
+float SmallestDifference(vector<CPlayerInfor> , CPlayerInfor );
 
-/** Read Player's Information from file and add into cPlayerInfor object **/
-void ReadInforPlayer(ifstream &, cPlayerInfor &);
+/** Read Player's Information from file and add into CPlayerInfor object **/
+void ReadInforPlayer(ifstream &, CPlayerInfor &);
 
 /** Read Player's Information from file and add into list **/
-void ReadInforListPlayer(ifstream &, vector<cPlayerInfor> &);
+void ReadInforListPlayer(ifstream &, vector<CPlayerInfor> &);
 
 /** Display Players' list **/
-void WriteInforListPlayerScreen(vector<cPlayerInfor>);
+void WriteInforListPlayerScreen(vector<CPlayerInfor>);
 
 /** Save Players' list in file **/
-void WriteInforListPlayerFile(ofstream &, vector<cPlayerInfor>);
+void WriteInforListPlayerFile(ofstream &, vector<CPlayerInfor>);
 
-/* Swap of 2 objects  */
+/** Swap of 2 objects  **/
 template <class T>
 void Swap(T &, T &);
 
 /** Sort Players by win rate **/
-vector<cPlayerInfor> SortInforPlayer(vector<cPlayerInfor>, SORT);
+vector<CPlayerInfor> SortInforPlayer(vector<CPlayerInfor>, eSort);
 
-/* Display information of player with options */
-void DisplayInforPlayer(vector<cPlayerInfor>);
+/** Display information of player with options **/
+void DisplayInforPlayer(vector<CPlayerInfor>);
 
 #endif

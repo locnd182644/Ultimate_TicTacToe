@@ -9,16 +9,16 @@
 #define SleepTime500 500
 
 /* Mode play with Friend */
-STATUS PlayWithFriend(PIECE);
+eStatus PlayWithFriend(ePiece);
 
 /* Mode play with Bot Easy */
-STATUS PlayWithBotEasy(PIECE);
+eStatus PlayWithBotEasy(ePiece);
 
 /* Mode play with Bot Normal */
-STATUS PlayWithBotNormal(PIECE);
+eStatus PlayWithBotNormal(ePiece);
 
 /* Mode play with Bot Hard */
-STATUS PlayWithBotHard(PIECE);
+eStatus PlayWithBotHard(ePiece);
 
 /* Re-watch the latest match */
 void RecordGame(void);

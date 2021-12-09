@@ -5,16 +5,16 @@
 using namespace std;
 
 /* Stack save Large Board to replay */
-extern stack<cLargeBoard> g_hisBoard;
+extern stack<CLargeBoard> g_hisBoard;
 
 /* Mode play with Friend */
-STATUS PlayWithFriend(PIECE piece)
+eStatus PlayWithFriend(ePiece piece)
 {
     ClearScreen();
 
-    cLargeBoard currentBoard;
+    CLargeBoard currentBoard;
     currentBoard.Setturn(piece);  // set first turn
-    currentBoard.m_mode = FRIEND; // mode with friend
+    currentBoard.m_mode = Friend; // mode with friend
 
     DrawBoards(currentBoard);
 
@@ -24,9 +24,9 @@ STATUS PlayWithFriend(PIECE piece)
 
     m_boardNum = InputData();
 
-    /*  Halfway exit */
+    /*  Halfway exit & Lost */
     if (m_boardNum == 66) // user input 'r'
-        return TIE;
+        return currentBoard.GetTurn() == Piece_X ? O : X;
     /**/
 
     currentBoard.SetBoardNum(m_boardNum);
@@ -46,9 +46,10 @@ STATUS PlayWithFriend(PIECE piece)
         cout << "Cell: ";
         cell = InputData();
 
-        /*  Halfway exit */
+        /*  Halfway exit & Lost */
         if (cell == 66) // user input 'r'
-            return TIE;
+            return currentBoard.GetTurn() == Piece_X ? O : X;
+        /**/
 
         /* If cell = 0, replay */
         if (cell == 0)
@@ -67,6 +68,7 @@ STATUS PlayWithFriend(PIECE piece)
 
         /* Check win large board */
         int status = currentBoard.CheckWin();
+        GotoXY(xInput, yInput + 2);
         switch (status)
         {
         case X:
@@ -82,6 +84,8 @@ STATUS PlayWithFriend(PIECE piece)
             break;
         }
 
+        currentBoard.ToggleTurn(); // change player
+
         /* Check board's status none or not to select new board */
         if (currentBoard.BoardFinished())
         {
@@ -92,13 +96,13 @@ STATUS PlayWithFriend(PIECE piece)
 }
 
 /* Mode play with Bot Easy */
-STATUS PlayWithBotEasy(PIECE piece)
+eStatus PlayWithBotEasy(ePiece piece)
 {
     ClearScreen();
 
-    cLargeBoard currentBoard;
-    currentBoard.m_mode = BOT;   // mode with bot
-    currentBoard.Setturn(piece); // set first turn
+    CLargeBoard currentBoard;
+    currentBoard.m_mode = BotEasy; // mode with bot easy
+    currentBoard.Setturn(piece);   // set first turn
 
     DrawBoards(currentBoard);
 
@@ -112,9 +116,9 @@ STATUS PlayWithBotEasy(PIECE piece)
     case X:
         m_boardNum = InputData(); // player import from keyboard
 
-        /*  Halfway exit */
+        /*  Halfway exit & Lost */
         if (m_boardNum == 66) // user input 'r'
-            return TIE;
+            return currentBoard.GetTurn() == Piece_X ? O : X;
         /**/
 
         break;
@@ -142,11 +146,11 @@ STATUS PlayWithBotEasy(PIECE piece)
             cout << "Cell: ";
             cell = InputData();
 
-            /*  Halfway exit */
+            /*  Halfway exit & Lost */
             if (cell == 66) // user input 'r'
-                return TIE;
+                return currentBoard.GetTurn() == Piece_X ? O : X;
             /**/
-			break;
+            break;
 
         case O:
             GotoXY(xInput, yInput);
@@ -174,6 +178,7 @@ STATUS PlayWithBotEasy(PIECE piece)
 
         /* Check win large board */
         int status = currentBoard.CheckWin();
+        GotoXY(xInput, yInput + 2);
         switch (status)
         {
         case X:
@@ -189,6 +194,8 @@ STATUS PlayWithBotEasy(PIECE piece)
             break;
         }
 
+        currentBoard.ToggleTurn(); // change player
+
         /* Check board's status none or not to select new board */
         if (currentBoard.BoardFinished())
         {
@@ -199,13 +206,13 @@ STATUS PlayWithBotEasy(PIECE piece)
 }
 
 /* Mode play with Bot Normal */
-STATUS PlayWithBotNormal(PIECE piece)
+eStatus PlayWithBotNormal(ePiece piece)
 {
     ClearScreen();
 
-    cLargeBoard currentBoard;
-    currentBoard.Setturn(piece); // set first turn
-    currentBoard.m_mode = BOT;   // mode with bot
+    CLargeBoard currentBoard;
+    currentBoard.Setturn(piece);     // set first turn
+    currentBoard.m_mode = BotNormal; // mode with bot normal
 
     DrawBoards(currentBoard);
 
@@ -219,10 +226,11 @@ STATUS PlayWithBotNormal(PIECE piece)
     case X:
         m_boardNum = InputData(); // player import from keyboard
 
-        /*  Halfway exit */
+        /*  Halfway exit & Lost */
         if (m_boardNum == 66) // user input 'r'
-            return TIE;
+            return currentBoard.GetTurn() == Piece_X ? O : X;
         /**/
+        break;
 
     case O:
         m_boardNum = BotSelectBoard(&currentBoard); // bot automatically selects board
@@ -246,10 +254,11 @@ STATUS PlayWithBotNormal(PIECE piece)
             cout << "Cell: ";
             cell = InputData();
 
-            /*  Halfway exit */
+            /*  Halfway exit & Lost */
             if (cell == 66) // user input 'r'
-                return TIE;
+                return currentBoard.GetTurn() == Piece_X ? O : X;
             /**/
+
             break;
 
         case O:
@@ -280,6 +289,10 @@ STATUS PlayWithBotNormal(PIECE piece)
 
         /* Check win large board */
         int status = currentBoard.CheckWin();
+
+        if (status != NONE)
+            DrawBoards(currentBoard);
+        GotoXY(xInput, yInput + 2);
         switch (status)
         {
         case X:
@@ -295,6 +308,8 @@ STATUS PlayWithBotNormal(PIECE piece)
             break;
         }
 
+        currentBoard.ToggleTurn(); // change player
+
         /* Check board's status none or not to select new board */
         if (currentBoard.BoardFinished())
         {
@@ -305,13 +320,13 @@ STATUS PlayWithBotNormal(PIECE piece)
 }
 
 /* Mode play with Bot Hard */
-STATUS PlayWithBotHard(PIECE piece)
+eStatus PlayWithBotHard(ePiece piece)
 {
     ClearScreen();
 
-    cLargeBoard currentBoard;
-    currentBoard.Setturn(piece); // set first turn
-    currentBoard.m_mode = BOT;   // mode with bot
+    CLargeBoard currentBoard;
+    currentBoard.Setturn(piece);   // set first turn
+    currentBoard.m_mode = BotHard; // mode with bot hard
 
     DrawBoards(currentBoard);
 
@@ -325,10 +340,12 @@ STATUS PlayWithBotHard(PIECE piece)
     case X:
         m_boardNum = InputData(); // player import from keyboard
 
-        /*  Halfway exit */
+        /*  Halfway exit & Lost */
         if (m_boardNum == 66) // user input 'r'
-            return TIE;
+            return currentBoard.GetTurn() == Piece_X ? O : X;
         /**/
+
+        break;
 
     case O:
         m_boardNum = BotSelectBoard(&currentBoard); // bot automatically selects board
@@ -352,10 +369,11 @@ STATUS PlayWithBotHard(PIECE piece)
             cout << "Cell: ";
             cell = InputData();
 
-            /*  Halfway exit */
+            /*  Halfway exit & Lost */
             if (cell == 66) // user input 'r'
-                return TIE;
+                return currentBoard.GetTurn() == Piece_X ? O : X;
             /**/
+            
             break;
 
         case O:
@@ -385,6 +403,10 @@ STATUS PlayWithBotHard(PIECE piece)
 
         /* Check win large board */
         int status = currentBoard.CheckWin();
+
+        if (status != NONE)
+            DrawBoards(currentBoard);
+        GotoXY(xInput, yInput + 2);
         switch (status)
         {
         case X:
@@ -400,6 +422,8 @@ STATUS PlayWithBotHard(PIECE piece)
             break;
         }
 
+        currentBoard.ToggleTurn(); // change player
+
         /* Check board's status none or not to select new board */
         if (currentBoard.BoardFinished())
         {
@@ -412,9 +436,9 @@ STATUS PlayWithBotHard(PIECE piece)
 /* Mode re-watch the latest match */
 void RecordGame()
 {
-    cLargeBoard currBoards; // current Board
+    CLargeBoard currBoards; // current Board
 
-    stack<cLargeBoard> temp;
+    stack<CLargeBoard> temp;
 
     for (; !g_hisBoard.empty(); g_hisBoard.pop())
     {

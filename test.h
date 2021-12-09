@@ -6,15 +6,15 @@
 #include "tic_tac_toe.h"
 #include "handle.h"
 
-void Display(cSmallBoard);
+// void Display(CSmallBoard);
 
-int RandomMove(void);
+// int RandomMove(void);
 
-int Minimax(cSmallBoard, int, bool);
+// int Minimax(CSmallBoard, int, bool);
 
-int BestMove(cSmallBoard, int);
+// int BestMove(CSmallBoard, int);
 
-void Test(void);
+// void Test(void);
 
 void DisplayUltimateTicTacToe(void);
 

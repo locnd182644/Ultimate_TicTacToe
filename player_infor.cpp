@@ -4,7 +4,7 @@
 
 using namespace std;
 
-cPlayerInfor::cPlayerInfor()
+CPlayerInfor::CPlayerInfor()
 {
     m_name = "NULL";
     m_win = 0;
@@ -12,7 +12,7 @@ cPlayerInfor::cPlayerInfor()
     m_lose = 0;
 }
 
-cPlayerInfor::cPlayerInfor(string TempName)
+CPlayerInfor::CPlayerInfor(string TempName)
 {
     m_name = TempName;
     m_win = 0;
@@ -20,19 +20,19 @@ cPlayerInfor::cPlayerInfor(string TempName)
     m_lose = 0;
 }
 
-int cPlayerInfor::TotalMatch()
+int CPlayerInfor::TotalMatch()
 {
     return m_win + m_tie + m_lose;
 }
 
-float cPlayerInfor::WinRate()
+float CPlayerInfor::WinRate()
 {
     return (TotalMatch() == 0) ? 0 : (m_win) / (float)TotalMatch();
 }
 
 /** Import name of player
 /** Return player's index in list **/
-int iSearchPlayer(vector<cPlayerInfor> &listPlayer)
+int iSearchPlayer(vector<CPlayerInfor> &listPlayer)
 {
     string name;
     cout << "Input your name: ";
@@ -48,7 +48,7 @@ int iSearchPlayer(vector<cPlayerInfor> &listPlayer)
     }
 
     /* if not then create new player */
-    cPlayerInfor newPlayer(name);
+    CPlayerInfor newPlayer(name);
     listPlayer.push_back(newPlayer);
     return i;
 }
@@ -56,7 +56,7 @@ int iSearchPlayer(vector<cPlayerInfor> &listPlayer)
 /* Find the player with the closest win rate */
 // maximum difference 10 %
 /* Return player's index in list or return -1 */
-int iFindCompetitor(vector<cPlayerInfor> listPlayer, cPlayerInfor currPlayer)
+int iFindCompetitor(vector<CPlayerInfor> listPlayer, CPlayerInfor currPlayer)
 {
     /* if a win rate difference of more than 10% % then return -1 */
     if (SmallestDifference(listPlayer, currPlayer) > 0.1)
@@ -78,7 +78,7 @@ int iFindCompetitor(vector<cPlayerInfor> listPlayer, cPlayerInfor currPlayer)
 }
 
 /* Smallest difference value of win rate */
-float SmallestDifference(vector<cPlayerInfor> listPlayer, cPlayerInfor currPlayer)
+float SmallestDifference(vector<CPlayerInfor> listPlayer, CPlayerInfor currPlayer)
 {
     // offset: difference of win rate
     float offset = 1; // 100 %
@@ -96,7 +96,7 @@ float SmallestDifference(vector<cPlayerInfor> listPlayer, cPlayerInfor currPlaye
 }
 
 /** Read Information of player from file **/
-void ReadInforPlayer(ifstream &filein, cPlayerInfor &player)
+void ReadInforPlayer(ifstream &filein, CPlayerInfor &player)
 {
     getline(filein, player.m_name, ',');
     if (player.m_name[0] == '\n')
@@ -107,9 +107,9 @@ void ReadInforPlayer(ifstream &filein, cPlayerInfor &player)
 }
 
 /** Read Information of player from file, then push on the list **/
-void ReadInforListPlayer(ifstream &filein, vector<cPlayerInfor> &listPlayer)
+void ReadInforListPlayer(ifstream &filein, vector<CPlayerInfor> &listPlayer)
 {
-    cPlayerInfor tempPlayer;
+    CPlayerInfor tempPlayer;
     while (!filein.eof()) // Check file end
     {
         ReadInforPlayer(filein, tempPlayer);
@@ -117,10 +117,10 @@ void ReadInforListPlayer(ifstream &filein, vector<cPlayerInfor> &listPlayer)
     }
 }
 
-/** Display imformation of player on screen**/
-void WriteInforListPlayerScreen(vector<cPlayerInfor> listPlayer)
+/** Display imformation of player on screen **/
+void WriteInforListPlayerScreen(vector<CPlayerInfor> listPlayer)
 {
-    cPlayerInfor tempPlayer;
+    CPlayerInfor tempPlayer;
     SetColorText(green);
     cout << "Name\t\t\tWin\tTie\tLose\tWin rate\n\n";
     SetColorText(white);
@@ -141,9 +141,9 @@ void WriteInforListPlayerScreen(vector<cPlayerInfor> listPlayer)
 }
 
 /** Save Players' list in file **/
-void WriteInforListPlayerFile(ofstream &fileout, vector<cPlayerInfor> listPlayer)
+void WriteInforListPlayerFile(ofstream &fileout, vector<CPlayerInfor> listPlayer)
 {
-    cPlayerInfor tempPlayer;
+    CPlayerInfor tempPlayer;
 
     for (int i = 0; i < listPlayer.size(); i++)
     {
@@ -170,7 +170,7 @@ void Swap(T &a, T &b)
 }
 
 /** Sort Players by win rate **/ /* Bubble sort */
-vector<cPlayerInfor> SortInforPlayer(vector<cPlayerInfor> listPlayer, SORT mode)
+vector<CPlayerInfor> SortInforPlayer(vector<CPlayerInfor> listPlayer, eSort mode)
 {
     switch (mode)
     {
@@ -193,28 +193,28 @@ vector<cPlayerInfor> SortInforPlayer(vector<cPlayerInfor> listPlayer, SORT mode)
     return listPlayer;
 }
 
+
 /* Display information of player with options */
-void DisplayInforPlayer(vector<cPlayerInfor> listPlayer)
+void DisplayInforPlayer(vector<CPlayerInfor> listPlayer)
 {
     int option = 1;
     while (1)
     {
         switch (option)
         {
-            /* Display by the history of creating player */
+            /* Display player list in chronological order */
         case 1:
             ClearScreen();
             WriteInforListPlayerScreen(listPlayer);
             break;
 
-            /* Displayed by decrease win rate */
+            /* Display player list in decreasing rate order */
         case 2:
             ClearScreen();
-            /* D */
             WriteInforListPlayerScreen(SortInforPlayer(listPlayer, DECREASE));
             break;
 
-            /*  Displayed by increase win rate */
+            /*  Display player list in increasing rate order */
         case 3:
             ClearScreen();
             WriteInforListPlayerScreen(SortInforPlayer(listPlayer, INCREASE));
@@ -227,9 +227,9 @@ void DisplayInforPlayer(vector<cPlayerInfor> listPlayer)
         }
         SetColorText(green);
         cout << "Choose: \n";
-        cout << "1. Display by the history of creating player\n";
-        cout << "2. Display by decrease win rate\n";
-        cout << "3. Display by increase win rate\n";
+        cout << "1. Display player list in chronological order\n";
+        cout << "2. Display player list in decreasing rate order\n";
+        cout << "3. Display player list in decreasing rate order\n";
         cout << "4. Return\n\n";
         SetColorText(white);
         cout << "Option: ";

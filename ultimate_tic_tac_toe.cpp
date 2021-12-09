@@ -5,12 +5,12 @@
 
 using namespace std;
 
-cLargeBoard::cLargeBoard()
+CLargeBoard::CLargeBoard()
 {
     InitStatuses(); // initial status
 }
 
-void cLargeBoard::InitStatuses()
+void CLargeBoard::InitStatuses()
 {
     /*
      * Initialise board statuses to NONE
@@ -21,37 +21,37 @@ void cLargeBoard::InitStatuses()
 }
 
 /* Get current turn */
-char cLargeBoard::GetTurn()
+char CLargeBoard::GetTurn()
 {
     return m_turn == Piece_X ? 'X' : 'O';
 }
 
 /* Set current turn by turn parameters */
-void cLargeBoard::Setturn(PIECE turn)
+void CLargeBoard::Setturn(ePiece turn)
 {
     m_turn = turn;
 }
 
 /* Toggle switch turn */
-void cLargeBoard::ToggleTurn()
+void CLargeBoard::ToggleTurn()
 {
     m_turn = m_turn == Piece_X ? Piece_O : Piece_X;
 }
 
 /* Get current board number */
-int cLargeBoard::GetBoardNum()
+int CLargeBoard::GetBoardNum()
 {
     return m_boardNum + 1;
 }
 
 /* Set current board number by board_nu parameters*/
-void cLargeBoard::SetBoardNum(int board_nu)
+void CLargeBoard::SetBoardNum(int board_nu)
 {
     m_boardNum = board_nu - 1;
 }
 
 /* Check board's status none or not */
-bool cLargeBoard::BoardFinished()
+bool CLargeBoard::BoardFinished()
 {
     if (m_boardStatuses[m_boardNum / 3][m_boardNum % 3] != NONE)
         return true;
@@ -59,7 +59,7 @@ bool cLargeBoard::BoardFinished()
 }
 
 /* Select new Board to play */
-void cLargeBoard::SelectNewBoard()
+void CLargeBoard::SelectNewBoard()
 {
     for (int i = 0; i < 3; i++)
     {
@@ -71,7 +71,7 @@ void cLargeBoard::SelectNewBoard()
     }
 
     /* Auto choose board for 2 mode */
-    if (m_mode == BOT && m_turn == Piece_O)
+    if (m_mode == BotEasy || m_mode == BotNormal || m_mode == BotHard && m_turn == Piece_O)
     {
         m_boardNum = BotSelectBoard(this);
     }
@@ -85,7 +85,7 @@ void cLargeBoard::SelectNewBoard()
         m_boardNum = InputData(); // input from keyboard
                                   /*  Halfway exit */
         if (m_boardNum == 66)     // user input 'r'
-            return ;
+            return;
         /**/
         m_boardNum -= 1;
 
@@ -94,7 +94,7 @@ void cLargeBoard::SelectNewBoard()
     }
 }
 
-void cLargeBoard::Move(int cell)
+void CLargeBoard::Move(int cell)
 {
     if (m_boards[m_boardNum / 3][m_boardNum % 3].Fill(cell, m_turn)) // convert 1d index to 2d
     {
@@ -113,7 +113,7 @@ void cLargeBoard::Move(int cell)
 }
 
 /* Check win the large board */
-STATUS cLargeBoard::CheckWin()
+eStatus CLargeBoard::CheckWin()
 {
     for (int x = 0; x < 3; x++)
     {
@@ -162,8 +162,6 @@ STATUS cLargeBoard::CheckWin()
             m_boardStatuses[1][column] == m_boardStatuses[2][column])
             return GetTurn() == 'X' ? X : O;
     }
-
-    ToggleTurn(); // change player
 
     return NONE;
 }

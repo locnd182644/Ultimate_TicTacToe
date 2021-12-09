@@ -3,14 +3,14 @@
 
 #include <iostream>
 
-enum PIECE
+enum ePiece
 {
     Piece_BLANK = 95, // " _ "
     Piece_O = 79,     // " O "
     Piece_X = 88,     // " X "
 };
 
-enum STATUS
+enum eStatus
 {
     NONE,
     TIE = 61, // " = "
@@ -18,29 +18,31 @@ enum STATUS
     X = 88,   // " X "
 };
 
-enum MODE
+enum eMode
 {
-    FRIEND,
-    BOT
+    Friend,
+    BotEasy,
+    BotNormal,
+    BotHard,
 };
 
-enum SORT
+enum eSort
 {
     INCREASE,
     DECREASE
 };
 
-class cSmallBoard
+class CSmallBoard
 {
 private:
-    STATUS m_gameStatus; // Status of SmallBoard
+    eStatus m_gameStatus; // Status of SmallBoard
 public:
-    PIECE m_board[3][3];               // 3x3 cell
-    cSmallBoard();                     // Initialization method
-    void InitBoard();                  // Initialization for SmallBoard
-    bool Fill(int cell, PIECE m_turn); // Set pice for cell
-    STATUS CheckWin();                 // Check Win/Tie/None
-    STATUS GetStatus();                // Get status of SmallBoard
+    ePiece m_board[3][3];   // 3x3 cell
+    CSmallBoard();          // Initialization method
+    void InitBoard();       // Initialization for SmallBoard
+    bool Fill(int, ePiece); // Set pice for cell
+    eStatus CheckWin();     // Check Win/Tie/None
+    eStatus GetStatus();    // Get status of SmallBoard
 };
 
 #endif

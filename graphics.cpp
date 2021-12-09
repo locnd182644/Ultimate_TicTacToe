@@ -6,13 +6,15 @@
 using namespace std;
 
 /* Pointer to player in the vector list */
-extern cPlayerInfor *pPlayer[2];
+extern CPlayerInfor *pPlayer[2];
 
+/* Clear Screen */
 void ClearScreen()
 {
     system("cls");
 }
 
+/* Set coordinate of a text pointer */
 void GotoXY(int _x, int _y)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -22,7 +24,15 @@ void GotoXY(int _x, int _y)
     SetConsoleCursorPosition(h, Position);
 }
 
-void Information(cLargeBoard boards)
+/* Set color for text  */
+void SetColorText(eColors color)
+{
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(h, color);
+}
+
+/* Display information board */
+void Information(CLargeBoard boards)
 {
     int i;
     GotoXY(xBoardInfor, yBoardInfor);
@@ -40,6 +50,7 @@ void Information(cLargeBoard boards)
     SetColorText(yellow);
     cout << "ULTIMATE TIC TAC TOE";
 
+    DisplayBoardsMode(boards);
     DisplayCurrPlayer(boards);
 
     GotoXY(xBoardInfor + 2, hBoardInfor - 4);
@@ -52,12 +63,13 @@ void Information(cLargeBoard boards)
     GotoXY(xBoardInfor + 1, hBoardInfor - 2);
     cout << "- Input: Cell = '0' - Go back to your previous turn";
     GotoXY(xBoardInfor + 1, hBoardInfor - 1);
-    cout << "         Cell = 'r' - Exit Game";
+    cout << "         Cell = 'r' - Exit Game & Lost";
 
     GotoXY(0, 0);
 }
 
-void InforStatusLargeBoard(cLargeBoard boards)
+/* Display Large Board Status */
+void InforStatusLargeBoard(CLargeBoard boards)
 {
     char temp[9]; // ASCII of '1' -> '9' or 'X' or 'O' or '='
     for (int i = 0; i < 9; i++)
@@ -96,6 +108,7 @@ void InforStatusLargeBoard(cLargeBoard boards)
     cout << "+---+---+---+";
 }
 
+/* Display specify the current table */
 void DrawSelect(int _boardNum)
 {
     SetColorText(yellow);
@@ -116,14 +129,8 @@ void DrawSelect(int _boardNum)
     SetColorText(white);
 }
 
-void SetColorText(COLORS _color)
-{
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, _color);
-}
-
 /* Display interface a Large Board */
-void DrawBoards(cLargeBoard boards)
+void DrawBoards(CLargeBoard boards)
 {
     int tempBoardNum = boards.m_boardNum;
     ClearScreen();
@@ -137,7 +144,7 @@ void DrawBoards(cLargeBoard boards)
             {
                 for (int z = 0; z < 3; z++)
                 {
-                    PIECE player = boards.m_boards[w][y].m_board[x][z];
+                    ePiece player = boards.m_boards[w][y].m_board[x][z];
                     cout << (char)player << " ";
                 }
                 cout << "     ";
@@ -148,8 +155,8 @@ void DrawBoards(cLargeBoard boards)
         cout << endl;
     }
 
-    /* Display board graphic before	being taken */
-    if (tempBoardNum == -1)
+    /* Display board graphic before	being taken or finish match */
+    if (tempBoardNum == -1 || boards.CheckWin() != NONE)
         Information(boards);
 
     /* Display board graphic after being taken */
@@ -162,26 +169,15 @@ void DrawBoards(cLargeBoard boards)
 }
 
 /*  Display name of current player */
-void DisplayCurrPlayer(cLargeBoard boards)
+void DisplayCurrPlayer(CLargeBoard boards)
 {
     SetColorText(green);
-    GotoXY(xBoardInfor + 2, hBoardInfor - 6);
-    cout << "Current Turn: ";
+    GotoXY(xBoardInfor + 2, hBoardInfor - 5);
+    cout << "* Current Turn: ";
     SetColorText(white);
     switch (boards.m_mode)
     {
-    case BOT:
-        switch (boards.GetTurn())
-        {
-        case X:
-            cout << pPlayer[0]->m_name;
-            break;
-        case O:
-            cout << "BOT";
-            break;
-        }
-        break;
-    case FRIEND:
+    case Friend:
         switch (boards.GetTurn())
         {
         case X:
@@ -193,6 +189,42 @@ void DisplayCurrPlayer(cLargeBoard boards)
             break;
         }
         break;
+
+    default:
+        switch (boards.GetTurn())
+        {
+        case X:
+            cout << pPlayer[0]->m_name;
+            break;
+        case O:
+            cout << "BOT";
+            break;
+        }
+        break;
     }
 }
 
+/* Display mode of large board */
+void DisplayBoardsMode(CLargeBoard boards)
+{
+    SetColorText(green);
+    GotoXY(xBoardInfor + 2, hBoardInfor - 6);
+    cout << "* Play with: ";
+    SetColorText(white);
+    switch (boards.m_mode)
+    {
+    case Friend:
+        cout << "FRIEND";
+        break;
+
+    case BotEasy:
+        cout << "BOT EASY";
+        break;
+    case BotNormal:
+        cout << "BOT NORMAL";
+        break;
+    case BotHard:
+        cout << "BOT HARD";
+        break;
+    }
+}

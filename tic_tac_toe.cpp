@@ -2,7 +2,7 @@
 
 using namespace std;
 
-cSmallBoard::cSmallBoard()
+CSmallBoard::CSmallBoard()
 {
     InitBoard();
 	
@@ -10,7 +10,7 @@ cSmallBoard::cSmallBoard()
     m_gameStatus = NONE;
 }
 
-void cSmallBoard::InitBoard()
+void CSmallBoard::InitBoard()
 {
     /* For all BLANK */
     for (int x = 0; x < 3; ++x)
@@ -19,13 +19,13 @@ void cSmallBoard::InitBoard()
 }
 
 /* Get status of small board */
-STATUS cSmallBoard::GetStatus()
+eStatus CSmallBoard::GetStatus()
 {
     return m_gameStatus;
 }
 
 /* Fill in cell */
-bool cSmallBoard::Fill(int cell, PIECE m_turn)
+bool CSmallBoard::Fill(int cell, ePiece m_turn)
 {
     /* Player grid is display from 1 
      * So 1 must be subtracted for the 
@@ -40,7 +40,7 @@ bool cSmallBoard::Fill(int cell, PIECE m_turn)
 }
 
 /* Check win */
-STATUS cSmallBoard::CheckWin()
+eStatus CSmallBoard::CheckWin()
 {
     bool tie = true;
     /* Check for a tie */
