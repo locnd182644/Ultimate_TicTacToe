@@ -139,6 +139,7 @@ eStatus PlayWithBotEasy(ePiece piece)
         DrawBoards(currentBoard);
         switch (currentBoard.GetTurn())
         {
+            
         case X:
             GotoXY(xInput, yInput);
             cout << "Player " << currentBoard.GetTurn() << ": select cell";
@@ -267,7 +268,7 @@ eStatus PlayWithBotNormal(ePiece piece)
             GotoXY(xInput, yInput);
             cout << "Bot " << currentBoard.GetTurn() << ": select cell";
             GotoXY(xInput, yInput + 1);
-            cell = BestMove(currentBoard, 2);
+            cell = BestMove(currentBoard, 2); // depth = 2
             cout << "Cell: " << cell;
             break;
         }

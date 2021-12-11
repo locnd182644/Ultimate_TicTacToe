@@ -229,7 +229,7 @@ void DisplayInforPlayer(vector<CPlayerInfor> listPlayer)
         cout << "Choose: \n";
         cout << "1. Display player list in chronological order\n";
         cout << "2. Display player list in decreasing rate order\n";
-        cout << "3. Display player list in decreasing rate order\n";
+        cout << "3. Display player list in increasing rate order\n";
         cout << "4. Return\n\n";
         SetColorText(white);
         cout << "Option: ";

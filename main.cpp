@@ -49,7 +49,6 @@ int main()
         switch (choice1)
         {
         case 1:
-
             pPlayer[0] = &g_players[iSearchPlayer(g_players)]; // import name of current player
             while (1)
             {
@@ -190,11 +189,7 @@ int main()
                     Sleep(SleepTime); // screen pause for 2 seconds
                     break;
                 }
-                // fflush(stdin);
-                // cin >> choice2;
-                // cout << "Choose 2: " << choice2;
-                // Sleep(1000);
-                /* Return Choose Options */
+
                 if (choice2 == 6)
                     break;
             }
