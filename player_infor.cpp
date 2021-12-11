@@ -236,3 +236,4 @@ void DisplayInforPlayer(vector<CPlayerInfor> listPlayer)
         option = InputData();
     }
 }
+

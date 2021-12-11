@@ -1,8 +1,8 @@
 
 Nguyen Van A,
-22
-13
-8
+21
+7
+3
 Nguyen Van B,
 2
 9
@@ -23,3 +23,7 @@ Nguyen Van F,
 0
 3
 0
+1,
+0
+0
+1

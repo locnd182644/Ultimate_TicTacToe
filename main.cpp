@@ -5,11 +5,10 @@
 #include "graphics.h"
 #include "player_infor.h"
 #include "ultimate_tic_tac_toe.h"
-#include "test.h"
 
 using namespace std;
 
-#define SleepTime 3000  // 3 seconds
+#define SleepTime 3000 // 3 seconds
 
 /* Pointer to player in the vector list */
 CPlayerInfor *pPlayer[2];
@@ -43,7 +42,7 @@ int main()
         SetColorText(white);
         cout << "1. Start New Game\n";
         cout << "2. How to Play\n";
-		cout << "3. Information of Player\n";
+        cout << "3. Information of Player\n";
         cout << "4. Save Information & Exit\n\n";
         cout << "Option: ";
         choice1 = InputData(); // allows input from the keypad integers from 0 to 9
@@ -79,7 +78,8 @@ int main()
                     SetColorText(white);
                     cout << "1.  Import another player's name\n";
                     cout << "2.  Find player at the same level\n";
-                    cout << "*** Note: Option 2: Find opponents  with a differential rate no more than 10% %\n\n";
+                    cout << "*** Note: Option 2: Find opponents with\n";
+                    cout << "    a differential rate no more than 10%\n\n";
                     cout << "Option: ";
                     choice3 = InputData();
                     eStatus withFriend;
@@ -128,7 +128,7 @@ int main()
 
                 /* Play with Bot Easy */
                 case 2:
-                    ClearScreen();                                 // clean Screen
+                    ClearScreen();                                     // clean Screen
                     switch (PlayWithBotEasy(SelectFirstPlay(BotEasy))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
@@ -147,7 +147,7 @@ int main()
 
                 /* Play with Bot Normal */
                 case 3:
-                    ClearScreen();                                   // clean Screen
+                    ClearScreen();                                         // clean Screen
                     switch (PlayWithBotNormal(SelectFirstPlay(BotNormal))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
@@ -166,7 +166,7 @@ int main()
 
                     /* Play with Bot Hard */
                 case 4:
-                    ClearScreen();                                 // clean Screen
+                    ClearScreen();                                     // clean Screen
                     switch (PlayWithBotHard(SelectFirstPlay(BotHard))) // choose first turn to play with modeBoards is BOT
                     {
                     case X:
@@ -190,7 +190,10 @@ int main()
                     Sleep(SleepTime); // screen pause for 2 seconds
                     break;
                 }
-
+                // fflush(stdin);
+                // cin >> choice2;
+                // cout << "Choose 2: " << choice2;
+                // Sleep(1000);
                 /* Return Choose Options */
                 if (choice2 == 6)
                     break;
@@ -201,11 +204,10 @@ int main()
             ClearScreen();
             Rules(); // game rule
             break;
-			
+
         case 3:
             DisplayInforPlayer(g_players); // display information of player with options
             break;
-
 
         case 4:
             /* Save information into file & Exit */

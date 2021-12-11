@@ -6,13 +6,16 @@
 #include "ultimate_tic_tac_toe.h"
 #include "player_infor.h"
 
+//**************** Handing for data of USER ***************//
 /*  Handling input data from the keyboard */
 int InputData(); // Allows input from the keypad integers from 0 to 9
 
 /*  Handling select first to play */
 ePiece SelectFirstPlay(eMode);
 
-/******** Handling for BOT **********/
+//**********************************************************//
+
+//**************** Handing for BOT ***************//
 
 /*  Handling Easy Bot */
 int BotSelectCell(CLargeBoard *);  // random with checked condition : Cell must be Piece_BLANK

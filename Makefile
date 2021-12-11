@@ -22,9 +22,6 @@ main.o: main.cpp
 player_infor.o: player_infor.cpp
 	g++ -c player_infor.cpp
 
-# test.o: test.cpp
-# 	g++ -c test.cpp
-
 clean:
 	rm *.o
 	rm game

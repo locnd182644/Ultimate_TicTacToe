@@ -1,11 +1,14 @@
 #include "handle.h"
-#include "stack"
+#include <stack>
 #include "graphics.h"
+#include <windows.h>
+#include <thread>
 
 using namespace std;
 
-// Pointer to player in the vector list
-extern CPlayerInfor *pPlayer[2];
+extern CPlayerInfor *pPlayer[2]; // pointer to player in the vector list
+
+//**************** Handing for data of USER ***************//
 
 /* Allows input from the keypad integers from 0 to 9 or 'r' */
 int InputData()
@@ -83,6 +86,10 @@ ePiece SelectFirstPlay(eMode mode)
         }
     }
 }
+
+//**********************************************************//
+
+//**************** Handing for BOT ***************//
 
 /* Random with checked condition : Cell must be Piece_BLANK */
 int BotSelectCell(CLargeBoard *pBoards)
@@ -222,3 +229,5 @@ int MoveNum(CLargeBoard boards)
     }
     return tempMoveNum;
 }
+
+//**********************************************************//
