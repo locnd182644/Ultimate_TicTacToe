@@ -2,7 +2,7 @@
 Nguyen Van A,
 22
 13
-7
+8
 Nguyen Van B,
 2
 9
