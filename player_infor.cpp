@@ -50,7 +50,7 @@ int iSearchPlayer(vector<CPlayerInfor> &listPlayer)
     /* if not then create new player */
     CPlayerInfor newPlayer(name);
     listPlayer.push_back(newPlayer);
-    return i;
+    return listPlayer.size() - 1;
 }
 
 /* Find the player with the closest win rate */
